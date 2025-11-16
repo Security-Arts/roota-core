@@ -47,6 +47,9 @@ export default function HomePage() {
     fetchIdeas();
   }, []);
 
+  const ideasCountLabel =
+    !loading && !error ? `${ideas.length} ідея(й)` : "—";
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-50">
       <div className="max-w-5xl mx-auto px-4 py-10">
@@ -62,78 +65,85 @@ export default function HomePage() {
             </p>
           </div>
 
-        <div className="flex flex-col gap-1 text-xs text-slate-400 mt-4 sm:items-end">
-  <p>Backend: Supabase</p>
-  <p>Endpoint: /api/ideas</p>
-  <p>Mode: MVP · read-only list</p>
-</div>
-
+          <div className="flex flex-col gap-1 text-xs text-slate-400 mt-4 sm:items-end">
+            <p>Backend: Supabase</p>
+            <p>Endpoint: /api/ideas</p>
+            <p>Mode: MVP · read-only list</p>
+          </div>
         </header>
 
-        {/* State handling */}
-        {loading && (
-          <div className="text-slate-300 text-sm">
-            Завантажую ідеї з бекенду…
+        {/* Потік ідей — завжди на місці, без стрибків */}
+        <section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur">
+          <div className="border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide">
+              Живий потік ідей
+            </h2>
+            <span className="text-xs text-slate-400">{ideasCountLabel}</span>
           </div>
-        )}
 
-        {error && !loading && (
-          <div className="mb-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
-            Помилка завантаження: {error}
-          </div>
-        )}
-
-        {/* Empty state */}
-        {!loading && !error && ideas.length === 0 && (
-          <div className="rounded-xl border border-slate-700 bg-slate-900/60 px-6 py-10 text-center">
-            <p className="text-slate-200 font-medium">
-              Поки що немає жодної ідеї.
-            </p>
-            <p className="text-slate-400 text-sm mt-2">
-              Бекенд працює, але таблиця порожня — наступним кроком додамо форму
-              створення ідей.
-            </p>
-          </div>
-        )}
-
-        {/* Ideas table */}
-        {!loading && !error && ideas.length > 0 && (
-          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur mt-10">
-            <div className="border-b border-slate-800 px-4 py-3 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide mt-12">
-                Живий потік ідей
-              </h2>
-              <span className="text-xs text-slate-400">
-                {ideas.length} ідея(й)
-              </span>
+          {/* Статусна панель (помилка / лоадер) */}
+          {error && (
+            <div className="px-4 py-3 text-sm text-red-100 bg-red-500/10 border-b border-red-500/40">
+              Помилка завантаження: {error}
             </div>
+          )}
 
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm">
-                <thead className="bg-slate-900/80">
-                  <tr className="border-b border-slate-800 text-left">
-                    <th className="px-4 py-2 font-medium text-slate-400">
-                      Ідея
-                    </th>
-                    <th className="px-4 py-2 font-medium text-slate-400">
-                      Опис
-                    </th>
-                    <th className="px-4 py-2 font-medium text-slate-400">
-                      Proof
-                    </th>
-                    <th className="px-4 py-2 font-medium text-slate-400">
-                      Pulse
-                    </th>
-                    <th className="px-4 py-2 font-medium text-slate-400">
-                      Автор
-                    </th>
-                    <th className="px-4 py-2 font-medium text-slate-400">
-                      Дата
-                    </th>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead className="bg-slate-900/80">
+                <tr className="border-b border-slate-800 text-left">
+                  <th className="px-4 py-2 font-medium text-slate-400">
+                    Ідея
+                  </th>
+                  <th className="px-4 py-2 font-medium text-slate-400">
+                    Опис
+                  </th>
+                  <th className="px-4 py-2 font-medium text-slate-400">
+                    Proof
+                  </th>
+                  <th className="px-4 py-2 font-medium text-slate-400">
+                    Pulse
+                  </th>
+                  <th className="px-4 py-2 font-medium text-slate-400">
+                    Автор
+                  </th>
+                  <th className="px-4 py-2 font-medium text-slate-400">
+                    Дата
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {/* Стан: завантаження */}
+                {loading && !error && (
+                  <tr className="border-t border-slate-800/70">
+                    <td
+                      className="px-4 py-6 text-slate-300 text-sm"
+                      colSpan={6}
+                    >
+                      Завантажую ідеї з бекенду…
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {ideas.map((idea) => (
+                )}
+
+                {/* Стан: немає ідей */}
+                {!loading && !error && ideas.length === 0 && (
+                  <tr className="border-t border-slate-800/70">
+                    <td
+                      className="px-4 py-6 text-slate-300 text-sm"
+                      colSpan={6}
+                    >
+                      Поки що немає жодної ідеї. Наступним кроком додамо форму
+                      створення ідей.
+                    </td>
+                  </tr>
+                )}
+
+                {/* Стан: є ідеї */}
+                {!loading &&
+                  !error &&
+                  ideas.length > 0 &&
+                  ideas.map((idea) => (
                     <tr
                       key={idea.id}
                       className="border-t border-slate-800/70 hover:bg-slate-900/80 transition-colors"
@@ -178,11 +188,10 @@ export default function HomePage() {
                       </td>
                     </tr>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </main>
   );
