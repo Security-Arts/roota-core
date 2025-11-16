@@ -62,11 +62,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-1 text-xs text-slate-400 sm:items-end">
-            <span>Backend: Supabase</span>
-            <span>Endpoint: /api/ideas</span>
-            <span>Mode: MVP · read-only list</span>
-          </div>
+        <div className="flex flex-col gap-1 text-xs text-slate-400 mt-4 sm:items-end">
+  <p>Backend: Supabase</p>
+  <p>Endpoint: /api/ideas</p>
+  <p>Mode: MVP · read-only list</p>
+</div>
+
         </header>
 
         {/* State handling */}
