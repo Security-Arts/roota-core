@@ -73,125 +73,101 @@ export default function HomePage() {
         </header>
 
         {/* Потік ідей — завжди на місці, без стрибків */}
-        <section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur">
-          <div className="border-b border-slate-800 px-4 py-3 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide">
-              Живий потік ідей
-            </h2>
-            <span className="text-xs text-slate-400">{ideasCountLabel}</span>
-          </div>
+<section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur mt-12">
+  <div className="border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+    <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide">
+      Живий потік ідей
+    </h2>
+    <span className="text-xs text-slate-400">
+      {!loading && !error ? `${ideas.length} ідея(й)` : "—"}
+    </span>
+  </div>
 
-          {/* Статусна панель (помилка / лоадер) */}
-          {error && (
-            <div className="px-4 py-3 text-sm text-red-100 bg-red-500/10 border-b border-red-500/40">
-              Помилка завантаження: {error}
-            </div>
-          )}
+  {/* Loader */}
+  {loading && (
+    <div className="px-4 py-6 text-slate-300 text-sm border-b border-slate-800">
+      Завантажую ідеї з бекенду…
+    </div>
+  )}
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead className="bg-slate-900/80">
-                <tr className="border-b border-slate-800 text-left">
-                  <th className="px-4 py-2 font-medium text-slate-400">
-                    Ідея
-                  </th>
-                  <th className="px-4 py-2 font-medium text-slate-400">
-                    Опис
-                  </th>
-                  <th className="px-4 py-2 font-medium text-slate-400">
-                    Proof
-                  </th>
-                  <th className="px-4 py-2 font-medium text-slate-400">
-                    Pulse
-                  </th>
-                  <th className="px-4 py-2 font-medium text-slate-400">
-                    Автор
-                  </th>
-                  <th className="px-4 py-2 font-medium text-slate-400">
-                    Дата
-                  </th>
-                </tr>
-              </thead>
+  {/* Error */}
+  {error && (
+    <div className="px-4 py-6 text-sm text-red-100 bg-red-500/10 border-b border-red-500/40">
+      Помилка: {error}
+    </div>
+  )}
 
-              <tbody>
-                {/* Стан: завантаження */}
-                {loading && !error && (
-                  <tr className="border-t border-slate-800/70">
-                    <td
-                      className="px-4 py-6 text-slate-300 text-sm"
-                      colSpan={6}
-                    >
-                      Завантажую ідеї з бекенду…
-                    </td>
-                  </tr>
+  {/* No ideas */}
+  {!loading && !error && ideas.length === 0 && (
+    <div className="px-4 py-6 text-slate-300 text-sm border-b border-slate-800">
+      Даних поки нема. Додамо форму створення ідей.
+    </div>
+  )}
+
+  {/* Table */}
+  {!loading && !error && ideas.length > 0 && (
+    <div className="overflow-x-auto">
+      <table className="min-w-full text-sm">
+        <thead className="bg-slate-900/80">
+          <tr className="border-b border-slate-800 text-left">
+            <th className="px-4 py-2 font-medium text-slate-400">Ідея</th>
+            <th className="px-4 py-2 font-medium text-slate-400">Опис</th>
+            <th className="px-4 py-2 font-medium text-slate-400">Proof</th>
+            <th className="px-4 py-2 font-medium text-slate-400">Pulse</th>
+            <th className="px-4 py-2 font-medium text-slate-400">Автор</th>
+            <th className="px-4 py-2 font-medium text-slate-400">Дата</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ideas.map((idea) => (
+            <tr
+              key={idea.id}
+              className="border-t border-slate-800/70 hover:bg-slate-900/80 transition-colors"
+            >
+              <td className="px-4 py-3 align-top font-semibold text-slate-50">
+                {idea.title}
+              </td>
+
+              <td className="px-4 py-3 align-top max-w-xs text-slate-300">
+                {idea.description}
+              </td>
+
+              <td className="px-4 py-3 align-top">
+                {idea.proof_hash ? (
+                  <span className="inline-flex items-center rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-200">
+                    Proof linked
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center rounded-full border border-slate-600/60 bg-slate-800 px-2.5 py-0.5 text-[11px] text-slate-300">
+                    no proof yet
+                  </span>
                 )}
+              </td>
 
-                {/* Стан: немає ідей */}
-                {!loading && !error && ideas.length === 0 && (
-                  <tr className="border-t border-slate-800/70">
-                    <td
-                      className="px-4 py-6 text-slate-300 text-sm"
-                      colSpan={6}
-                    >
-                      Поки що немає жодної ідеї. Наступним кроком додамо форму
-                      створення ідей.
-                    </td>
-                  </tr>
-                )}
+              <td className="px-4 py-3 align-top">
+                <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-200">
+                  ⚡ {idea.pulse ?? 0}
+                </span>
+              </td>
 
-                {/* Стан: є ідеї */}
-                {!loading &&
-                  !error &&
-                  ideas.length > 0 &&
-                  ideas.map((idea) => (
-                    <tr
-                      key={idea.id}
-                      className="border-t border-slate-800/70 hover:bg-slate-900/80 transition-colors"
-                    >
-                      <td className="px-4 py-3 align-top">
-                        <div className="font-semibold text-slate-50">
-                          {idea.title}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 align-top max-w-xs">
-                        <p className="text-slate-300 line-clamp-3">
-                          {idea.description}
-                        </p>
-                      </td>
-                      <td className="px-4 py-3 align-top">
-                        {idea.proof_hash ? (
-                          <span className="inline-flex items-center rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-200">
-                            Proof linked
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center rounded-full border border-slate-600/60 bg-slate-800 px-2.5 py-0.5 text-[11px] text-slate-300">
-                            no proof yet
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 align-top">
-                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-200">
-                          ⚡ {idea.pulse ?? 0}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 align-top">
-                        <span className="text-slate-300">
-                          {idea.author || "anonymous"}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 align-top whitespace-nowrap text-slate-400 text-xs">
-                        {new Date(idea.created_at).toLocaleDateString("uk-UA", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+              <td className="px-4 py-3 align-top text-slate-300">
+                {idea.author || "anonymous"}
+              </td>
+
+              <td className="px-4 py-3 align-top whitespace-nowrap text-slate-400 text-xs">
+                {new Date(idea.created_at).toLocaleDateString("uk-UA", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</section>
       </div>
     </main>
   );
