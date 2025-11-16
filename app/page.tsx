@@ -51,18 +51,20 @@ export default function HomePage() {
     <main className="min-h-screen bg-slate-950 text-slate-50">
       <div className="max-w-5xl mx-auto px-4 py-10">
         {/* Top bar / brand */}
-        <header className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <header className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-              Synthroot
+              Roota
             </h1>
             <p className="text-sm sm:text-base text-slate-300 mt-1">
-              Ideas Stock Exchange · живий реєстр ідей з доказом та пульсом інтересу
+              Ideas Stock Exchange · живий реєстр ідей з доказом та пульсом
+              інтересу
             </p>
           </div>
 
-          <div className="inline-flex flex-col items-end gap-1 text-xs text-slate-400">
-            <span>Backend: Supabase · /api/ideas</span>
+          <div className="flex flex-col gap-1 text-xs text-slate-400 sm:items-end">
+            <span>Backend: Supabase</span>
+            <span>Endpoint: /api/ideas</span>
             <span>Mode: MVP · read-only list</span>
           </div>
         </header>
@@ -87,7 +89,7 @@ export default function HomePage() {
               Поки що немає жодної ідеї.
             </p>
             <p className="text-slate-400 text-sm mt-2">
-              Бекенд працює, але таблиця порожня — наступним кроком додамо форму 
+              Бекенд працює, але таблиця порожня — наступним кроком додамо форму
               створення ідей.
             </p>
           </div>
@@ -95,7 +97,7 @@ export default function HomePage() {
 
         {/* Ideas table */}
         {!loading && !error && ideas.length > 0 && (
-          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur">
+          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur mt-10">
             <div className="border-b border-slate-800 px-4 py-3 flex items-center justify-between">
               <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide">
                 Живий потік ідей
@@ -107,24 +109,24 @@ export default function HomePage() {
 
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="border-b border-slate-800 bg-slate-900/80">
-                    <th className="px-4 py-2 text-left font-medium text-slate-400">
+                <thead className="bg-slate-900/80">
+                  <tr className="border-b border-slate-800 text-left">
+                    <th className="px-4 py-2 font-medium text-slate-400">
                       Ідея
                     </th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-400">
+                    <th className="px-4 py-2 font-medium text-slate-400">
                       Опис
                     </th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-400">
+                    <th className="px-4 py-2 font-medium text-slate-400">
                       Proof
                     </th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-400">
+                    <th className="px-4 py-2 font-medium text-slate-400">
                       Pulse
                     </th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-400">
+                    <th className="px-4 py-2 font-medium text-slate-400">
                       Автор
                     </th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-400">
+                    <th className="px-4 py-2 font-medium text-slate-400">
                       Дата
                     </th>
                   </tr>
