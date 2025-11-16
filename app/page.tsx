@@ -100,7 +100,7 @@ export default function HomePage() {
         {!loading && !error && ideas.length > 0 && (
           <section className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur mt-10">
             <div className="border-b border-slate-800 px-4 py-3 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide">
+              <h2 className="text-sm font-semibold text-slate-100 uppercase tracking-wide mt-12">
                 Живий потік ідей
               </h2>
               <span className="text-xs text-slate-400">
