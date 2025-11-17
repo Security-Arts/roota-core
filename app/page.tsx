@@ -46,6 +46,11 @@ export default function HomePage() {
   const totalLabel =
     !loading && !error ? `${ideas.length} ідея(й)` : "—";
 
+  // спільний стиль для вертикальної межі (видима світла лінія)
+  const colBorderRight = {
+    borderRight: "1px solid rgba(148,163,184,0.7)", // приблизно tailwind slate-400
+  } as const;
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-50">
       <div className="max-w-5xl mx-auto px-4 py-10">
@@ -104,19 +109,34 @@ export default function HomePage() {
               <table className="min-w-full text-sm border-t border-slate-700 border-collapse">
                 <thead className="bg-slate-900/90">
                   <tr className="border-b border-slate-700">
-                    <th className="px-4 py-2 font-medium text-slate-300 text-left border-r border-slate-700">
+                    <th
+                      className="px-4 py-2 font-medium text-slate-300 text-left"
+                      style={colBorderRight}
+                    >
                       Ідея
                     </th>
-                    <th className="px-4 py-2 font-medium text-slate-300 text-left border-r border-slate-700">
+                    <th
+                      className="px-4 py-2 font-medium text-slate-300 text-left"
+                      style={colBorderRight}
+                    >
                       Опис
                     </th>
-                    <th className="px-4 py-2 font-medium text-slate-300 text-left border-r border-slate-700">
+                    <th
+                      className="px-4 py-2 font-medium text-slate-300 text-left"
+                      style={colBorderRight}
+                    >
                       Proof
                     </th>
-                    <th className="px-4 py-2 font-medium text-slate-300 text-left border-r border-slate-700">
+                    <th
+                      className="px-4 py-2 font-medium text-slate-300 text-left"
+                      style={colBorderRight}
+                    >
                       Pulse
                     </th>
-                    <th className="px-4 py-2 font-medium text-slate-300 text-left border-r border-slate-700">
+                    <th
+                      className="px-4 py-2 font-medium text-slate-300 text-left"
+                      style={colBorderRight}
+                    >
                       Автор
                     </th>
                     <th className="px-4 py-2 font-medium text-slate-300 text-left">
@@ -132,19 +152,25 @@ export default function HomePage() {
                       className="border-b border-slate-700 hover:bg-slate-900/80 transition-colors"
                     >
                       {/* ІДЕЯ */}
-                      <td className="px-4 py-3 align-top font-semibold text-slate-50 border-r border-slate-700">
+                      <td
+                        className="px-4 py-3 align-top font-semibold text-slate-50"
+                        style={colBorderRight}
+                      >
                         {idea.title}
                       </td>
 
                       {/* ОПИС */}
-                      <td className="px-4 py-3 align-top border-r border-slate-700 max-w-[420px] whitespace-normal break-words">
+                      <td
+                        className="px-4 py-3 align-top max-w-[420px] whitespace-normal break-words"
+                        style={colBorderRight}
+                      >
                         <p className="text-slate-300 leading-relaxed">
                           {idea.description}
                         </p>
                       </td>
 
                       {/* PROOF */}
-                      <td className="px-4 py-3 align-top border-r border-slate-700">
+                      <td className="px-4 py-3 align-top" style={colBorderRight}>
                         {idea.proof_hash ? (
                           <span className="inline-flex items-center rounded-full border border-emerald-400 bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-medium text-emerald-100">
                             Proof linked
@@ -157,14 +183,17 @@ export default function HomePage() {
                       </td>
 
                       {/* PULSE */}
-                      <td className="px-4 py-3 align-top border-r border-slate-700">
+                      <td className="px-4 py-3 align-top" style={colBorderRight}>
                         <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-100">
                           ⚡ {idea.pulse ?? 0}
                         </span>
                       </td>
 
                       {/* АВТОР */}
-                      <td className="px-4 py-3 align-top text-slate-200 border-r border-slate-700">
+                      <td
+                        className="px-4 py-3 align-top text-slate-200"
+                        style={colBorderRight}
+                      >
                         {idea.author || "anonymous"}
                       </td>
 
