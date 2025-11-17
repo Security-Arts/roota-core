@@ -22,6 +22,167 @@ type SortDirection = "asc" | "desc";
 type ProofFilter = "all" | "with" | "without";
 type PulseFilter = "all" | "1" | "3" | "5";
 
+type Locale = "en" | "es" | "ja";
+
+const translations: Record<
+  Locale,
+  {
+    appTitle: string;
+    tagline: string;
+    backend: string;
+    endpoint: string;
+    mode: string;
+    liveStream: string;
+    totalIdeas: (n: number) => string;
+    searchLabel: string;
+    searchPlaceholder: string;
+    proofFilterLabel: string;
+    proofFilter_all: string;
+    proofFilter_with: string;
+    proofFilter_without: string;
+    pulseFilterLabel: string;
+    pulseFilter_all: string;
+    pulseFilter_1: string;
+    pulseFilter_3: string;
+    pulseFilter_5: string;
+    visibleLabel: (shown: number, total: number) => string;
+    table_idea: string;
+    table_description: string;
+    table_proof: string;
+    table_pulse: string;
+    table_author: string;
+    table_date: string;
+    loading: string;
+    errorPrefix: string;
+    noIdeasForFilter: string;
+    badge_proof_linked: string;
+    badge_no_proof: string;
+    badge_pulse_suffix: string;
+    modal_created: string;
+    modal_author: string;
+    modal_proof_hash: string;
+    modal_close: string;
+  }
+> = {
+  en: {
+    appTitle: "Roota",
+    tagline:
+      "Ideas Stock Exchange · a live registry of ideas with proof and pulse of interest",
+    backend: "Backend: Supabase",
+    endpoint: "Endpoint: /api/ideas",
+    mode: "Mode: MVP · read-only list",
+    liveStream: "Live Idea Stream",
+    totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
+    searchLabel: "Search",
+    searchPlaceholder: "Idea, description, keywords…",
+    proofFilterLabel: "Proof",
+    proofFilter_all: "All ideas",
+    proofFilter_with: "With proof only",
+    proofFilter_without: "Without proof only",
+    pulseFilterLabel: "Pulse",
+    pulseFilter_all: "All values",
+    pulseFilter_1: "from 1+",
+    pulseFilter_3: "from 3+",
+    pulseFilter_5: "from 5+",
+    visibleLabel: (shown, total) =>
+      `Showing ${shown} of ${total} idea${total === 1 ? "" : "s"}`,
+    table_idea: "Idea",
+    table_description: "Description",
+    table_proof: "Proof",
+    table_pulse: "Pulse",
+    table_author: "Author",
+    table_date: "Date",
+    loading: "Loading ideas…",
+    errorPrefix: "Error",
+    noIdeasForFilter: "No ideas match the current filters.",
+    badge_proof_linked: "Proof linked",
+    badge_no_proof: "no proof",
+    badge_pulse_suffix: "pulse",
+    modal_created: "Created",
+    modal_author: "Author",
+    modal_proof_hash: "Proof / hash",
+    modal_close: "Close",
+  },
+  es: {
+    appTitle: "Roota",
+    tagline:
+      "Ideas Stock Exchange · un registro vivo de ideas con prueba y pulso de interés",
+    backend: "Backend: Supabase",
+    endpoint: "Endpoint: /api/ideas",
+    mode: "Modo: MVP · sólo lectura",
+    liveStream: "Flujo en vivo de ideas",
+    totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
+    searchLabel: "Buscar",
+    searchPlaceholder: "Idea, descripción, palabras clave…",
+    proofFilterLabel: "Prueba",
+    proofFilter_all: "Todas las ideas",
+    proofFilter_with: "Sólo con prueba",
+    proofFilter_without: "Sólo sin prueba",
+    pulseFilterLabel: "Pulso",
+    pulseFilter_all: "Todos los valores",
+    pulseFilter_1: "desde 1+",
+    pulseFilter_3: "desde 3+",
+    pulseFilter_5: "desde 5+",
+    visibleLabel: (shown, total) =>
+      `Mostrando ${shown} de ${total} idea${total === 1 ? "" : "s"}`,
+    table_idea: "Idea",
+    table_description: "Descripción",
+    table_proof: "Prueba",
+    table_pulse: "Pulso",
+    table_author: "Autor",
+    table_date: "Fecha",
+    loading: "Cargando ideas…",
+    errorPrefix: "Error",
+    noIdeasForFilter: "No hay ideas que coincidan con los filtros actuales.",
+    badge_proof_linked: "Prueba vinculada",
+    badge_no_proof: "sin prueba",
+    badge_pulse_suffix: "pulso",
+    modal_created: "Creado",
+    modal_author: "Autor",
+    modal_proof_hash: "Prueba / hash",
+    modal_close: "Cerrar",
+  },
+  ja: {
+    appTitle: "Roota",
+    tagline:
+      "Ideas Stock Exchange · 証拠と関心のパルスを持つアイデアのライブレジストリ",
+    backend: "バックエンド: Supabase",
+    endpoint: "エンドポイント: /api/ideas",
+    mode: "モード: MVP · 読み取り専用",
+    liveStream: "ライブ・アイデアストリーム",
+    totalIdeas: (n) => `アイデア ${n} 件`,
+    searchLabel: "検索",
+    searchPlaceholder: "アイデア、説明、キーワード…",
+    proofFilterLabel: "証拠",
+    proofFilter_all: "すべてのアイデア",
+    proofFilter_with: "証拠ありのみ",
+    proofFilter_without: "証拠なしのみ",
+    pulseFilterLabel: "パルス",
+    pulseFilter_all: "すべての値",
+    pulseFilter_1: "1 以上",
+    pulseFilter_3: "3 以上",
+    pulseFilter_5: "5 以上",
+    visibleLabel: (shown, total) =>
+      `${total} 件中 ${shown} 件を表示`,
+    table_idea: "アイデア",
+    table_description: "説明",
+    table_proof: "証拠",
+    table_pulse: "パルス",
+    table_author: "投稿者",
+    table_date: "日付",
+    loading: "アイデアを読み込み中…",
+    errorPrefix: "エラー",
+    noIdeasForFilter: "現在のフィルターに一致するアイデアはありません。",
+    badge_proof_linked: "証拠リンクあり",
+    badge_no_proof: "証拠なし",
+    badge_pulse_suffix: "パルス",
+    modal_created: "作成日",
+    modal_author: "投稿者",
+    modal_proof_hash: "証拠 / ハッシュ",
+    modal_close: "閉じる",
+  },
+};
+
 const styles = {
   page: {
     width: "100%",
@@ -33,6 +194,11 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     gap: "24px",
+  },
+  titleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
   },
   title: {
     fontSize: "32px",
@@ -62,7 +228,30 @@ const styles = {
     fontSize: "13px",
     color: "#94a3b8",
   },
-  // панель фільтрів
+  // language switcher
+  langSwitcher: {
+    display: "inline-flex",
+    gap: "6px",
+    padding: "4px",
+    borderRadius: "999px",
+    border: "1px solid #1e293b",
+    backgroundColor: "#020617",
+  },
+  langButton: {
+    border: "none",
+    borderRadius: "999px",
+    padding: "3px 10px",
+    fontSize: "11px",
+    cursor: "pointer",
+    backgroundColor: "transparent",
+    color: "#cbd5f5",
+  } as const,
+  langButtonActive: {
+    backgroundColor: "#1d4ed8",
+    color: "#e5e7eb",
+  },
+
+  // filters
   filtersBar: {
     marginBottom: "10px",
     display: "flex",
@@ -315,10 +504,14 @@ export default function HomePage() {
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
 
-  // фільтри
+  // filters
   const [searchQuery, setSearchQuery] = useState("");
   const [proofFilter, setProofFilter] = useState<ProofFilter>("all");
   const [pulseFilter, setPulseFilter] = useState<PulseFilter>("all");
+
+  // locale
+  const [locale, setLocale] = useState<Locale>("en");
+  const t = translations[locale];
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -341,9 +534,6 @@ export default function HomePage() {
     fetchIdeas();
   }, []);
 
-  const totalLabel =
-    !loading && !error ? `${ideas.length} ідея(й)` : "—";
-
   const handleSort = (field: SortField) => {
     if (!field) return;
     if (sortField === field) {
@@ -354,14 +544,12 @@ export default function HomePage() {
     }
   };
 
-  // 1) фільтрація
+  // filter
   const filteredIdeas = ideas.filter((idea) => {
     const text = (idea.title + " " + idea.description).toLowerCase();
     const q = searchQuery.trim().toLowerCase();
 
-    if (q && !text.includes(q)) {
-      return false;
-    }
+    if (q && !text.includes(q)) return false;
 
     if (proofFilter === "with" && !idea.proof_hash) return false;
     if (proofFilter === "without" && idea.proof_hash) return false;
@@ -374,7 +562,7 @@ export default function HomePage() {
     return true;
   });
 
-  // 2) сортування
+  // sort
   const sortedIdeas = (() => {
     if (!sortField) return filteredIdeas;
     const copy = [...filteredIdeas];
@@ -396,31 +584,56 @@ export default function HomePage() {
     return sortDirection === "asc" ? "↑" : "↓";
   };
 
+  const totalLabel =
+    !loading && !error ? t.totalIdeas(ideas.length) : "—";
+
   const visibleLabel =
-    !loading && !error
-      ? `Показано ${filteredIdeas.length} з ${ideas.length} ідей`
-      : "";
+    !loading && !error ? t.visibleLabel(filteredIdeas.length, ideas.length) : "";
+
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(locale === "ja" ? "ja-JP" : "en-GB", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
 
   return (
     <main style={styles.page}>
       {/* HEADER */}
       <header style={styles.headerTop}>
         <div>
-          <h1 style={styles.title}>Roota</h1>
-          <p style={styles.subtitle}>
-            Ideas Stock Exchange · живий реєстр ідей з доказом та пульсом інтересу
-          </p>
+          <div style={styles.titleRow}>
+            <h1 style={styles.title}>{t.appTitle}</h1>
+
+            {/* language switcher */}
+            <div style={styles.langSwitcher}>
+              {(["en", "es", "ja"] as Locale[]).map((code) => (
+                <button
+                  key={code}
+                  style={{
+                    ...styles.langButton,
+                    ...(locale === code ? styles.langButtonActive : {}),
+                  }}
+                  onClick={() => setLocale(code)}
+                >
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <p style={styles.subtitle}>{t.tagline}</p>
         </div>
         <div style={styles.metaBlock}>
-          <div>Backend: Supabase</div>
-          <div>Endpoint: /api/ideas</div>
-          <div>Mode: MVP · read-only list</div>
+          <div>{t.backend}</div>
+          <div>{t.endpoint}</div>
+          <div>{t.mode}</div>
         </div>
       </header>
 
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
-        <div style={styles.sectionTitle}>Живий потік ідей</div>
+        <div style={styles.sectionTitle}>{t.liveStream}</div>
         <div style={styles.sectionCount}>{totalLabel}</div>
       </div>
 
@@ -428,10 +641,10 @@ export default function HomePage() {
       <div style={styles.filtersBar}>
         <div style={styles.filtersLeft}>
           <div style={styles.filterGroup}>
-            <label style={styles.filterLabel}>Пошук</label>
+            <label style={styles.filterLabel}>{t.searchLabel}</label>
             <input
               type="text"
-              placeholder="Ідея, опис, ключові слова…"
+              placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={styles.searchInput}
@@ -439,29 +652,29 @@ export default function HomePage() {
           </div>
 
           <div style={styles.filterGroup}>
-            <label style={styles.filterLabel}>Proof</label>
+            <label style={styles.filterLabel}>{t.proofFilterLabel}</label>
             <select
               value={proofFilter}
               onChange={(e) => setProofFilter(e.target.value as ProofFilter)}
               style={styles.select}
             >
-              <option value="all">Усі ідеї</option>
-              <option value="with">Лише з proof</option>
-              <option value="without">Лише без proof</option>
+              <option value="all">{t.proofFilter_all}</option>
+              <option value="with">{t.proofFilter_with}</option>
+              <option value="without">{t.proofFilter_without}</option>
             </select>
           </div>
 
           <div style={styles.filterGroup}>
-            <label style={styles.filterLabel}>Pulse</label>
+            <label style={styles.filterLabel}>{t.pulseFilterLabel}</label>
             <select
               value={pulseFilter}
               onChange={(e) => setPulseFilter(e.target.value as PulseFilter)}
               style={styles.select}
             >
-              <option value="all">Усі значення</option>
-              <option value="1">від 1+</option>
-              <option value="3">від 3+</option>
-              <option value="5">від 5+</option>
+              <option value="all">{t.pulseFilter_all}</option>
+              <option value="1">{t.pulseFilter_1}</option>
+              <option value="3">{t.pulseFilter_3}</option>
+              <option value="5">{t.pulseFilter_5}</option>
             </select>
           </div>
         </div>
@@ -471,12 +684,12 @@ export default function HomePage() {
 
       {/* TABLE BLOCK */}
       <div style={styles.tableWrapper}>
-        {loading && (
-          <div style={styles.loading}>Завантажую ідеї…</div>
-        )}
+        {loading && <div style={styles.loading}>{t.loading}</div>}
 
         {error && (
-          <div style={styles.errorBox}>Помилка: {error}</div>
+          <div style={styles.errorBox}>
+            {t.errorPrefix}: {error}
+          </div>
         )}
 
         {!loading && !error && sortedIdeas.length > 0 && (
@@ -498,7 +711,7 @@ export default function HomePage() {
                       ...styles.thWithRightBorder,
                     }}
                   >
-                    Ідея
+                    {t.table_idea}
                   </th>
                   <th
                     style={{
@@ -506,7 +719,7 @@ export default function HomePage() {
                       ...styles.thWithRightBorder,
                     }}
                   >
-                    Опис
+                    {t.table_description}
                   </th>
                   <th
                     style={{
@@ -514,7 +727,7 @@ export default function HomePage() {
                       ...styles.thWithRightBorder,
                     }}
                   >
-                    Proof
+                    {t.table_proof}
                   </th>
                   <th
                     style={{
@@ -525,7 +738,7 @@ export default function HomePage() {
                     onClick={() => handleSort("pulse")}
                   >
                     <span style={{ display: "inline-flex", gap: 4 }}>
-                      <span>Pulse</span>
+                      <span>{t.table_pulse}</span>
                       <span style={{ fontSize: 11, color: "#94a3b8" }}>
                         {sortIcon("pulse")}
                       </span>
@@ -537,7 +750,7 @@ export default function HomePage() {
                       ...styles.thWithRightBorder,
                     }}
                   >
-                    Автор
+                    {t.table_author}
                   </th>
                   <th
                     style={{
@@ -547,7 +760,7 @@ export default function HomePage() {
                     onClick={() => handleSort("date")}
                   >
                     <span style={{ display: "inline-flex", gap: 4 }}>
-                      <span>Дата</span>
+                      <span>{t.table_date}</span>
                       <span style={{ fontSize: 11, color: "#94a3b8" }}>
                         {sortIcon("date")}
                       </span>
@@ -570,7 +783,7 @@ export default function HomePage() {
                       onMouseLeave={() => setHoveredRowId(null)}
                       onClick={() => setSelectedIdea(idea)}
                     >
-                      {/* ІДЕЯ */}
+                      {/* IDEA */}
                       <td
                         style={{
                           ...styles.tdBase,
@@ -581,7 +794,7 @@ export default function HomePage() {
                         {idea.title}
                       </td>
 
-                      {/* ОПИС */}
+                      {/* DESCRIPTION */}
                       <td
                         style={{
                           ...styles.tdBase,
@@ -600,9 +813,13 @@ export default function HomePage() {
                         }}
                       >
                         {idea.proof_hash ? (
-                          <span style={styles.proofBadge}>Proof linked</span>
+                          <span style={styles.proofBadge}>
+                            {t.badge_proof_linked}
+                          </span>
                         ) : (
-                          <span style={styles.proofBadgeEmpty}>no proof</span>
+                          <span style={styles.proofBadgeEmpty}>
+                            {t.badge_no_proof}
+                          </span>
                         )}
                       </td>
 
@@ -619,7 +836,7 @@ export default function HomePage() {
                         </span>
                       </td>
 
-                      {/* АВТОР */}
+                      {/* AUTHOR */}
                       <td
                         style={{
                           ...styles.tdBase,
@@ -629,17 +846,10 @@ export default function HomePage() {
                         {idea.author || "anonymous"}
                       </td>
 
-                      {/* ДАТА */}
+                      {/* DATE */}
                       <td style={styles.tdBase}>
                         <span style={{ fontSize: 12, color: "#94a3b8" }}>
-                          {new Date(idea.created_at).toLocaleDateString(
-                            "uk-UA",
-                            {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            }
-                          )}
+                          {formatDate(idea.created_at)}
                         </span>
                       </td>
                     </tr>
@@ -651,9 +861,7 @@ export default function HomePage() {
         )}
 
         {!loading && !error && sortedIdeas.length === 0 && (
-          <div style={styles.emptyBox}>
-            За вибраними фільтрами ідей немає.
-          </div>
+          <div style={styles.emptyBox}>{t.noIdeasForFilter}</div>
         )}
       </div>
 
@@ -671,15 +879,7 @@ export default function HomePage() {
               <div>
                 <div style={styles.modalTitle}>{selectedIdea.title}</div>
                 <div style={styles.modalMeta}>
-                  Створено{" "}
-                  {new Date(selectedIdea.created_at).toLocaleDateString(
-                    "uk-UA",
-                    {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    }
-                  )}
+                  {t.modal_created}: {formatDate(selectedIdea.created_at)}
                 </div>
               </div>
               <button
@@ -692,15 +892,19 @@ export default function HomePage() {
 
             <div style={styles.modalTags}>
               <span style={styles.pulseBadge}>
-                ⚡ {selectedIdea.pulse ?? 0} <span>pulse</span>
+                ⚡ {selectedIdea.pulse ?? 0} <span>{t.badge_pulse_suffix}</span>
               </span>
               {selectedIdea.proof_hash ? (
-                <span style={styles.proofBadge}>Proof linked</span>
+                <span style={styles.proofBadge}>
+                  {t.badge_proof_linked}
+                </span>
               ) : (
-                <span style={styles.proofBadgeEmpty}>No proof yet</span>
+                <span style={styles.proofBadgeEmpty}>
+                  {t.badge_no_proof}
+                </span>
               )}
               <span style={{ color: "#e5e7eb" }}>
-                Автор:{" "}
+                {t.modal_author}:{" "}
                 <span style={{ fontWeight: 500 }}>
                   {selectedIdea.author || "anonymous"}
                 </span>
@@ -711,7 +915,7 @@ export default function HomePage() {
 
             {selectedIdea.proof_hash && (
               <div style={styles.modalProofBox}>
-                <div>Proof / hash:</div>
+                <div>{t.modal_proof_hash}:</div>
                 <div style={styles.modalProofCode}>
                   {selectedIdea.proof_hash}
                 </div>
@@ -723,7 +927,7 @@ export default function HomePage() {
                 style={styles.modalButton}
                 onClick={() => setSelectedIdea(null)}
               >
-                Закрити
+                {t.modal_close}
               </button>
             </div>
           </div>
