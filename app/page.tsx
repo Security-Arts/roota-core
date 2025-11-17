@@ -10,7 +10,6 @@ type Idea = {
   pulse: number | null;
   author: string | null;
   created_at: string;
-  updated_at?: string;
 };
 
 type IdeasResponse =
@@ -54,18 +53,19 @@ export default function HomePage() {
   const totalLabel =
     !loading && !error ? `${ideas.length} ідея(й)` : "—";
 
-  // дуже помітні вертикальні межі між колонками
+  // явні вертикальні лінії між колонками
   const colBorderRight = {
-    borderRight: "2px solid #64748b", // slate-500
+    borderRight: "1px solid rgba(148,163,184,0.8)", // slate-400, добре видно
   } as const;
 
+  // ---- сортування ----
   const handleSort = (field: SortField) => {
     if (!field) return;
     if (sortField === field) {
       setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortField(field);
-      setSortDirection(field === "date" ? "desc" : "desc");
+      setSortDirection("desc");
     }
   };
 
@@ -79,6 +79,7 @@ export default function HomePage() {
         const bv = b.pulse ?? 0;
         return sortDirection === "asc" ? av - bv : bv - av;
       }
+
       const av = new Date(a.created_at).getTime();
       const bv = new Date(b.created_at).getTime();
       return sortDirection === "asc" ? av - bv : bv - av;
@@ -120,57 +121,55 @@ export default function HomePage() {
           <span className="text-sm text-slate-400">{totalLabel}</span>
         </div>
 
-        {/* WRAPPER */}
+        {/* TABLE WRAPPER */}
         <div className="overflow-x-auto rounded-2xl border border-slate-700 bg-slate-900/70 backdrop-blur">
-          {/* LOADING */}
           {loading && (
-            <div className="px-8 py-6 text-slate-300 text-sm border-b border-slate-700">
+            <div className="px-6 py-6 text-slate-300 text-sm border-b border-slate-700">
               Завантажую ідеї…
             </div>
           )}
 
-          {/* ERROR */}
           {error && (
-            <div className="px-8 py-6 text-red-200 text-sm bg-red-500/10 border-b border-red-400/40">
+            <div className="px-6 py-6 text-red-200 text-sm bg-red-500/10 border-b border-red-400/40">
               Помилка: {error}
             </div>
           )}
 
-          {/* TABLE */}
           {!loading && !error && sortedIdeas.length > 0 && (
             <div className="relative max-h-[520px] overflow-y-auto">
               <table className="min-w-full text-sm border-collapse table-fixed">
+                {/* важливо: table-fixed + жорстка ширина Опису */}
                 <colgroup>
                   <col className="w-[18%]" />
-                  <col className="w-[42%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[10%]" />
+                  <col className="w-[32%]" /> {/* Опис — вузько, буде перенос */}
+                  <col className="w-[12%]" />
+                  <col className="w-[12%]" />
+                  <col className="w-[14%]" />
+                  <col className="w-[12%]" />
                 </colgroup>
 
                 <thead className="sticky top-0 z-20 bg-slate-900/95">
                   <tr className="border-b border-slate-700">
                     <th
-                      className="px-8 py-3 font-semibold text-slate-200 text-left"
+                      className="px-4 py-3 font-semibold text-slate-200 text-left"
                       style={colBorderRight}
                     >
                       Ідея
                     </th>
                     <th
-                      className="px-8 py-3 font-semibold text-slate-200 text-left"
+                      className="px-4 py-3 font-semibold text-slate-200 text-left"
                       style={colBorderRight}
                     >
                       Опис
                     </th>
                     <th
-                      className="px-8 py-3 font-semibold text-slate-200 text-left"
+                      className="px-4 py-3 font-semibold text-slate-200 text-left"
                       style={colBorderRight}
                     >
                       Proof
                     </th>
                     <th
-                      className="px-8 py-3 font-semibold text-slate-200 text-left cursor-pointer select-none"
+                      className="px-4 py-3 font-semibold text-slate-200 text-left cursor-pointer select-none"
                       style={colBorderRight}
                       onClick={() => handleSort("pulse")}
                     >
@@ -182,13 +181,13 @@ export default function HomePage() {
                       </span>
                     </th>
                     <th
-                      className="px-8 py-3 font-semibold text-slate-200 text-left"
+                      className="px-4 py-3 font-semibold text-slate-200 text-left"
                       style={colBorderRight}
                     >
                       Автор
                     </th>
                     <th
-                      className="px-8 py-3 font-semibold text-slate-200 text-left cursor-pointer select-none"
+                      className="px-4 py-3 font-semibold text-slate-200 text-left cursor-pointer select-none"
                       onClick={() => handleSort("date")}
                     >
                       <span className="inline-flex items-center gap-1">
@@ -208,27 +207,24 @@ export default function HomePage() {
                       className="border-b border-slate-700 hover:bg-slate-800/80 transition-colors cursor-pointer"
                       onClick={() => setSelectedIdea(idea)}
                     >
-                      {/* TITLE */}
+                      {/* ІДЕЯ */}
                       <td
-                        className="px-8 py-4 align-top font-semibold text-slate-50"
+                        className="px-4 py-4 align-top font-semibold text-slate-50"
                         style={colBorderRight}
                       >
                         {idea.title}
                       </td>
 
-                      {/* DESCRIPTION */}
+                      {/* ОПИС — тут робимо ЖОРСТКЕ обмеження ширини */}
                       <td
-                        className="px-8 py-4 align-top text-slate-300 leading-relaxed whitespace-normal break-words"
+                        className="px-4 py-4 align-top text-slate-300 leading-relaxed whitespace-normal break-words max-w-[260px]"
                         style={colBorderRight}
                       >
                         {idea.description}
                       </td>
 
                       {/* PROOF */}
-                      <td
-                        className="px-8 py-4 align-top"
-                        style={colBorderRight}
-                      >
+                      <td className="px-4 py-4 align-top" style={colBorderRight}>
                         {idea.proof_hash ? (
                           <span className="inline-block rounded-full border border-emerald-400 bg-emerald-500/15 px-3 py-0.5 text-xs text-emerald-100">
                             Proof linked
@@ -241,25 +237,22 @@ export default function HomePage() {
                       </td>
 
                       {/* PULSE */}
-                      <td
-                        className="px-8 py-4 align-top"
-                        style={colBorderRight}
-                      >
+                      <td className="px-4 py-4 align-top" style={colBorderRight}>
                         <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/15 px-3 py-0.5 text-xs font-semibold text-indigo-100">
                           ⚡ {idea.pulse ?? 0}
                         </span>
                       </td>
 
-                      {/* AUTHOR */}
+                      {/* АВТОР */}
                       <td
-                        className="px-8 py-4 align-top text-slate-200"
+                        className="px-4 py-4 align-top text-slate-200"
                         style={colBorderRight}
                       >
                         {idea.author || "anonymous"}
                       </td>
 
-                      {/* DATE */}
-                      <td className="px-8 py-4 align-top whitespace-nowrap text-slate-400 text-xs">
+                      {/* ДАТА */}
+                      <td className="px-4 py-4 align-top whitespace-nowrap text-slate-400 text-xs">
                         {new Date(idea.created_at).toLocaleDateString("uk-UA", {
                           year: "numeric",
                           month: "short",
@@ -273,16 +266,15 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* NO IDEAS */}
           {!loading && !error && sortedIdeas.length === 0 && (
-            <div className="px-8 py-6 text-slate-300">
+            <div className="px-6 py-6 text-slate-300">
               Поки що немає ідей.
             </div>
           )}
         </div>
       </div>
 
-      {/* MODAL VIEW DETAILS */}
+      {/* MODAL */}
       {selectedIdea && (
         <div
           className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm"
