@@ -53,12 +53,12 @@ export default function HomePage() {
   const totalLabel =
     !loading && !error ? `${ideas.length} ідея(й)` : "—";
 
-  // явні вертикальні лінії між колонками
+  // вертикальні лінії
   const colBorderRight = {
-    borderRight: "1px solid rgba(148,163,184,0.8)", // slate-400, добре видно
+    borderRight: "1px solid rgba(148,163,184,0.8)", // slate-400
   } as const;
 
-  // ---- сортування ----
+  // сортування
   const handleSort = (field: SortField) => {
     if (!field) return;
     if (sortField === field) {
@@ -138,10 +138,9 @@ export default function HomePage() {
           {!loading && !error && sortedIdeas.length > 0 && (
             <div className="relative max-h-[520px] overflow-y-auto">
               <table className="min-w-full text-sm border-collapse table-fixed">
-                {/* важливо: table-fixed + жорстка ширина Опису */}
                 <colgroup>
                   <col className="w-[18%]" />
-                  <col className="w-[32%]" /> {/* Опис — вузько, буде перенос */}
+                  <col className="w-[32%]" />
                   <col className="w-[12%]" />
                   <col className="w-[12%]" />
                   <col className="w-[14%]" />
@@ -215,10 +214,13 @@ export default function HomePage() {
                         {idea.title}
                       </td>
 
-                      {/* ОПИС — тут робимо ЖОРСТКЕ обмеження ширини */}
+                      {/* ОПИС — ІНЛАЙН-ОВЕРРАЙД white-space */}
                       <td
-                        className="px-4 py-4 align-top text-slate-300 leading-relaxed whitespace-normal break-words max-w-[260px]"
-                        style={colBorderRight}
+                        className="px-4 py-4 align-top text-slate-300 leading-relaxed break-words max-w-[260px]"
+                        style={{
+                          ...colBorderRight,
+                          whiteSpace: "normal", // <-- головний фікс
+                        }}
                       >
                         {idea.description}
                       </td>
