@@ -19,6 +19,239 @@ type IdeasResponse =
 type SortField = "pulse" | "date" | null;
 type SortDirection = "asc" | "desc";
 
+const styles = {
+  page: {
+    width: "100%",
+    maxWidth: "1100px",
+    margin: "0 auto",
+  },
+  headerTop: {
+    marginBottom: "32px",
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "24px",
+  },
+  title: {
+    fontSize: "32px",
+    fontWeight: 700,
+  },
+  subtitle: {
+    marginTop: "8px",
+    fontSize: "14px",
+    color: "#cbd5f5",
+  },
+  metaBlock: {
+    fontSize: "11px",
+    color: "#94a3b8",
+    textAlign: "right" as const,
+  },
+  sectionHeader: {
+    marginBottom: "12px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  sectionTitle: {
+    fontSize: "18px",
+    fontWeight: 600,
+  },
+  sectionCount: {
+    fontSize: "13px",
+    color: "#94a3b8",
+  },
+  tableWrapper: {
+    borderRadius: "16px",
+    border: "1px solid #1e293b",
+    backgroundColor: "rgba(15,23,42,0.95)",
+    overflow: "hidden",
+  },
+  scrollArea: {
+    maxHeight: "520px",
+    overflowY: "auto" as const,
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse" as const,
+    tableLayout: "fixed" as const,
+    fontSize: "14px",
+  },
+  headRow: {
+    backgroundColor: "#020617",
+  },
+  thBase: {
+    position: "sticky" as const,
+    top: 0,
+    zIndex: 2,
+    padding: "10px 14px",
+    textAlign: "left" as const,
+    fontWeight: 600,
+    color: "#e5e7eb",
+    borderBottom: "1px solid #1f2937",
+    backgroundColor: "#020617",
+    fontSize: "13px",
+    whiteSpace: "nowrap" as const,
+  },
+  thWithRightBorder: {
+    borderRight: "1px solid #64748b",
+  },
+  tdBase: {
+    padding: "10px 14px",
+    borderBottom: "1px solid #1f2937",
+    verticalAlign: "top" as const,
+    color: "#e2e8f0",
+    fontSize: "14px",
+  },
+  tdWithRightBorder: {
+    borderRight: "1px solid #64748b",
+  },
+  ideaCell: {
+    fontWeight: 600,
+  },
+  descCell: {
+    color: "#cbd5f5",
+    maxWidth: "320px",
+    whiteSpace: "normal" as const,
+    wordBreak: "break-word" as const,
+  },
+  proofBadge: {
+    display: "inline-block",
+    padding: "3px 8px",
+    borderRadius: "999px",
+    border: "1px solid #4ade80",
+    backgroundColor: "rgba(22,163,74,0.15)",
+    color: "#bbf7d0",
+    fontSize: "11px",
+  },
+  proofBadgeEmpty: {
+    display: "inline-block",
+    padding: "3px 8px",
+    borderRadius: "999px",
+    border: "1px solid #64748b",
+    backgroundColor: "#020617",
+    color: "#e2e8f0",
+    fontSize: "11px",
+  },
+  pulseBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "4px",
+    padding: "3px 8px",
+    borderRadius: "999px",
+    backgroundColor: "rgba(79,70,229,0.2)",
+    color: "#c7d2fe",
+    fontSize: "11px",
+    fontWeight: 600,
+  },
+  rowBase: {
+    cursor: "pointer",
+    transition: "background-color 0.15s ease",
+  },
+  rowHover: {
+    backgroundColor: "rgba(30,64,175,0.35)",
+  },
+  loading: {
+    padding: "16px 18px",
+    fontSize: "13px",
+    borderBottom: "1px solid #1e293b",
+    color: "#e2e8f0",
+  },
+  errorBox: {
+    padding: "16px 18px",
+    fontSize: "13px",
+    borderBottom: "1px solid #7f1d1d",
+    color: "#fecaca",
+    backgroundColor: "rgba(127,29,29,0.3)",
+  },
+  emptyBox: {
+    padding: "16px 18px",
+    fontSize: "13px",
+    color: "#e2e8f0",
+  },
+  // modal
+  modalOverlay: {
+    position: "fixed" as const,
+    inset: 0,
+    backgroundColor: "rgba(0,0,0,0.65)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 50,
+  },
+  modalCard: {
+    width: "100%",
+    maxWidth: "560px",
+    backgroundColor: "#020617",
+    borderRadius: "16px",
+    border: "1px solid #1e293b",
+    padding: "18px 20px",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+  },
+  modalHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "16px",
+  },
+  modalTitle: {
+    fontSize: "18px",
+    fontWeight: 600,
+  },
+  modalMeta: {
+    marginTop: "4px",
+    fontSize: "11px",
+    color: "#94a3b8",
+  },
+  modalClose: {
+    border: "none",
+    background: "none",
+    color: "#94a3b8",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
+  modalTags: {
+    marginTop: "12px",
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "8px",
+    fontSize: "11px",
+  },
+  modalDesc: {
+    marginTop: "14px",
+    fontSize: "13px",
+    color: "#e2e8f0",
+    lineHeight: 1.6,
+    whiteSpace: "pre-wrap" as const,
+  },
+  modalProofBox: {
+    marginTop: "12px",
+    fontSize: "11px",
+    color: "#94a3b8",
+  },
+  modalProofCode: {
+    marginTop: "4px",
+    padding: "6px 8px",
+    backgroundColor: "#020617",
+    borderRadius: "8px",
+    border: "1px solid #1e293b",
+    fontSize: "11px",
+    color: "#e5e7eb",
+    wordBreak: "break-all" as const,
+  },
+  modalFooter: {
+    marginTop: "16px",
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  modalButton: {
+    padding: "6px 12px",
+    borderRadius: "8px",
+    border: "none",
+    backgroundColor: "#1f2937",
+    color: "#e5e7eb",
+    cursor: "pointer",
+    fontSize: "13px",
+  },
+};
+
 export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +261,7 @@ export default function HomePage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
+  const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -53,12 +287,6 @@ export default function HomePage() {
   const totalLabel =
     !loading && !error ? `${ideas.length} ідея(й)` : "—";
 
-  // вертикальні лінії
-  const colBorderRight = {
-    borderRight: "1px solid rgba(148,163,184,0.8)", // slate-400
-  } as const;
-
-  // сортування
   const handleSort = (field: SortField) => {
     if (!field) return;
     if (sortField === field) {
@@ -72,19 +300,16 @@ export default function HomePage() {
   const sortedIdeas = (() => {
     if (!sortField) return ideas;
     const copy = [...ideas];
-
     copy.sort((a, b) => {
       if (sortField === "pulse") {
         const av = a.pulse ?? 0;
         const bv = b.pulse ?? 0;
         return sortDirection === "asc" ? av - bv : bv - av;
       }
-
       const av = new Date(a.created_at).getTime();
       const bv = new Date(b.created_at).getTime();
       return sortDirection === "asc" ? av - bv : bv - av;
     });
-
     return copy;
   })();
 
@@ -94,262 +319,279 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* HEADER */}
-        <header className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight">Roota</h1>
-            <p className="text-slate-300 mt-2">
-              Ideas Stock Exchange · живий реєстр ідей з доказом та пульсом
-              інтересу
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-1 text-xs text-slate-400 mt-2 sm:items-end">
-            <p>Backend: Supabase</p>
-            <p>Endpoint: /api/ideas</p>
-            <p>Mode: MVP · read-only list</p>
-          </div>
-        </header>
-
-        {/* TITLE BAR */}
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-100">
-            Живий потік ідей
-          </h2>
-          <span className="text-sm text-slate-400">{totalLabel}</span>
+    <main style={styles.page}>
+      {/* HEADER */}
+      <header style={styles.headerTop}>
+        <div>
+          <h1 style={styles.title}>Roota</h1>
+          <p style={styles.subtitle}>
+            Ideas Stock Exchange · живий реєстр ідей з доказом та пульсом інтересу
+          </p>
         </div>
+        <div style={styles.metaBlock}>
+          <div>Backend: Supabase</div>
+          <div>Endpoint: /api/ideas</div>
+          <div>Mode: MVP · read-only list</div>
+        </div>
+      </header>
 
-        {/* TABLE WRAPPER */}
-        <div className="overflow-x-auto rounded-2xl border border-slate-700 bg-slate-900/70 backdrop-blur">
-          {loading && (
-            <div className="px-6 py-6 text-slate-300 text-sm border-b border-slate-700">
-              Завантажую ідеї…
-            </div>
-          )}
+      {/* SECTION HEADER */}
+      <div style={styles.sectionHeader}>
+        <div style={styles.sectionTitle}>Живий потік ідей</div>
+        <div style={styles.sectionCount}>{totalLabel}</div>
+      </div>
 
-          {error && (
-            <div className="px-6 py-6 text-red-200 text-sm bg-red-500/10 border-b border-red-400/40">
-              Помилка: {error}
-            </div>
-          )}
+      {/* TABLE BLOCK */}
+      <div style={styles.tableWrapper}>
+        {loading && (
+          <div style={styles.loading}>Завантажую ідеї…</div>
+        )}
 
-          {!loading && !error && sortedIdeas.length > 0 && (
-            <div className="relative max-h-[520px] overflow-y-auto">
-              <table className="min-w-full text-sm border-collapse table-fixed">
-                <colgroup>
-                  <col className="w-[18%]" />
-                  <col className="w-[32%]" />
-                  <col className="w-[12%]" />
-                  <col className="w-[12%]" />
-                  <col className="w-[14%]" />
-                  <col className="w-[12%]" />
-                </colgroup>
+        {error && (
+          <div style={styles.errorBox}>Помилка: {error}</div>
+        )}
 
-                <thead className="sticky top-0 z-20 bg-slate-900/95">
-                  <tr className="border-b border-slate-700">
-                    <th
-                      className="px-4 py-3 font-semibold text-slate-200 text-left"
-                      style={colBorderRight}
-                    >
-                      Ідея
-                    </th>
-                    <th
-                      className="px-4 py-3 font-semibold text-slate-200 text-left"
-                      style={colBorderRight}
-                    >
-                      Опис
-                    </th>
-                    <th
-                      className="px-4 py-3 font-semibold text-slate-200 text-left"
-                      style={colBorderRight}
-                    >
-                      Proof
-                    </th>
-                    <th
-                      className="px-4 py-3 font-semibold text-slate-200 text-left cursor-pointer select-none"
-                      style={colBorderRight}
-                      onClick={() => handleSort("pulse")}
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        Pulse
-                        <span className="text-[11px] text-slate-400">
-                          {sortIcon("pulse")}
-                        </span>
+        {!loading && !error && sortedIdeas.length > 0 && (
+          <div style={styles.scrollArea}>
+            <table style={styles.table}>
+              <colgroup>
+                <col style={{ width: "18%" }} />
+                <col style={{ width: "32%" }} />
+                <col style={{ width: "12%" }} />
+                <col style={{ width: "12%" }} />
+                <col style={{ width: "14%" }} />
+                <col style={{ width: "12%" }} />
+              </colgroup>
+              <thead>
+                <tr style={styles.headRow}>
+                  <th
+                    style={{
+                      ...styles.thBase,
+                      ...styles.thWithRightBorder,
+                    }}
+                  >
+                    Ідея
+                  </th>
+                  <th
+                    style={{
+                      ...styles.thBase,
+                      ...styles.thWithRightBorder,
+                    }}
+                  >
+                    Опис
+                  </th>
+                  <th
+                    style={{
+                      ...styles.thBase,
+                      ...styles.thWithRightBorder,
+                    }}
+                  >
+                    Proof
+                  </th>
+                  <th
+                    style={{
+                      ...styles.thBase,
+                      ...styles.thWithRightBorder,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleSort("pulse")}
+                  >
+                    <span style={{ display: "inline-flex", gap: 4 }}>
+                      <span>Pulse</span>
+                      <span style={{ fontSize: 11, color: "#94a3b8" }}>
+                        {sortIcon("pulse")}
                       </span>
-                    </th>
-                    <th
-                      className="px-4 py-3 font-semibold text-slate-200 text-left"
-                      style={colBorderRight}
-                    >
-                      Автор
-                    </th>
-                    <th
-                      className="px-4 py-3 font-semibold text-slate-200 text-left cursor-pointer select-none"
-                      onClick={() => handleSort("date")}
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        Дата
-                        <span className="text-[11px] text-slate-400">
-                          {sortIcon("date")}
-                        </span>
+                    </span>
+                  </th>
+                  <th
+                    style={{
+                      ...styles.thBase,
+                      ...styles.thWithRightBorder,
+                    }}
+                  >
+                    Автор
+                  </th>
+                  <th
+                    style={{
+                      ...styles.thBase,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleSort("date")}
+                  >
+                    <span style={{ display: "inline-flex", gap: 4 }}>
+                      <span>Дата</span>
+                      <span style={{ fontSize: 11, color: "#94a3b8" }}>
+                        {sortIcon("date")}
                       </span>
-                    </th>
-                  </tr>
-                </thead>
+                    </span>
+                  </th>
+                </tr>
+              </thead>
 
-                <tbody>
-                  {sortedIdeas.map((idea) => (
+              <tbody>
+                {sortedIdeas.map((idea) => {
+                  const isHovered = hoveredRowId === idea.id;
+                  return (
                     <tr
                       key={idea.id}
-                      className="border-b border-slate-700 hover:bg-slate-800/80 transition-colors cursor-pointer"
+                      style={{
+                        ...styles.rowBase,
+                        ...(isHovered ? styles.rowHover : {}),
+                      }}
+                      onMouseEnter={() => setHoveredRowId(idea.id)}
+                      onMouseLeave={() => setHoveredRowId(null)}
                       onClick={() => setSelectedIdea(idea)}
                     >
                       {/* ІДЕЯ */}
                       <td
-                        className="px-4 py-4 align-top font-semibold text-slate-50"
-                        style={colBorderRight}
+                        style={{
+                          ...styles.tdBase,
+                          ...styles.tdWithRightBorder,
+                          ...styles.ideaCell,
+                        }}
                       >
                         {idea.title}
                       </td>
 
-                      {/* ОПИС — ІНЛАЙН-ОВЕРРАЙД white-space */}
+                      {/* ОПИС — тут і відступ, і перенос, і фіксована ширина */}
                       <td
-                        className="px-4 py-4 align-top text-slate-300 leading-relaxed break-words max-w-[260px]"
                         style={{
-                          ...colBorderRight,
-                          whiteSpace: "normal", // <-- головний фікс
+                          ...styles.tdBase,
+                          ...styles.tdWithRightBorder,
+                          ...styles.descCell,
                         }}
                       >
                         {idea.description}
                       </td>
 
                       {/* PROOF */}
-                      <td className="px-4 py-4 align-top" style={colBorderRight}>
+                      <td
+                        style={{
+                          ...styles.tdBase,
+                          ...styles.tdWithRightBorder,
+                        }}
+                      >
                         {idea.proof_hash ? (
-                          <span className="inline-block rounded-full border border-emerald-400 bg-emerald-500/15 px-3 py-0.5 text-xs text-emerald-100">
-                            Proof linked
-                          </span>
+                          <span style={styles.proofBadge}>Proof linked</span>
                         ) : (
-                          <span className="inline-block rounded-full border border-slate-500 bg-slate-800 px-3 py-0.5 text-xs text-slate-200">
-                            no proof
-                          </span>
+                          <span style={styles.proofBadgeEmpty}>no proof</span>
                         )}
                       </td>
 
                       {/* PULSE */}
-                      <td className="px-4 py-4 align-top" style={colBorderRight}>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/15 px-3 py-0.5 text-xs font-semibold text-indigo-100">
-                          ⚡ {idea.pulse ?? 0}
+                      <td
+                        style={{
+                          ...styles.tdBase,
+                          ...styles.tdWithRightBorder,
+                        }}
+                      >
+                        <span style={styles.pulseBadge}>
+                          <span>⚡</span>
+                          <span>{idea.pulse ?? 0}</span>
                         </span>
                       </td>
 
                       {/* АВТОР */}
                       <td
-                        className="px-4 py-4 align-top text-slate-200"
-                        style={colBorderRight}
+                        style={{
+                          ...styles.tdBase,
+                          ...styles.tdWithRightBorder,
+                        }}
                       >
                         {idea.author || "anonymous"}
                       </td>
 
                       {/* ДАТА */}
-                      <td className="px-4 py-4 align-top whitespace-nowrap text-slate-400 text-xs">
-                        {new Date(idea.created_at).toLocaleDateString("uk-UA", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
+                      <td style={styles.tdBase}>
+                        <span style={{ fontSize: 12, color: "#94a3b8" }}>
+                          {new Date(idea.created_at).toLocaleDateString(
+                            "uk-UA",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-          {!loading && !error && sortedIdeas.length === 0 && (
-            <div className="px-6 py-6 text-slate-300">
-              Поки що немає ідей.
-            </div>
-          )}
-        </div>
+        {!loading && !error && sortedIdeas.length === 0 && (
+          <div style={styles.emptyBox}>Поки що немає ідей.</div>
+        )}
       </div>
 
       {/* MODAL */}
       {selectedIdea && (
         <div
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          style={styles.modalOverlay}
           onClick={() => setSelectedIdea(null)}
         >
           <div
-            className="w-full max-w-xl rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl px-6 py-5"
+            style={styles.modalCard}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-4">
+            <div style={styles.modalHeader}>
               <div>
-                <h3 className="text-lg font-semibold text-slate-50">
-                  {selectedIdea.title}
-                </h3>
-                <p className="mt-1 text-xs text-slate-400">
-                  Створено:{" "}
+                <div style={styles.modalTitle}>{selectedIdea.title}</div>
+                <div style={styles.modalMeta}>
+                  Створено{" "}
                   {new Date(selectedIdea.created_at).toLocaleDateString(
                     "uk-UA",
-                    { year: "numeric", month: "short", day: "numeric" }
+                    {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    }
                   )}
-                </p>
+                </div>
               </div>
               <button
+                style={styles.modalClose}
                 onClick={() => setSelectedIdea(null)}
-                className="text-slate-400 hover:text-slate-100 text-sm"
               >
                 ✕
               </button>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs">
-              <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/15 px-3 py-0.5 font-semibold text-indigo-100">
-                ⚡ {selectedIdea.pulse ?? 0}{" "}
-                <span className="opacity-70">pulse</span>
+            <div style={styles.modalTags}>
+              <span style={styles.pulseBadge}>
+                ⚡ {selectedIdea.pulse ?? 0} <span>pulse</span>
               </span>
-
               {selectedIdea.proof_hash ? (
-                <span className="inline-flex items-center rounded-full border border-emerald-400 bg-emerald-500/15 px-3 py-0.5 text-emerald-100">
-                  Proof linked
-                </span>
+                <span style={styles.proofBadge}>Proof linked</span>
               ) : (
-                <span className="inline-flex items-center rounded-full border border-slate-500 bg-slate-800 px-3 py-0.5 text-slate-200">
-                  No proof yet
-                </span>
+                <span style={styles.proofBadgeEmpty}>No proof yet</span>
               )}
-
-              <span className="text-slate-300">
+              <span style={{ color: "#e5e7eb" }}>
                 Автор:{" "}
-                <span className="text-slate-100">
+                <span style={{ fontWeight: 500 }}>
                   {selectedIdea.author || "anonymous"}
                 </span>
               </span>
             </div>
 
-            <div className="mt-5">
-              <p className="text-sm text-slate-100 leading-relaxed whitespace-pre-wrap">
-                {selectedIdea.description}
-              </p>
-            </div>
+            <div style={styles.modalDesc}>{selectedIdea.description}</div>
 
             {selectedIdea.proof_hash && (
-              <div className="mt-4">
-                <p className="text-xs text-slate-400 mb-1">Proof / hash:</p>
-                <code className="block text-xs text-slate-200 bg-slate-800/80 rounded-md px-3 py-2 break-all">
+              <div style={styles.modalProofBox}>
+                <div>Proof / hash:</div>
+                <div style={styles.modalProofCode}>
                   {selectedIdea.proof_hash}
-                </code>
+                </div>
               </div>
             )}
 
-            <div className="mt-6 flex justify-end">
+            <div style={styles.modalFooter}>
               <button
+                style={styles.modalButton}
                 onClick={() => setSelectedIdea(null)}
-                className="px-4 py-2 text-sm rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-100"
               >
                 Закрити
               </button>
