@@ -19,6 +19,9 @@ type IdeasResponse =
 type SortField = "pulse" | "date" | null;
 type SortDirection = "asc" | "desc";
 
+type ProofFilter = "all" | "with" | "without";
+type PulseFilter = "all" | "1" | "3" | "5";
+
 const styles = {
   page: {
     width: "100%",
@@ -59,6 +62,55 @@ const styles = {
     fontSize: "13px",
     color: "#94a3b8",
   },
+  // панель фільтрів
+  filtersBar: {
+    marginBottom: "10px",
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "12px",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  filtersLeft: {
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "10px",
+    alignItems: "center",
+  },
+  filtersRight: {
+    fontSize: "12px",
+    color: "#94a3b8",
+  },
+  filterGroup: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "4px",
+  },
+  filterLabel: {
+    fontSize: "11px",
+    color: "#94a3b8",
+  },
+  searchInput: {
+    minWidth: "220px",
+    padding: "6px 10px",
+    borderRadius: "999px",
+    border: "1px solid #1e293b",
+    backgroundColor: "#020617",
+    color: "#e5e7eb",
+    fontSize: "13px",
+    outline: "none",
+  },
+  select: {
+    minWidth: "140px",
+    padding: "6px 10px",
+    borderRadius: "999px",
+    border: "1px solid #1e293b",
+    backgroundColor: "#020617",
+    color: "#e5e7eb",
+    fontSize: "13px",
+    outline: "none",
+  },
+
   tableWrapper: {
     borderRadius: "16px",
     border: "1px solid #1e293b",
@@ -263,6 +315,11 @@ export default function HomePage() {
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
 
+  // фільтри
+  const [searchQuery, setSearchQuery] = useState("");
+  const [proofFilter, setProofFilter] = useState<ProofFilter>("all");
+  const [pulseFilter, setPulseFilter] = useState<PulseFilter>("all");
+
   useEffect(() => {
     const fetchIdeas = async () => {
       try {
@@ -297,9 +354,30 @@ export default function HomePage() {
     }
   };
 
+  // 1) фільтрація
+  const filteredIdeas = ideas.filter((idea) => {
+    const text = (idea.title + " " + idea.description).toLowerCase();
+    const q = searchQuery.trim().toLowerCase();
+
+    if (q && !text.includes(q)) {
+      return false;
+    }
+
+    if (proofFilter === "with" && !idea.proof_hash) return false;
+    if (proofFilter === "without" && idea.proof_hash) return false;
+
+    const p = idea.pulse ?? 0;
+    if (pulseFilter === "1" && p < 1) return false;
+    if (pulseFilter === "3" && p < 3) return false;
+    if (pulseFilter === "5" && p < 5) return false;
+
+    return true;
+  });
+
+  // 2) сортування
   const sortedIdeas = (() => {
-    if (!sortField) return ideas;
-    const copy = [...ideas];
+    if (!sortField) return filteredIdeas;
+    const copy = [...filteredIdeas];
     copy.sort((a, b) => {
       if (sortField === "pulse") {
         const av = a.pulse ?? 0;
@@ -317,6 +395,11 @@ export default function HomePage() {
     if (sortField !== field) return "⇅";
     return sortDirection === "asc" ? "↑" : "↓";
   };
+
+  const visibleLabel =
+    !loading && !error
+      ? `Показано ${filteredIdeas.length} з ${ideas.length} ідей`
+      : "";
 
   return (
     <main style={styles.page}>
@@ -339,6 +422,51 @@ export default function HomePage() {
       <div style={styles.sectionHeader}>
         <div style={styles.sectionTitle}>Живий потік ідей</div>
         <div style={styles.sectionCount}>{totalLabel}</div>
+      </div>
+
+      {/* FILTERS BAR */}
+      <div style={styles.filtersBar}>
+        <div style={styles.filtersLeft}>
+          <div style={styles.filterGroup}>
+            <label style={styles.filterLabel}>Пошук</label>
+            <input
+              type="text"
+              placeholder="Ідея, опис, ключові слова…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={styles.searchInput}
+            />
+          </div>
+
+          <div style={styles.filterGroup}>
+            <label style={styles.filterLabel}>Proof</label>
+            <select
+              value={proofFilter}
+              onChange={(e) => setProofFilter(e.target.value as ProofFilter)}
+              style={styles.select}
+            >
+              <option value="all">Усі ідеї</option>
+              <option value="with">Лише з proof</option>
+              <option value="without">Лише без proof</option>
+            </select>
+          </div>
+
+          <div style={styles.filterGroup}>
+            <label style={styles.filterLabel}>Pulse</label>
+            <select
+              value={pulseFilter}
+              onChange={(e) => setPulseFilter(e.target.value as PulseFilter)}
+              style={styles.select}
+            >
+              <option value="all">Усі значення</option>
+              <option value="1">від 1+</option>
+              <option value="3">від 3+</option>
+              <option value="5">від 5+</option>
+            </select>
+          </div>
+        </div>
+
+        <div style={styles.filtersRight}>{visibleLabel}</div>
       </div>
 
       {/* TABLE BLOCK */}
@@ -453,7 +581,7 @@ export default function HomePage() {
                         {idea.title}
                       </td>
 
-                      {/* ОПИС — тут і відступ, і перенос, і фіксована ширина */}
+                      {/* ОПИС */}
                       <td
                         style={{
                           ...styles.tdBase,
@@ -523,7 +651,9 @@ export default function HomePage() {
         )}
 
         {!loading && !error && sortedIdeas.length === 0 && (
-          <div style={styles.emptyBox}>Поки що немає ідей.</div>
+          <div style={styles.emptyBox}>
+            За вибраними фільтрами ідей немає.
+          </div>
         )}
       </div>
 
