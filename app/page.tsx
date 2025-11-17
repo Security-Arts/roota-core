@@ -19,9 +19,7 @@ type IdeasResponse =
 type SortField = "pulse" | "date" | null;
 type SortDirection = "asc" | "desc";
 
-type ProofFilter = "all" | "with" | "without";
 type PulseFilter = "all" | "1" | "3" | "5";
-
 type Locale = "en" | "es" | "ja";
 
 const translations: Record<
@@ -36,10 +34,6 @@ const translations: Record<
     totalIdeas: (n: number) => string;
     searchLabel: string;
     searchPlaceholder: string;
-    proofFilterLabel: string;
-    proofFilter_all: string;
-    proofFilter_with: string;
-    proofFilter_without: string;
     pulseFilterLabel: string;
     pulseFilter_all: string;
     pulseFilter_1: string;
@@ -48,20 +42,20 @@ const translations: Record<
     visibleLabel: (shown: number, total: number) => string;
     table_idea: string;
     table_description: string;
-    table_proof: string;
+    table_proof_token: string;
     table_pulse: string;
     table_author: string;
     table_date: string;
     loading: string;
     errorPrefix: string;
     noIdeasForFilter: string;
-    badge_proof_linked: string;
-    badge_no_proof: string;
-    badge_pulse_suffix: string;
+    proofTokenLabel: string;
+    proofTokenMissing: string;
     modal_created: string;
     modal_author: string;
     modal_proof_hash: string;
     modal_close: string;
+    pulseSuffix: string;
   }
 > = {
   en: {
@@ -75,10 +69,6 @@ const translations: Record<
     totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
     searchLabel: "Search",
     searchPlaceholder: "Idea, description, keywords…",
-    proofFilterLabel: "Proof",
-    proofFilter_all: "All ideas",
-    proofFilter_with: "With proof only",
-    proofFilter_without: "Without proof only",
     pulseFilterLabel: "Pulse",
     pulseFilter_all: "All values",
     pulseFilter_1: "from 1+",
@@ -88,20 +78,20 @@ const translations: Record<
       `Showing ${shown} of ${total} idea${total === 1 ? "" : "s"}`,
     table_idea: "Idea",
     table_description: "Description",
-    table_proof: "Proof",
+    table_proof_token: "Proof token",
     table_pulse: "Pulse",
     table_author: "Author",
     table_date: "Date",
     loading: "Loading ideas…",
     errorPrefix: "Error",
     noIdeasForFilter: "No ideas match the current filters.",
-    badge_proof_linked: "Proof linked",
-    badge_no_proof: "no proof",
-    badge_pulse_suffix: "pulse",
+    proofTokenLabel: "Proof token",
+    proofTokenMissing: "missing",
     modal_created: "Created",
     modal_author: "Author",
     modal_proof_hash: "Proof / hash",
     modal_close: "Close",
+    pulseSuffix: "pulse",
   },
   es: {
     appTitle: "Roota",
@@ -114,10 +104,6 @@ const translations: Record<
     totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
     searchLabel: "Buscar",
     searchPlaceholder: "Idea, descripción, palabras clave…",
-    proofFilterLabel: "Prueba",
-    proofFilter_all: "Todas las ideas",
-    proofFilter_with: "Sólo con prueba",
-    proofFilter_without: "Sólo sin prueba",
     pulseFilterLabel: "Pulso",
     pulseFilter_all: "Todos los valores",
     pulseFilter_1: "desde 1+",
@@ -127,20 +113,20 @@ const translations: Record<
       `Mostrando ${shown} de ${total} idea${total === 1 ? "" : "s"}`,
     table_idea: "Idea",
     table_description: "Descripción",
-    table_proof: "Prueba",
+    table_proof_token: "Token de prueba",
     table_pulse: "Pulso",
     table_author: "Autor",
     table_date: "Fecha",
     loading: "Cargando ideas…",
     errorPrefix: "Error",
     noIdeasForFilter: "No hay ideas que coincidan con los filtros actuales.",
-    badge_proof_linked: "Prueba vinculada",
-    badge_no_proof: "sin prueba",
-    badge_pulse_suffix: "pulso",
+    proofTokenLabel: "Token de prueba",
+    proofTokenMissing: "falta",
     modal_created: "Creado",
     modal_author: "Autor",
     modal_proof_hash: "Prueba / hash",
     modal_close: "Cerrar",
+    pulseSuffix: "pulso",
   },
   ja: {
     appTitle: "Roota",
@@ -153,10 +139,6 @@ const translations: Record<
     totalIdeas: (n) => `アイデア ${n} 件`,
     searchLabel: "検索",
     searchPlaceholder: "アイデア、説明、キーワード…",
-    proofFilterLabel: "証拠",
-    proofFilter_all: "すべてのアイデア",
-    proofFilter_with: "証拠ありのみ",
-    proofFilter_without: "証拠なしのみ",
     pulseFilterLabel: "パルス",
     pulseFilter_all: "すべての値",
     pulseFilter_1: "1 以上",
@@ -166,20 +148,20 @@ const translations: Record<
       `${total} 件中 ${shown} 件を表示`,
     table_idea: "アイデア",
     table_description: "説明",
-    table_proof: "証拠",
+    table_proof_token: "Proof トークン",
     table_pulse: "パルス",
     table_author: "投稿者",
     table_date: "日付",
     loading: "アイデアを読み込み中…",
     errorPrefix: "エラー",
     noIdeasForFilter: "現在のフィルターに一致するアイデアはありません。",
-    badge_proof_linked: "証拠リンクあり",
-    badge_no_proof: "証拠なし",
-    badge_pulse_suffix: "パルス",
+    proofTokenLabel: "Proof トークン",
+    proofTokenMissing: "なし",
     modal_created: "作成日",
     modal_author: "投稿者",
-    modal_proof_hash: "証拠 / ハッシュ",
+    modal_proof_hash: "Proof / ハッシュ",
     modal_close: "閉じる",
+    pulseSuffix: "パルス",
   },
 };
 
@@ -228,7 +210,6 @@ const styles = {
     fontSize: "13px",
     color: "#94a3b8",
   },
-  // language switcher
   langSwitcher: {
     display: "inline-flex",
     gap: "6px",
@@ -354,23 +335,14 @@ const styles = {
     whiteSpace: "normal" as const,
     wordBreak: "break-word" as const,
   },
-  proofBadge: {
-    display: "inline-block",
-    padding: "3px 8px",
-    borderRadius: "999px",
-    border: "1px solid #4ade80",
-    backgroundColor: "rgba(22,163,74,0.15)",
-    color: "#bbf7d0",
+  proofLabel: {
     fontSize: "11px",
+    color: "#cbd5f5",
   },
-  proofBadgeEmpty: {
-    display: "inline-block",
-    padding: "3px 8px",
-    borderRadius: "999px",
-    border: "1px solid #64748b",
-    backgroundColor: "#020617",
-    color: "#e2e8f0",
+  proofShort: {
     fontSize: "11px",
+    color: "#9ca3af",
+    fontFamily: "monospace",
   },
   pulseBadge: {
     display: "inline-flex",
@@ -476,6 +448,7 @@ const styles = {
     fontSize: "11px",
     color: "#e5e7eb",
     wordBreak: "break-all" as const,
+    fontFamily: "monospace",
   },
   modalFooter: {
     marginTop: "16px",
@@ -506,7 +479,6 @@ export default function HomePage() {
 
   // filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [proofFilter, setProofFilter] = useState<ProofFilter>("all");
   const [pulseFilter, setPulseFilter] = useState<PulseFilter>("all");
 
   // locale
@@ -551,9 +523,6 @@ export default function HomePage() {
 
     if (q && !text.includes(q)) return false;
 
-    if (proofFilter === "with" && !idea.proof_hash) return false;
-    if (proofFilter === "without" && idea.proof_hash) return false;
-
     const p = idea.pulse ?? 0;
     if (pulseFilter === "1" && p < 1) return false;
     if (pulseFilter === "3" && p < 3) return false;
@@ -596,6 +565,11 @@ export default function HomePage() {
       month: "short",
       day: "numeric",
     });
+
+  const shortHash = (hash: string) =>
+    hash.length > 12
+      ? `${hash.slice(0, 6)}…${hash.slice(-4)}`
+      : hash;
 
   return (
     <main style={styles.page}>
@@ -652,19 +626,6 @@ export default function HomePage() {
           </div>
 
           <div style={styles.filterGroup}>
-            <label style={styles.filterLabel}>{t.proofFilterLabel}</label>
-            <select
-              value={proofFilter}
-              onChange={(e) => setProofFilter(e.target.value as ProofFilter)}
-              style={styles.select}
-            >
-              <option value="all">{t.proofFilter_all}</option>
-              <option value="with">{t.proofFilter_with}</option>
-              <option value="without">{t.proofFilter_without}</option>
-            </select>
-          </div>
-
-          <div style={styles.filterGroup}>
             <label style={styles.filterLabel}>{t.pulseFilterLabel}</label>
             <select
               value={pulseFilter}
@@ -698,10 +659,10 @@ export default function HomePage() {
               <colgroup>
                 <col style={{ width: "18%" }} />
                 <col style={{ width: "32%" }} />
+                <col style={{ width: "18%" }} />
                 <col style={{ width: "12%" }} />
                 <col style={{ width: "12%" }} />
-                <col style={{ width: "14%" }} />
-                <col style={{ width: "12%" }} />
+                <col style={{ width: "8%" }} />
               </colgroup>
               <thead>
                 <tr style={styles.headRow}>
@@ -727,7 +688,7 @@ export default function HomePage() {
                       ...styles.thWithRightBorder,
                     }}
                   >
-                    {t.table_proof}
+                    {t.table_proof_token}
                   </th>
                   <th
                     style={{
@@ -805,7 +766,7 @@ export default function HomePage() {
                         {idea.description}
                       </td>
 
-                      {/* PROOF */}
+                      {/* PROOF TOKEN */}
                       <td
                         style={{
                           ...styles.tdBase,
@@ -813,13 +774,23 @@ export default function HomePage() {
                         }}
                       >
                         {idea.proof_hash ? (
-                          <span style={styles.proofBadge}>
-                            {t.badge_proof_linked}
-                          </span>
+                          <div>
+                            <div style={styles.proofLabel}>
+                              {t.proofTokenLabel}
+                            </div>
+                            <div style={styles.proofShort}>
+                              {shortHash(idea.proof_hash)}
+                            </div>
+                          </div>
                         ) : (
-                          <span style={styles.proofBadgeEmpty}>
-                            {t.badge_no_proof}
-                          </span>
+                          <div>
+                            <div style={styles.proofLabel}>
+                              {t.proofTokenLabel}
+                            </div>
+                            <div style={styles.proofShort}>
+                              {t.proofTokenMissing}
+                            </div>
+                          </div>
                         )}
                       </td>
 
@@ -892,17 +863,8 @@ export default function HomePage() {
 
             <div style={styles.modalTags}>
               <span style={styles.pulseBadge}>
-                ⚡ {selectedIdea.pulse ?? 0} <span>{t.badge_pulse_suffix}</span>
+                ⚡ {selectedIdea.pulse ?? 0} <span>{t.pulseSuffix}</span>
               </span>
-              {selectedIdea.proof_hash ? (
-                <span style={styles.proofBadge}>
-                  {t.badge_proof_linked}
-                </span>
-              ) : (
-                <span style={styles.proofBadgeEmpty}>
-                  {t.badge_no_proof}
-                </span>
-              )}
               <span style={{ color: "#e5e7eb" }}>
                 {t.modal_author}:{" "}
                 <span style={{ fontWeight: 500 }}>
