@@ -63,6 +63,19 @@ const translations: Record<
     pulseLevelValidated: string;
     pulseLevelHigh: string;
     pulseTooltip: string;
+    // new idea form
+    newIdeaButton: string;
+    createIdeaTitle: string;
+    form_titleLabel: string;
+    form_descriptionLabel: string;
+    form_authorLabel: string;
+    form_proofLabel: string;
+    form_generateProof: string;
+    form_publish: string;
+    form_cancel: string;
+    form_generating: string;
+    form_publishing: string;
+    form_error_missingProof: string;
   }
 > = {
   en: {
@@ -71,7 +84,7 @@ const translations: Record<
       "Ideas Stock Exchange · a live registry of ideas with proof and pulse of interest",
     backend: "Backend: Supabase",
     endpoint: "Endpoint: /api/ideas",
-    mode: "Mode: MVP · read-only list",
+    mode: "Mode: MVP · read-only list + idea creation",
     liveStream: "Live Idea Stream",
     totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
     searchLabel: "Search",
@@ -107,6 +120,19 @@ const translations: Record<
     pulseLevelHigh: "High conviction",
     pulseTooltip:
       "Roota score: 0–10. 1–2 = Seed, 3–4 = Validated, 5+ = High conviction.",
+    // new idea form
+    newIdeaButton: "New idea",
+    createIdeaTitle: "Create new idea with proof",
+    form_titleLabel: "Idea title",
+    form_descriptionLabel: "Description",
+    form_authorLabel: "Author (optional)",
+    form_proofLabel: "Proof token (SHA-256)",
+    form_generateProof: "Generate proof token",
+    form_publish: "Publish idea",
+    form_cancel: "Cancel",
+    form_generating: "Generating…",
+    form_publishing: "Publishing…",
+    form_error_missingProof: "Generate proof token before publishing.",
   },
   es: {
     appTitle: "Roota",
@@ -114,7 +140,7 @@ const translations: Record<
       "Ideas Stock Exchange · un registro vivo de ideas con prueba y pulso de interés",
     backend: "Backend: Supabase",
     endpoint: "Endpoint: /api/ideas",
-    mode: "Modo: MVP · sólo lectura",
+    mode: "Modo: MVP · sólo lectura + creación de ideas",
     liveStream: "Flujo en vivo de ideas",
     totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
     searchLabel: "Buscar",
@@ -151,6 +177,19 @@ const translations: Record<
     pulseLevelHigh: "Alta convicción",
     pulseTooltip:
       "Puntaje Roota: 0–10. 1–2 = Seed, 3–4 = Validado, 5+ = Alta convicción.",
+    newIdeaButton: "Nueva idea",
+    createIdeaTitle: "Crear nueva idea con proof",
+    form_titleLabel: "Título de la idea",
+    form_descriptionLabel: "Descripción",
+    form_authorLabel: "Autor (opcional)",
+    form_proofLabel: "Token de prueba (SHA-256)",
+    form_generateProof: "Generar token de prueba",
+    form_publish: "Publicar idea",
+    form_cancel: "Cancelar",
+    form_generating: "Generando…",
+    form_publishing: "Publicando…",
+    form_error_missingProof:
+      "Genera el token de prueba antes de publicar.",
   },
   ja: {
     appTitle: "Roota",
@@ -158,7 +197,7 @@ const translations: Record<
       "Ideas Stock Exchange · 証拠と関心のパルスを持つアイデアのライブレジストリ",
     backend: "バックエンド: Supabase",
     endpoint: "エンドポイント: /api/ideas",
-    mode: "モード: MVP · 読み取り専用",
+    mode: "モード: MVP · 読み取り専用 + 追加",
     liveStream: "ライブ・アイデアストリーム",
     totalIdeas: (n) => `アイデア ${n} 件`,
     searchLabel: "検索",
@@ -195,6 +234,18 @@ const translations: Record<
     pulseLevelHigh: "High conviction",
     pulseTooltip:
       "Roota スコア: 0–10。1–2 = Seed、3–4 = Validated、5+ = High conviction。",
+    newIdeaButton: "New idea",
+    createIdeaTitle: "Create new idea with proof",
+    form_titleLabel: "Idea title",
+    form_descriptionLabel: "Description",
+    form_authorLabel: "Author (optional)",
+    form_proofLabel: "Proof token (SHA-256)",
+    form_generateProof: "Generate proof token",
+    form_publish: "Publish idea",
+    form_cancel: "Cancel",
+    form_generating: "Generating…",
+    form_publishing: "Publishing…",
+    form_error_missingProof: "Generate proof token before publishing.",
   },
 };
 
@@ -239,6 +290,11 @@ const styles = {
     fontSize: "18px",
     fontWeight: 600,
   },
+  sectionRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
   sectionCount: {
     fontSize: "13px",
     color: "#94a3b8",
@@ -263,6 +319,20 @@ const styles = {
   langButtonActive: {
     backgroundColor: "#1d4ed8",
     color: "#e5e7eb",
+  },
+  primaryButton: {
+    padding: "6px 12px",
+    borderRadius: "999px",
+    border: "none",
+    backgroundColor: "#1d4ed8",
+    color: "#e5e7eb",
+    fontSize: "12px",
+    cursor: "pointer",
+    whiteSpace: "nowrap" as const,
+  },
+  primaryButtonDisabled: {
+    opacity: 0.6,
+    cursor: "default",
   },
 
   // filters
@@ -371,7 +441,7 @@ const styles = {
 
   tdBase: {
     padding: "10px 14px",
-    borderBottom: "1px solid #1f2937",
+    borderBottom: "1px solid "#1f2937",
     verticalAlign: "top" as const,
     color: "#e2e8f0",
     fontSize: "14px",
@@ -431,7 +501,7 @@ const styles = {
     fontSize: "13px",
     color: "#e2e8f0",
   },
-  // modal
+  // modal base
   modalOverlay: {
     position: "fixed" as const,
     inset: 0,
@@ -505,6 +575,7 @@ const styles = {
     marginTop: "16px",
     display: "flex",
     justifyContent: "flex-end",
+    gap: "8px",
   },
   modalButton: {
     padding: "6px 12px",
@@ -514,6 +585,50 @@ const styles = {
     color: "#e5e7eb",
     cursor: "pointer",
     fontSize: "13px",
+  },
+  modalButtonSecondary: {
+    padding: "6px 12px",
+    borderRadius: "8px",
+    border: "1px solid #4b5563",
+    backgroundColor: "transparent",
+    color: "#e5e7eb",
+    cursor: "pointer",
+    fontSize: "13px",
+  },
+  formGroup: {
+    marginTop: "12px",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "4px",
+  },
+  formLabel: {
+    fontSize: "12px",
+    color: "#9ca3af",
+  },
+  formInput: {
+    padding: "7px 10px",
+    borderRadius: "8px",
+    border: "1px solid #1f2937",
+    backgroundColor: "#020617",
+    color: "#e5e7eb",
+    fontSize: "13px",
+    outline: "none",
+  },
+  formTextarea: {
+    padding: "7px 10px",
+    borderRadius: "8px",
+    border: "1px solid #1f2937",
+    backgroundColor: "#020617",
+    color: "#e5e7eb",
+    fontSize: "13px",
+    outline: "none",
+    minHeight: "80px",
+    resize: "vertical" as const,
+  },
+  formError: {
+    marginTop: "8px",
+    fontSize: "12px",
+    color: "#fca5a5",
   },
 };
 
@@ -559,6 +674,23 @@ const getPulseLevelName = (
   return localeStrings.pulseLevelNone;
 };
 
+// SHA-256 proof generator (runs in browser)
+async function generateProofHash(
+  title: string,
+  description: string,
+  author: string
+): Promise<string> {
+  const encoder = new TextEncoder();
+  const signature = `${title}||${description}||${author || ""}||${Date.now()}`;
+  const data = encoder.encode(signature);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return hashHex;
+}
+
 export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loading, setLoading] = useState(true);
@@ -577,6 +709,16 @@ export default function HomePage() {
   // locale
   const [locale, setLocale] = useState<Locale>("en");
   const t = translations[locale];
+
+  // create idea modal state
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
+  const [newProof, setNewProof] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [generatingProof, setGeneratingProof] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchIdeas = async () => {
@@ -664,6 +806,89 @@ export default function HomePage() {
       ? `${hash.slice(0, 6)}…${hash.slice(-4)}`
       : hash;
 
+  const resetForm = () => {
+    setNewTitle("");
+    setNewDescription("");
+    setNewAuthor("");
+    setNewProof("");
+    setFormError(null);
+  };
+
+  const handleOpenCreate = () => {
+    resetForm();
+    setShowCreateModal(true);
+  };
+
+  const handleGenerateProof = async () => {
+    setFormError(null);
+    if (!newTitle.trim() || !newDescription.trim()) {
+      setFormError("Title and description are required before generating proof.");
+      return;
+    }
+    try {
+      setGeneratingProof(true);
+      const hash = await generateProofHash(
+        newTitle.trim(),
+        newDescription.trim(),
+        newAuthor.trim()
+      );
+      setNewProof(hash);
+    } catch (e: any) {
+      setFormError(e?.message || "Failed to generate proof token.");
+    } finally {
+      setGeneratingProof(false);
+    }
+  };
+
+  const handlePublishIdea = async () => {
+    setFormError(null);
+
+    if (!newTitle.trim() || !newDescription.trim()) {
+      setFormError("Title and description are required.");
+      return;
+    }
+    if (!newProof) {
+      setFormError(t.form_error_missingProof);
+      return;
+    }
+
+    try {
+      setCreating(true);
+      const payload = {
+        title: newTitle.trim(),
+        description: newDescription.trim(),
+        author: newAuthor.trim() || null,
+        proof_hash: newProof,
+        pulse: 1,
+      };
+
+      const res = await fetch("/api/ideas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data?.error || "Failed to publish idea.");
+      }
+
+      const created: Idea = data.idea;
+
+      // prepend to list
+      setIdeas((prev) => [created, ...prev]);
+      setShowCreateModal(false);
+      resetForm();
+    } catch (e: any) {
+      setFormError(e?.message || "Failed to publish idea.");
+    } finally {
+      setCreating(false);
+    }
+  };
+
   return (
     <main style={styles.page}>
       {/* HEADER */}
@@ -701,7 +926,15 @@ export default function HomePage() {
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
         <div style={styles.sectionTitle}>{t.liveStream}</div>
-        <div style={styles.sectionCount}>{totalLabel}</div>
+        <div style={styles.sectionRight}>
+          <div style={styles.sectionCount}>{totalLabel}</div>
+          <button
+            style={styles.primaryButton}
+            onClick={handleOpenCreate}
+          >
+            {t.newIdeaButton}
+          </button>
+        </div>
       </div>
 
       {/* FILTERS BAR */}
@@ -944,7 +1177,7 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* MODAL */}
+      {/* VIEW IDEA MODAL */}
       {selectedIdea && (
         <div
           style={styles.modalOverlay}
@@ -1005,6 +1238,108 @@ export default function HomePage() {
                 onClick={() => setSelectedIdea(null)}
               >
                 {t.modal_close}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CREATE IDEA MODAL */}
+      {showCreateModal && (
+        <div
+          style={styles.modalOverlay}
+          onClick={() => setShowCreateModal(false)}
+        >
+          <div
+            style={styles.modalCard}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={styles.modalHeader}>
+              <div>
+                <div style={styles.modalTitle}>{t.createIdeaTitle}</div>
+              </div>
+              <button
+                style={styles.modalClose}
+                onClick={() => setShowCreateModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={styles.formGroup}>
+              <label style={styles.formLabel}>{t.form_titleLabel}</label>
+              <input
+                style={styles.formInput}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+            </div>
+
+            <div style={styles.formGroup}>
+              <label style={styles.formLabel}>
+                {t.form_descriptionLabel}
+              </label>
+              <textarea
+                style={styles.formTextarea}
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              />
+            </div>
+
+            <div style={styles.formGroup}>
+              <label style={styles.formLabel}>{t.form_authorLabel}</label>
+              <input
+                style={styles.formInput}
+                value={newAuthor}
+                onChange={(e) => setNewAuthor(e.target.value)}
+              />
+            </div>
+
+            <div style={styles.formGroup}>
+              <label style={styles.formLabel}>{t.form_proofLabel}</label>
+              <input
+                style={{
+                  ...styles.formInput,
+                  fontFamily: "monospace",
+                  fontSize: "12px",
+                }}
+                value={newProof}
+                readOnly
+              />
+              <button
+                style={{
+                  ...styles.modalButton,
+                  ...(generatingProof ? { opacity: 0.7 } : {}),
+                  marginTop: "6px",
+                  alignSelf: "flex-start",
+                }}
+                onClick={handleGenerateProof}
+                disabled={generatingProof}
+              >
+                {generatingProof ? t.form_generating : t.form_generateProof}
+              </button>
+            </div>
+
+            {formError && (
+              <div style={styles.formError}>{formError}</div>
+            )}
+
+            <div style={styles.modalFooter}>
+              <button
+                style={styles.modalButtonSecondary}
+                onClick={() => setShowCreateModal(false)}
+              >
+                {t.form_cancel}
+              </button>
+              <button
+                style={{
+                  ...styles.modalButton,
+                  ...(creating ? { opacity: 0.7 } : {}),
+                }}
+                onClick={handlePublishIdea}
+                disabled={creating}
+              >
+                {creating ? t.form_publishing : t.form_publish}
               </button>
             </div>
           </div>
