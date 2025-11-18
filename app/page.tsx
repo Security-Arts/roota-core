@@ -495,7 +495,7 @@ const styles = {
     padding: "6px 8px",
     backgroundColor: "#020617",
     borderRadius: "8px",
-    border: "1px solid "#1e293b",
+    border: "1px solid #1e293b",
     fontSize: "11px",
     color: "#e5e7eb",
     wordBreak: "break-all" as const,
@@ -548,7 +548,10 @@ const getPulseBadgeStyle = (value: number | null) => {
   };
 };
 
-const getPulseLevelName = (value: number | null, localeStrings: (typeof translations)[Locale]) => {
+const getPulseLevelName = (
+  value: number | null,
+  localeStrings: (typeof translations)[Locale]
+) => {
   const v = value ?? 0;
   if (v >= 5) return localeStrings.pulseLevelHigh;
   if (v >= 3) return localeStrings.pulseLevelValidated;
