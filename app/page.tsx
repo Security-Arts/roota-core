@@ -441,7 +441,7 @@ const styles = {
 
   tdBase: {
     padding: "10px 14px",
-    borderBottom: "1px solid "#1f2937",
+    borderBottom: "1px solid #1f2937",
     verticalAlign: "top" as const,
     color: "#e2e8f0",
     fontSize: "14px",
