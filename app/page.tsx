@@ -39,6 +39,7 @@ const translations: Record<
     pulseFilter_1: string;
     pulseFilter_3: string;
     pulseFilter_5: string;
+    pulseLegend: string;
     visibleLabel: (shown: number, total: number) => string;
     table_idea: string;
     table_description: string;
@@ -56,6 +57,12 @@ const translations: Record<
     modal_proof_hash: string;
     modal_close: string;
     pulseSuffix: string;
+    pulseLevelLabel: string;
+    pulseLevelNone: string;
+    pulseLevelSeed: string;
+    pulseLevelValidated: string;
+    pulseLevelHigh: string;
+    pulseTooltip: string;
   }
 > = {
   en: {
@@ -69,11 +76,12 @@ const translations: Record<
     totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
     searchLabel: "Search",
     searchPlaceholder: "Idea, description, keywords…",
-    pulseFilterLabel: "Pulse",
-    pulseFilter_all: "All values",
-    pulseFilter_1: "from 1+",
-    pulseFilter_3: "from 3+",
-    pulseFilter_5: "from 5+",
+    pulseFilterLabel: "Pulse level",
+    pulseFilter_all: "All levels",
+    pulseFilter_1: "Seed & above (≥1)",
+    pulseFilter_3: "Validated & above (≥3)",
+    pulseFilter_5: "High conviction (≥5)",
+    pulseLegend: "Pulse: 1–2 = Seed · 3–4 = Validated · 5+ = High conviction",
     visibleLabel: (shown, total) =>
       `Showing ${shown} of ${total} idea${total === 1 ? "" : "s"}`,
     table_idea: "Idea",
@@ -92,6 +100,13 @@ const translations: Record<
     modal_proof_hash: "Proof / hash",
     modal_close: "Close",
     pulseSuffix: "pulse",
+    pulseLevelLabel: "Pulse level",
+    pulseLevelNone: "None",
+    pulseLevelSeed: "Seed",
+    pulseLevelValidated: "Validated",
+    pulseLevelHigh: "High conviction",
+    pulseTooltip:
+      "Roota score: 0–10. 1–2 = Seed, 3–4 = Validated, 5+ = High conviction.",
   },
   es: {
     appTitle: "Roota",
@@ -104,11 +119,13 @@ const translations: Record<
     totalIdeas: (n) => `${n} idea${n === 1 ? "" : "s"}`,
     searchLabel: "Buscar",
     searchPlaceholder: "Idea, descripción, palabras clave…",
-    pulseFilterLabel: "Pulso",
-    pulseFilter_all: "Todos los valores",
-    pulseFilter_1: "desde 1+",
-    pulseFilter_3: "desde 3+",
-    pulseFilter_5: "desde 5+",
+    pulseFilterLabel: "Nivel de pulso",
+    pulseFilter_all: "Todos los niveles",
+    pulseFilter_1: "Seed y más (≥1)",
+    pulseFilter_3: "Validado y más (≥3)",
+    pulseFilter_5: "Alta convicción (≥5)",
+    pulseLegend:
+      "Pulso: 1–2 = Seed · 3–4 = Validado · 5+ = Alta convicción",
     visibleLabel: (shown, total) =>
       `Mostrando ${shown} de ${total} idea${total === 1 ? "" : "s"}`,
     table_idea: "Idea",
@@ -127,6 +144,13 @@ const translations: Record<
     modal_proof_hash: "Prueba / hash",
     modal_close: "Cerrar",
     pulseSuffix: "pulso",
+    pulseLevelLabel: "Nivel de pulso",
+    pulseLevelNone: "Ninguno",
+    pulseLevelSeed: "Seed",
+    pulseLevelValidated: "Validado",
+    pulseLevelHigh: "Alta convicción",
+    pulseTooltip:
+      "Puntaje Roota: 0–10. 1–2 = Seed, 3–4 = Validado, 5+ = Alta convicción.",
   },
   ja: {
     appTitle: "Roota",
@@ -139,11 +163,13 @@ const translations: Record<
     totalIdeas: (n) => `アイデア ${n} 件`,
     searchLabel: "検索",
     searchPlaceholder: "アイデア、説明、キーワード…",
-    pulseFilterLabel: "パルス",
-    pulseFilter_all: "すべての値",
-    pulseFilter_1: "1 以上",
-    pulseFilter_3: "3 以上",
-    pulseFilter_5: "5 以上",
+    pulseFilterLabel: "パルスレベル",
+    pulseFilter_all: "すべてのレベル",
+    pulseFilter_1: "Seed 以上 (≥1)",
+    pulseFilter_3: "Validated 以上 (≥3)",
+    pulseFilter_5: "High conviction (≥5)",
+    pulseLegend:
+      "パルス: 1–2 = Seed · 3–4 = Validated · 5+ = High conviction",
     visibleLabel: (shown, total) =>
       `${total} 件中 ${shown} 件を表示`,
     table_idea: "アイデア",
@@ -162,6 +188,13 @@ const translations: Record<
     modal_proof_hash: "Proof / ハッシュ",
     modal_close: "閉じる",
     pulseSuffix: "パルス",
+    pulseLevelLabel: "パルスレベル",
+    pulseLevelNone: "なし",
+    pulseLevelSeed: "Seed",
+    pulseLevelValidated: "Validated",
+    pulseLevelHigh: "High conviction",
+    pulseTooltip:
+      "Roota スコア: 0–10。1–2 = Seed、3–4 = Validated、5+ = High conviction。",
   },
 };
 
@@ -234,7 +267,7 @@ const styles = {
 
   // filters
   filtersBar: {
-    marginBottom: "10px",
+    marginBottom: "4px",
     display: "flex",
     flexWrap: "wrap" as const,
     gap: "12px",
@@ -271,7 +304,7 @@ const styles = {
     outline: "none",
   },
   select: {
-    minWidth: "140px",
+    minWidth: "180px",
     padding: "6px 10px",
     borderRadius: "999px",
     border: "1px solid #1e293b",
@@ -279,6 +312,11 @@ const styles = {
     color: "#e5e7eb",
     fontSize: "13px",
     outline: "none",
+  },
+  pulseLegend: {
+    marginBottom: "10px",
+    fontSize: "11px",
+    color: "#64748b",
   },
 
   tableWrapper: {
@@ -316,6 +354,21 @@ const styles = {
   thWithRightBorder: {
     borderRight: "1px solid #64748b",
   },
+  thPulseHeader: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+  },
+  thPulseIcon: {
+    fontSize: 11,
+    color: "#94a3b8",
+  },
+  tooltipIcon: {
+    fontSize: 11,
+    color: "#9ca3af",
+    cursor: "help",
+  },
+
   tdBase: {
     padding: "10px 14px",
     borderBottom: "1px solid #1f2937",
@@ -344,14 +397,12 @@ const styles = {
     color: "#9ca3af",
     fontFamily: "monospace",
   },
-  pulseBadge: {
+  pulseBadgeBase: {
     display: "inline-flex",
     alignItems: "center",
     gap: "4px",
     padding: "3px 8px",
     borderRadius: "999px",
-    backgroundColor: "rgba(79,70,229,0.2)",
-    color: "#c7d2fe",
     fontSize: "11px",
     fontWeight: 600,
   },
@@ -444,7 +495,7 @@ const styles = {
     padding: "6px 8px",
     backgroundColor: "#020617",
     borderRadius: "8px",
-    border: "1px solid #1e293b",
+    border: "1px solid "#1e293b",
     fontSize: "11px",
     color: "#e5e7eb",
     wordBreak: "break-all" as const,
@@ -464,6 +515,45 @@ const styles = {
     cursor: "pointer",
     fontSize: "13px",
   },
+};
+
+// helpers for pulse visual + label
+const getPulseBadgeStyle = (value: number | null) => {
+  const v = value ?? 0;
+  if (v >= 5) {
+    // high conviction
+    return {
+      backgroundColor: "rgba(234,179,8,0.18)",
+      color: "#facc15",
+    };
+  }
+  if (v >= 3) {
+    // validated
+    return {
+      backgroundColor: "rgba(129,140,248,0.25)",
+      color: "#c7d2fe",
+    };
+  }
+  if (v >= 1) {
+    // seed
+    return {
+      backgroundColor: "rgba(56,189,248,0.25)",
+      color: "#bae6fd",
+    };
+  }
+  // none
+  return {
+    backgroundColor: "rgba(15,23,42,0.9)",
+    color: "#64748b",
+  };
+};
+
+const getPulseLevelName = (value: number | null, localeStrings: (typeof translations)[Locale]) => {
+  const v = value ?? 0;
+  if (v >= 5) return localeStrings.pulseLevelHigh;
+  if (v >= 3) return localeStrings.pulseLevelValidated;
+  if (v >= 1) return localeStrings.pulseLevelSeed;
+  return localeStrings.pulseLevelNone;
 };
 
 export default function HomePage() {
@@ -643,6 +733,9 @@ export default function HomePage() {
         <div style={styles.filtersRight}>{visibleLabel}</div>
       </div>
 
+      {/* Pulse legend */}
+      <div style={styles.pulseLegend}>{t.pulseLegend}</div>
+
       {/* TABLE BLOCK */}
       <div style={styles.tableWrapper}>
         {loading && <div style={styles.loading}>{t.loading}</div>}
@@ -698,9 +791,15 @@ export default function HomePage() {
                     }}
                     onClick={() => handleSort("pulse")}
                   >
-                    <span style={{ display: "inline-flex", gap: 4 }}>
+                    <span style={styles.thPulseHeader}>
                       <span>{t.table_pulse}</span>
-                      <span style={{ fontSize: 11, color: "#94a3b8" }}>
+                      <span
+                        style={styles.tooltipIcon}
+                        title={t.pulseTooltip}
+                      >
+                        ?
+                      </span>
+                      <span style={styles.thPulseIcon}>
                         {sortIcon("pulse")}
                       </span>
                     </span>
@@ -720,9 +819,9 @@ export default function HomePage() {
                     }}
                     onClick={() => handleSort("date")}
                   >
-                    <span style={{ display: "inline-flex", gap: 4 }}>
+                    <span style={styles.thPulseHeader}>
                       <span>{t.table_date}</span>
-                      <span style={{ fontSize: 11, color: "#94a3b8" }}>
+                      <span style={styles.thPulseIcon}>
                         {sortIcon("date")}
                       </span>
                     </span>
@@ -733,6 +832,7 @@ export default function HomePage() {
               <tbody>
                 {sortedIdeas.map((idea) => {
                   const isHovered = hoveredRowId === idea.id;
+                  const pulseStyle = getPulseBadgeStyle(idea.pulse);
                   return (
                     <tr
                       key={idea.id}
@@ -801,7 +901,12 @@ export default function HomePage() {
                           ...styles.tdWithRightBorder,
                         }}
                       >
-                        <span style={styles.pulseBadge}>
+                        <span
+                          style={{
+                            ...styles.pulseBadgeBase,
+                            ...pulseStyle,
+                          }}
+                        >
                           <span>⚡</span>
                           <span>{idea.pulse ?? 0}</span>
                         </span>
@@ -862,8 +967,15 @@ export default function HomePage() {
             </div>
 
             <div style={styles.modalTags}>
-              <span style={styles.pulseBadge}>
-                ⚡ {selectedIdea.pulse ?? 0} <span>{t.pulseSuffix}</span>
+              <span
+                style={{
+                  ...styles.pulseBadgeBase,
+                  ...getPulseBadgeStyle(selectedIdea.pulse),
+                }}
+              >
+                <span>⚡</span>
+                <span>{selectedIdea.pulse ?? 0}</span>
+                <span>· {getPulseLevelName(selectedIdea.pulse, t)}</span>
               </span>
               <span style={{ color: "#e5e7eb" }}>
                 {t.modal_author}:{" "}
