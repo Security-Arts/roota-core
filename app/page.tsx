@@ -1,10 +1,5 @@
-export const dynamic = 'force-dynamic';
-<h1>DEBUG ROOTA 777</h1>
-
 "use client";
-
 import { useEffect, useState } from "react";
-
 type Idea = {
   id: string;
   title: string;
