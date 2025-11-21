@@ -1232,14 +1232,25 @@ export default function HomePage() {
             )}
 
             <div style={styles.modalFooter}>
-              <button
-                style={styles.modalButton}
-                onClick={() => setSelectedIdea(null)}
-              >
-                {t.modal_close}
-              </button>
-            </div>
-          </div>
+  <Link
+    href={`/idea/${selectedIdea.id}`}
+    style={{
+      ...styles.modalButton,
+      textDecoration: "none",
+      display: "inline-block",
+    }}
+  >
+    View public page
+  </Link>
+
+  <button
+    style={styles.modalButton}
+    onClick={() => setSelectedIdea(null)}
+  >
+    {t.modal_close}
+  </button>
+</div>
+        </div>
         </div>
       )}
 
