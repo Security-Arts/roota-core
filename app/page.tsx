@@ -1162,23 +1162,61 @@ export default function HomePage() {
                         )}
                       </td>
 
-                      {/* PULSE */}
-                      <td
-                        style={{
-                          ...styles.tdBase,
-                          ...styles.tdWithRightBorder,
-                        }}
-                      >
-                        <span
-                          style={{
-                            ...styles.pulseBadgeBase,
-                            ...pulseStyle,
-                          }}
-                        >
-                          <span>⚡</span>
-                          <span>{idea.pulse ?? 0}</span>
-                        </span>
-                      </td>
+                    {/* PULSE */}
+<td
+  style={{
+    ...styles.tdBase,
+    ...styles.tdWithRightBorder,
+  }}
+>
+  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+    <span
+      style={{
+        ...styles.pulseBadgeBase,
+        ...pulseStyle,
+      }}
+    >
+      <span>⚡</span>
+      <span>{idea.pulse ?? 0}</span>
+    </span>
+
+    <button
+      style={{
+        border: "1px solid #334155",
+        background: "transparent",
+        color: "#e5e7eb",
+        borderRadius: 999,
+        fontSize: 11,
+        padding: "2px 6px",
+        cursor: "pointer",
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        handlePulseChange(idea.id, 1);
+      }}
+    >
+      +1
+    </button>
+
+    <button
+      style={{
+        border: "1px solid #334155",
+        background: "transparent",
+        color: "#94a3b8",
+        borderRadius: 999,
+        fontSize: 11,
+        padding: "2px 6px",
+        cursor: "pointer",
+      }}
+      onClick={(e) => {
+        e.stopPropagation();
+        handlePulseChange(idea.id, -1);
+      }}
+    >
+      −1
+    </button>
+  </div>
+</td>
 
                       {/* AUTHOR */}
                       <td
