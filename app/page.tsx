@@ -887,6 +887,39 @@ export default function HomePage() {
       setCreating(false);
     }
   };
+  const handlePulseChange = async (id: string, delta: number) => {
+  // оптимістично оновлюємо локальний стейт
+  setIdeas((prev) =>
+    prev.map((idea) =>
+      idea.id === id
+        ? { ...idea, pulse: (idea.pulse ?? 0) + delta }
+        : idea
+    )
+  );
+
+  try {
+    const res = await fetch("/api/pulse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, delta }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      throw new Error(data?.error || "Pulse update failed");
+    }
+
+    // синхронізуємося з тим, що в БД
+    setIdeas((prev) =>
+      prev.map((idea) =>
+        idea.id === id ? data.idea : idea
+      )
+    );
+  } catch (e) {
+    console.error(e);
+  }
+};
 
   return (
     <main style={styles.page}>
