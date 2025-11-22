@@ -13,7 +13,26 @@ type Idea = {
   pulse: number | null;
   author: string | null;
   created_at: string;
+  updated_at: string | null;
 };
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function getPulseLabel(pulse: number | null) {
+  const v = pulse ?? 0;
+  if (v >= 5) return "High conviction";
+  if (v >= 3) return "Validated";
+  if (v >= 1) return "Seed";
+  return "None";
+}
 
 export default async function IdeaPage({
   params,
@@ -35,55 +54,59 @@ export default async function IdeaPage({
 
   const idea = data as Idea;
 
-  const createdAt = new Date(idea.created_at).toLocaleString("en-GB", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
   return (
     <main className="min-h-screen bg-[#020617] text-white">
       <div className="max-w-3xl mx-auto px-4 py-8">
+        {/* Top bar */}
         <header className="flex items-center justify-between gap-4 mb-8">
           <div>
             <Link
               href="/"
               className="text-xs text-gray-400 hover:text-gray-200"
             >
-              ← Back to stream
+              ← Back to Roota stream
             </Link>
-            <h1 className="text-2xl font-semibold mt-2">{idea.title}</h1>
-            <p className="text-xs text-gray-500 mt-1">
-              by {idea.author || "anonymous"} · {createdAt}
+            <h1 className="text-2xl md:text-3xl font-semibold mt-3">
+              {idea.title}
+            </h1>
+            <p className="text-[11px] text-gray-500 mt-2">
+              by{" "}
+              <span className="text-gray-200">
+                {idea.author || "anonymous"}
+              </span>{" "}
+              · {formatDate(idea.created_at)}
             </p>
           </div>
 
           <div className="flex flex-col items-end gap-2">
-            <span className="text-[11px] text-gray-400 uppercase tracking-wide">
+            <span className="text-[10px] tracking-wide uppercase text-gray-400">
               Pulse
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/60 px-3 py-1 text-sm">
-              <span>⚡</span>
-              <span className="font-semibold text-emerald-400">
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/70 bg-emerald-500/10 px-3 py-1">
+              <span className="text-sm">⚡</span>
+              <span className="text-lg font-semibold text-emerald-400">
                 {idea.pulse ?? 0}
               </span>
+            </span>
+            <span className="text-[11px] text-gray-400">
+              {getPulseLabel(idea.pulse)}
             </span>
           </div>
         </header>
 
+        {/* Description */}
         {idea.description && (
-          <section className="mb-6">
+          <section className="mb-8">
             <h2 className="text-sm font-semibold text-gray-300 mb-2">
               Description
             </h2>
-            <p className="text-sm text-gray-100 leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm leading-relaxed text-gray-100 whitespace-pre-wrap">
               {idea.description}
             </p>
           </section>
         )}
 
+        {/* Proof token */}
         <section className="mb-8">
           <h2 className="text-sm font-semibold text-gray-300 mb-2">
             Proof token (SHA-256)
@@ -101,11 +124,21 @@ export default async function IdeaPage({
           )}
         </section>
 
-        <section className="border-t border-gray-800 pt-4 flex items-center justify-between text-xs text-gray-500">
-          <span>Roota · live registry of ideas with proof and pulse</span>
-          <span className="truncate max-w-[220px] text-right">
-            ID: {idea.id}
-          </span>
+        {/* Meta / footer */}
+        <section className="border-t border-gray-800 pt-4 mt-6 flex flex-col gap-1 text-[11px] text-gray-500">
+          <div>
+            Roota · live registry of ideas with proof and pulse of interest
+          </div>
+          <div className="flex flex-wrap justify-between gap-2">
+            <span className="truncate max-w-[220px]">
+              ID: {idea.id}
+            </span>
+            {idea.updated_at && (
+              <span>
+                Last updated: {formatDate(idea.updated_at)}
+              </span>
+            )}
+          </div>
         </section>
       </div>
     </main>
