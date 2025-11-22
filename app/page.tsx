@@ -953,6 +953,8 @@ export default function HomePage() {
           <div>{t.endpoint}</div>
           <div>{t.mode}</div>
         </div>
+        <a href="/about">About Roota →</a>
+
       </header>
 
       {/* SECTION HEADER */}
