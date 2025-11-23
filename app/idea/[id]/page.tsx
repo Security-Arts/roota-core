@@ -123,21 +123,20 @@ export default async function IdeaPage({ params }: { params: { id: string } }) {
             <p className="text-xs text-gray-500">No proof token stored for this idea.</p>
           )}
         </section>
-   <section className="border-t border-gray-800 pt-4 mt-6 flex flex-col gap-1 text-[11px] text-gray-500">
+  <section className="border-t border-gray-800 pt-4 mt-6 flex flex-col gap-2 text-[11px] text-gray-400">
   <div>
     Roota · live registry of ideas with proof and pulse of interest
   </div>
-  <div className="flex flex-wrap justify-between gap-2">
-    <span className="truncate max-w-[220px]">
-      ID: {idea.id}
-    </span>
 
-    {idea.updated_at && (
-      <span>
-        Last updated: {formatDate(idea.updated_at)}
-      </span>
-    )}
+  <div className="truncate">
+    ID: {idea.id}
   </div>
+
+  {idea.updated_at && (
+    <div>
+      Last updated: {formatDate(idea.updated_at)}
+    </div>
+  )}
 </section>
       </div>
     </main>
