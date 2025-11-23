@@ -10,6 +10,7 @@ type Idea = {
   pulse: number | null;
   author: string | null;
   created_at: string;
+  slug: string | null;   // ← ДОДАЛИ ТУТ
 };
 
 type IdeasResponse =
@@ -1342,16 +1343,18 @@ export default function HomePage() {
             )}
 
             <div style={styles.modalFooter}>
-  <Link
-    href={`/idea/${selectedIdea.id}`}
-    style={{
-      ...styles.modalButton,
-      textDecoration: "none",
-      display: "inline-block",
-    }}
-  >
-    View public page
-  </Link>
+ <Link
+  href={`/idea/${selectedIdea.slug || selectedIdea.id}`}
+  style={{
+    ...styles.modalButton,
+    textDecoration: "none",
+    display: "inline-block",
+  }}
+  onClick={() => setSelectedIdea(null)}
+>
+  View public page
+</Link>
+
 
   <button
     style={styles.modalButton}
