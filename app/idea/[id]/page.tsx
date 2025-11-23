@@ -126,10 +126,18 @@ export default async function IdeaPage({ params }: { params: { id: string } }) {
 
         <section className="border-t border-gray-800 pt-4 mt-6 flex flex-col gap-1 text-[11px] text-gray-500">
           <div>Roota · live registry of ideas with proof and pulse of interest</div>
-          <div className="flex flex-wrap justify-between gap-2">
-            <span className="truncate max-w-[220px]">ID: {idea.id}</span>
-            {idea.updated_at && <span>Last updated: {formatDate(idea.updated_at)}</span>}
-          </div>
+      <div className="flex flex-wrap justify-between gap-2">
+  <span className="truncate max-w-[220px]">
+    ID: {idea.id}
+  </span>
+
+  {idea.updated_at && (
+    <span className="ml-4">
+      Last updated: {formatDate(idea.updated_at)}
+    </span>
+  )}
+</div>
+
         </section>
       </div>
     </main>
