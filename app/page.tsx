@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { supabaseBrowser } from "@/lib/supabase-browser";
 type Idea = {
   id: string;
   title: string;
@@ -739,6 +740,42 @@ export default function HomePage() {
 
     fetchIdeas();
   }, []);
+  useEffect(() => {
+  const channel = supabaseBrowser
+    .channel("ideas-realtime")
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "ideas" },
+      (payload) => {
+        const newIdea = payload.new as Idea;
+
+        setIdeas((prev) => {
+          // не дублюємо, якщо вже є
+          if (prev.some((i) => i.id === newIdea.id)) return prev;
+          return [newIdea, ...prev];
+        });
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "UPDATE", schema: "public", table: "ideas" },
+      (payload) => {
+        const updated = payload.new as Idea;
+
+        setIdeas((prev) =>
+          prev.map((idea) =>
+            idea.id === updated.id ? updated : idea
+          )
+        );
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabaseBrowser.removeChannel(channel);
+  };
+}, []);
+
 
   const handleSort = (field: SortField) => {
     if (!field) return;
