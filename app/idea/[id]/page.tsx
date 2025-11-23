@@ -41,11 +41,15 @@ export default async function IdeaPage({
 }) {
   const { id } = params;
 
+  // 👉 тепер ключ може бути slug або uuid
+  const key = id;
+
   const { data, error } = await supabase
     .from("ideas")
     .select("*")
-    .eq("id", id)
+    .or(`id.eq.${key},slug.eq.${key}`)
     .single();
+
 
   if (error || !data) {
     console.error("Idea page error:", error);
