@@ -123,21 +123,44 @@ export default async function IdeaPage({ params }: { params: { id: string } }) {
             <p className="text-xs text-gray-500">No proof token stored for this idea.</p>
           )}
         </section>
-  <section className="border-t border-gray-800 pt-4 mt-6 flex flex-col gap-2 text-[11px] text-gray-400">
-  <div>
-    Roota · live registry of ideas with proof and pulse of interest
-  </div>
+ <section className="mt-8">
+  <div className="border-t border-gray-800 pt-4 pb-2" />
 
-  <div className="truncate">
-    ID: {idea.id}
-  </div>
-
-  {idea.updated_at && (
-    <div>
-      Last updated: {formatDate(idea.updated_at)}
+  <div className="mt-3 rounded-xl border border-gray-800 bg-black/30 px-4 py-3 flex flex-col gap-3 text-[11px] text-gray-400">
+    <div className="flex items-center gap-2 text-gray-300">
+      <span className="text-[10px]">◎</span>
+      <span>Roota · live registry of ideas with proof and pulse of interest</span>
     </div>
-  )}
+
+    <div className="flex flex-wrap gap-4">
+      <div className="space-y-1">
+        <div className="uppercase tracking-wide text-[10px] text-gray-500">
+          Idea ID
+        </div>
+        <div className="font-mono break-all text-gray-200">
+          {idea.id}
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <div className="uppercase tracking-wide text-[10px] text-gray-500">
+          Created
+        </div>
+        <div>{formatDate(idea.created_at)}</div>
+      </div>
+
+      {idea.updated_at && (
+        <div className="space-y-1">
+          <div className="uppercase tracking-wide text-[10px] text-gray-500">
+            Last updated
+          </div>
+          <div>{formatDate(idea.updated_at)}</div>
+        </div>
+      )}
+    </div>
+  </div>
 </section>
+
       </div>
     </main>
   );
