@@ -1024,42 +1024,89 @@ export default function HomePage() {
   )}
 </header>
 {/* ABOUT ROOTA */}
-<div
-  style={{
-    marginBottom: "28px",
-    padding: "16px 20px",
-    borderRadius: "16px",
-    background:
-      "radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 60%) #0f172a",
-    border: "1px solid #1e293b",
-  }}
->
-  <h2
-    style={{
-      fontSize: "18px",
-      fontWeight: 600,
-      marginBottom: "8px",
-      color: "#e2e8f0",
-    }}
-  >
-    About Roota
-  </h2>
+<header style={styles.headerTop}>
+  <div>
+    <div style={styles.titleRow}>
+      <h1 style={styles.title}>{t.appTitle}</h1>
 
-  <p
-    style={{
-      color: "#cbd5f5",
-      fontSize: "14px",
-      lineHeight: 1.55,
-      whiteSpace: "pre-wrap",
-    }}
-  >
-    Roota is an Ideas Stock Exchange — a live registry of ideas with proof
-    and pulse of interest.  
-    Each idea receives its own cryptographic proof token, a public record,
-    and a dynamic pulse score reflecting real-time validation by the
-    community.
-  </p>
-</div>
+      {/* language switcher */}
+      <div style={styles.langSwitcher}>
+        {(["en", "es", "ja"] as Locale[]).map((code) => (
+          <button
+            key={code}
+            style={{
+              ...styles.langButton,
+              ...(locale === code ? styles.langButtonActive : {}),
+            }}
+            onClick={() => setLocale(code)}
+          >
+            {code.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <p style={styles.subtitle}>{t.tagline}</p>
+
+    {/* технічний рядок тільки для мобіли */}
+    {isMobile && (
+      <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
+        MVP • Supabase backend • /api/ideas
+      </p>
+    )}
+
+    {/* About-кнопка на мобілці — під сабтайтлом */}
+    {isMobile && (
+      <div style={{ marginTop: 10 }}>
+        <Link
+          href="/about"
+          style={{
+            display: "inline-block",
+            padding: "6px 12px",
+            borderRadius: 999,
+            border: "1px solid #334155",
+            fontSize: 12,
+            textDecoration: "none",
+            color: "#e5e7eb",
+            background:
+              "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+          }}
+        >
+          About Roota
+        </Link>
+      </div>
+    )}
+  </div>
+
+  {/* правий блок — тільки на десктопі/планшеті */}
+  {!isMobile && (
+    <div style={{ textAlign: "right" }}>
+      <Link
+        href="/about"
+        style={{
+          display: "inline-block",
+          marginBottom: 8,
+          padding: "6px 12px",
+          borderRadius: 999,
+          border: "1px solid #334155",
+          fontSize: 12,
+          textDecoration: "none",
+          color: "#e5e7eb",
+          background:
+            "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+        }}
+      >
+        About Roota
+      </Link>
+
+      <div style={styles.metaBlock}>
+        <div>{t.backend}</div>
+        <div>{t.endpoint}</div>
+        <div>{t.mode}</div>
+      </div>
+    </div>
+  )}
+</header>
 
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
