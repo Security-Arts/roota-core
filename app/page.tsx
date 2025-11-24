@@ -1,4 +1,5 @@
-  return (
+export default function Page() {
+return (
     <main style={styles.page}>
       {/* HEADER + About Roota */}
       <header style={styles.headerTop}>
