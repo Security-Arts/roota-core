@@ -1084,395 +1084,357 @@ export default function HomePage() {
           </div>
         )}
 
-      {!loading && !error && sortedIdeas.length > 0 && (
-  isMobile ? (
-    // 🟣 МОБІЛЬНІ КАРТКИ
-    <div
-      style={{
-        padding: "8px 10px 10px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
-        maxHeight: 520,
-        overflowY: "auto",
-      }}
-    >
-      {sortedIdeas.map((idea) => {
-        const pulseStyle = getPulseBadgeStyle(idea.pulse);
-        return (
-          <div
-            key={idea.id}
-            style={{
-              borderRadius: 14,
-              border: "1px solid #1f2937",
-              background:
-                "radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 55%) #020617",
-              padding: "10px 12px",
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
-            }}
-            onClick={() => setSelectedIdea(idea)}
-          >
-            {/* верх: назва + pulse */}
+        {!loading && !error && sortedIdeas.length > 0 && (
+          isMobile ? (
+            // 🟣 МОБІЛЬНІ КАРТКИ
             <div
               style={{
+                padding: "8px 10px 10px",
                 display: "flex",
-                justifyContent: "space-between",
-                gap: 8,
-                alignItems: "center",
+                flexDirection: "column",
+                gap: 10,
+                maxHeight: 520,
+                overflowY: "auto",
               }}
             >
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: "#e5e7eb",
-                  flex: 1,
-                  marginRight: 6,
-                }}
-              >
-                {idea.title}
-              </div>
-              <span
-                style={{
-                  ...styles.pulseBadgeBase,
-                  ...pulseStyle,
-                  fontSize: 11,
-                }}
-              >
-                <span>⚡</span>
-                <span>{idea.pulse ?? 0}</span>
-              </span>
-            </div>
-
-            {/* опис */}
-            <div
-              style={{
-                fontSize: 12,
-                color: "#cbd5f5",
-                overflow: "hidden",
-                display: "-webkit-box",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {idea.description}
-            </div>
-
-            {/* мета */}
-            <div
-              style={{
-                marginTop: 4,
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 6,
-                fontSize: 11,
-                color: "#64748b",
-              }}
-            >
-              <span>
-                {idea.author || "anonymous"} · {formatDate(idea.created_at)}
-              </span>
-              {idea.proof_hash && (
-                <span
-                  style={{
-                    fontFamily: "monospace",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {idea.proof_hash.slice(0, 6)}…{idea.proof_hash.slice(-4)}
-                </span>
-              )}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  ) : (
-    // 🖥 ДЕСКТОП – ТАБЛИЦЯ (ТВОЯ СТАРА!)
-    <div style={styles.scrollArea}>
-      <table style={styles.table}>
-        <colgroup>
-          <col style={{ width: "18%" }} />
-          <col style={{ width: "32%" }} />
-          <col style={{ width: "18%" }} />
-          <col style={{ width: "12%" }} />
-          <col style={{ width: "12%" }} />
-          <col style={{ width: "8%" }} />
-        </colgroup>
-        <thead>
-          <tr style={styles.headRow}>
-            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
-              {t.table_idea}
-            </th>
-            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
-              {t.table_description}
-            </th>
-            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
-              {t.table_proof_token}
-            </th>
-            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
-              {t.table_pulse}
-            </th>
-            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
-              {t.table_author}
-            </th>
-            <th style={styles.thBase}>{t.table_date}</th>
-          </tr>
-        </thead>
-
-        {/* … залишаєш ВСІ твої TR, map() тощо без змін */}
-        <tbody>
-          {sortedIdeas.map((idea) => (
-            <tr
-              key={idea.id}
-              style={{
-                ...styles.rowBase,
-                ...(hoveredRowId === idea.id ? styles.rowHover : {}),
-              }}
-              onClick={() => setSelectedIdea(idea)}
-              onMouseEnter={() => setHoveredRowId(idea.id)}
-              onMouseLeave={() => setHoveredRowId(null)}
-            >
-              {/* всі твої <td> тут */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-)}
-
-              <colgroup>
-                <col style={{ width: "18%" }} />
-                <col style={{ width: "32%" }} />
-                <col style={{ width: "18%" }} />
-                <col style={{ width: "12%" }} />
-                <col style={{ width: "12%" }} />
-                <col style={{ width: "8%" }} />
-              </colgroup>
-              <thead>
-                <tr style={styles.headRow}>
-                  <th
+              {sortedIdeas.map((idea) => {
+                const pulseStyle = getPulseBadgeStyle(idea.pulse);
+                return (
+                  <div
+                    key={idea.id}
                     style={{
-                      ...styles.thBase,
-                      ...styles.thWithRightBorder,
+                      borderRadius: 14,
+                      border: "1px solid #1f2937",
+                      background:
+                        "radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 55%) #020617",
+                      padding: "10px 12px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
                     }}
+                    onClick={() => setSelectedIdea(idea)}
                   >
-                    {t.table_idea}
-                  </th>
-                  <th
-                    style={{
-                      ...styles.thBase,
-                      ...styles.thWithRightBorder,
-                    }}
-                  >
-                    {t.table_description}
-                  </th>
-                  <th
-                    style={{
-                      ...styles.thBase,
-                      ...styles.thWithRightBorder,
-                    }}
-                  >
-                    {t.table_proof_token}
-                  </th>
-                  <th
-                    style={{
-                      ...styles.thBase,
-                      ...styles.thWithRightBorder,
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleSort("pulse")}
-                  >
-                    <span style={styles.thPulseHeader}>
-                      <span>{t.table_pulse}</span>
-                      <span
-                        style={styles.tooltipIcon}
-                        title={t.pulseTooltip}
-                      >
-                        ?
-                      </span>
-                      <span style={styles.thPulseIcon}>
-                        {sortIcon("pulse")}
-                      </span>
-                    </span>
-                  </th>
-                  <th
-                    style={{
-                      ...styles.thBase,
-                      ...styles.thWithRightBorder,
-                    }}
-                  >
-                    {t.table_author}
-                  </th>
-                  <th
-                    style={{
-                      ...styles.thBase,
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleSort("date")}
-                  >
-                    <span style={styles.thPulseHeader}>
-                      <span>{t.table_date}</span>
-                      <span style={styles.thPulseIcon}>
-                        {sortIcon("date")}
-                      </span>
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {sortedIdeas.map((idea) => {
-                  const isHovered = hoveredRowId === idea.id;
-                  const pulseStyle = getPulseBadgeStyle(idea.pulse);
-                  return (
-                    <tr
-                      key={idea.id}
+                    {/* верх: назва + pulse */}
+                    <div
                       style={{
-                        ...styles.rowBase,
-                        ...(isHovered ? styles.rowHover : {}),
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: 8,
+                        alignItems: "center",
                       }}
-                      onMouseEnter={() => setHoveredRowId(idea.id)}
-                      onMouseLeave={() => setHoveredRowId(null)}
-                      onClick={() => setSelectedIdea(idea)}
                     >
-                      {/* IDEA */}
-                      <td
+                      <div
                         style={{
-                          ...styles.tdBase,
-                          ...styles.tdWithRightBorder,
-                          ...styles.ideaCell,
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: "#e5e7eb",
+                          flex: 1,
+                          marginRight: 6,
                         }}
                       >
                         {idea.title}
-                      </td>
-
-                      {/* DESCRIPTION */}
-                      <td
+                      </div>
+                      <span
                         style={{
-                          ...styles.tdBase,
-                          ...styles.tdWithRightBorder,
-                          ...styles.descCell,
+                          ...styles.pulseBadgeBase,
+                          ...pulseStyle,
+                          fontSize: 11,
                         }}
                       >
-                        {idea.description}
-                      </td>
+                        <span>⚡</span>
+                        <span>{idea.pulse ?? 0}</span>
+                      </span>
+                    </div>
 
-                      {/* PROOF TOKEN */}
-                      <td
-                        style={{
-                          ...styles.tdBase,
-                          ...styles.tdWithRightBorder,
-                        }}
-                      >
-                        {idea.proof_hash ? (
-                          <div>
-                            <div style={styles.proofLabel}>
-                              {t.proofTokenLabel}
-                            </div>
-                            <div style={styles.proofShort}>
-                              {shortHash(idea.proof_hash)}
-                            </div>
-                          </div>
-                        ) : (
-                          <div>
-                            <div style={styles.proofLabel}>
-                              {t.proofTokenLabel}
-                            </div>
-                            <div style={styles.proofShort}>
-                              {t.proofTokenMissing}
-                            </div>
-                          </div>
-                        )}
-                      </td>
+                    {/* опис */}
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "#cbd5f5",
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {idea.description}
+                    </div>
 
-                    {/* PULSE */}
-<td
-  style={{
-    ...styles.tdBase,
-    ...styles.tdWithRightBorder,
-  }}
->
-  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-    <span
-      style={{
-        ...styles.pulseBadgeBase,
-        ...pulseStyle,
-      }}
-    >
-      <span>⚡</span>
-      <span>{idea.pulse ?? 0}</span>
-    </span>
-
-    <button
-      style={{
-        border: "1px solid #334155",
-        background: "transparent",
-        color: "#e5e7eb",
-        borderRadius: 999,
-        fontSize: 11,
-        padding: "2px 6px",
-        cursor: "pointer",
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        handlePulseChange(idea.id, 1);
-      }}
-    >
-      +1
-    </button>
-
-    <button
-      style={{
-        border: "1px solid #334155",
-        background: "transparent",
-        color: "#94a3b8",
-        borderRadius: 999,
-        fontSize: 11,
-        padding: "2px 6px",
-        cursor: "pointer",
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        handlePulseChange(idea.id, -1);
-      }}
-    >
-      −1
-    </button>
-  </div>
-</td>
-
-                      {/* AUTHOR */}
-                      <td
-                        style={{
-                          ...styles.tdBase,
-                          ...styles.tdWithRightBorder,
-                        }}
-                      >
-                        {idea.author || "anonymous"}
-                      </td>
-
-                      {/* DATE */}
-                      <td style={styles.tdBase}>
-                        <span style={{ fontSize: 12, color: "#94a3b8" }}>
-                          {formatDate(idea.created_at)}
+                    {/* мета */}
+                    <div
+                      style={{
+                        marginTop: 4,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: 6,
+                        fontSize: 11,
+                        color: "#64748b",
+                      }}
+                    >
+                      <span>
+                        {idea.author || "anonymous"} ·{" "}
+                        {formatDate(idea.created_at)}
+                      </span>
+                      {idea.proof_hash && (
+                        <span
+                          style={{
+                            fontFamily: "monospace",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {idea.proof_hash.slice(0, 6)}…
+                          {idea.proof_hash.slice(-4)}
                         </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            // 🖥 ДЕСКТОП – ТАБЛИЦЯ
+            <div style={styles.scrollArea}>
+              <table style={styles.table}>
+                <colgroup>
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "32%" }} />
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "12%" }} />
+                  <col style={{ width: "12%" }} />
+                  <col style={{ width: "8%" }} />
+                </colgroup>
+                <thead>
+                  <tr style={styles.headRow}>
+                    <th
+                      style={{
+                        ...styles.thBase,
+                        ...styles.thWithRightBorder,
+                      }}
+                    >
+                      {t.table_idea}
+                    </th>
+                    <th
+                      style={{
+                        ...styles.thBase,
+                        ...styles.thWithRightBorder,
+                      }}
+                    >
+                      {t.table_description}
+                    </th>
+                    <th
+                      style={{
+                        ...styles.thBase,
+                        ...styles.thWithRightBorder,
+                      }}
+                    >
+                      {t.table_proof_token}
+                    </th>
+                    <th
+                      style={{
+                        ...styles.thBase,
+                        ...styles.thWithRightBorder,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleSort("pulse")}
+                    >
+                      <span style={styles.thPulseHeader}>
+                        <span>{t.table_pulse}</span>
+                        <span
+                          style={styles.tooltipIcon}
+                          title={t.pulseTooltip}
+                        >
+                          ?
+                        </span>
+                        <span style={styles.thPulseIcon}>
+                          {sortIcon("pulse")}
+                        </span>
+                      </span>
+                    </th>
+                    <th
+                      style={{
+                        ...styles.thBase,
+                        ...styles.thWithRightBorder,
+                      }}
+                    >
+                      {t.table_author}
+                    </th>
+                    <th
+                      style={{
+                        ...styles.thBase,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleSort("date")}
+                    >
+                      <span style={styles.thPulseHeader}>
+                        <span>{t.table_date}</span>
+                        <span style={styles.thPulseIcon}>
+                          {sortIcon("date")}
+                        </span>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {sortedIdeas.map((idea) => {
+                    const isHovered = hoveredRowId === idea.id;
+                    const pulseStyle = getPulseBadgeStyle(idea.pulse);
+
+                    return (
+                      <tr
+                        key={idea.id}
+                        style={{
+                          ...styles.rowBase,
+                          ...(isHovered ? styles.rowHover : {}),
+                        }}
+                        onMouseEnter={() => setHoveredRowId(idea.id)}
+                        onMouseLeave={() => setHoveredRowId(null)}
+                        onClick={() => setSelectedIdea(idea)}
+                      >
+                        {/* IDEA */}
+                        <td
+                          style={{
+                            ...styles.tdBase,
+                            ...styles.tdWithRightBorder,
+                            ...styles.ideaCell,
+                          }}
+                        >
+                          {idea.title}
+                        </td>
+
+                        {/* DESCRIPTION */}
+                        <td
+                          style={{
+                            ...styles.tdBase,
+                            ...styles.tdWithRightBorder,
+                            ...styles.descCell,
+                          }}
+                        >
+                          {idea.description}
+                        </td>
+
+                        {/* PROOF TOKEN */}
+                        <td
+                          style={{
+                            ...styles.tdBase,
+                            ...styles.tdWithRightBorder,
+                          }}
+                        >
+                          {idea.proof_hash ? (
+                            <div>
+                              <div style={styles.proofLabel}>
+                                {t.proofTokenLabel}
+                              </div>
+                              <div style={styles.proofShort}>
+                                {shortHash(idea.proof_hash)}
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div style={styles.proofLabel}>
+                                {t.proofTokenLabel}
+                              </div>
+                              <div style={styles.proofShort}>
+                                {t.proofTokenMissing}
+                              </div>
+                            </div>
+                          )}
+                        </td>
+
+                        {/* PULSE + кнопки +1/-1 */}
+                        <td
+                          style={{
+                            ...styles.tdBase,
+                            ...styles.tdWithRightBorder,
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                            }}
+                          >
+                            <span
+                              style={{
+                                ...styles.pulseBadgeBase,
+                                ...pulseStyle,
+                              }}
+                            >
+                              <span>⚡</span>
+                              <span>{idea.pulse ?? 0}</span>
+                            </span>
+
+                            <button
+                              style={{
+                                border: "1px solid #334155",
+                                background: "transparent",
+                                color: "#e5e7eb",
+                                borderRadius: 999,
+                                fontSize: 11,
+                                padding: "2px 6px",
+                                cursor: "pointer",
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handlePulseChange(idea.id, 1);
+                              }}
+                            >
+                              +1
+                            </button>
+
+                            <button
+                              style={{
+                                border: "1px solid #334155",
+                                background: "transparent",
+                                color: "#94a3b8",
+                                borderRadius: 999,
+                                fontSize: 11,
+                                padding: "2px 6px",
+                                cursor: "pointer",
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handlePulseChange(idea.id, -1);
+                              }}
+                            >
+                              −1
+                            </button>
+                          </div>
+                        </td>
+
+                        {/* AUTHOR */}
+                        <td
+                          style={{
+                            ...styles.tdBase,
+                            ...styles.tdWithRightBorder,
+                          }}
+                        >
+                          {idea.author || "anonymous"}
+                        </td>
+
+                        {/* DATE */}
+                        <td style={styles.tdBase}>
+                          <span
+                            style={{ fontSize: 12, color: "#94a3b8" }}
+                          >
+                            {formatDate(idea.created_at)}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )
         )}
 
         {!loading && !error && sortedIdeas.length === 0 && (
           <div style={styles.emptyBox}>{t.noIdeasForFilter}</div>
         )}
       </div>
+
 
       {/* VIEW IDEA MODAL */}
       {selectedIdea && (
