@@ -720,6 +720,19 @@ export default function HomePage() {
   const [creating, setCreating] = useState(false);
   const [generatingProof, setGeneratingProof] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      if (typeof window !== "undefined") {
+        setIsMobile(window.innerWidth < 768);
+      }
+    };
+
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     const fetchIdeas = async () => {
