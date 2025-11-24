@@ -754,7 +754,7 @@ export default function HomePage() {
 
     fetchIdeas();
   }, []);
-  useEffect(() => {
+ useEffect(() => {
   const channel = supabaseBrowser
     .channel("ideas-realtime")
     .on(
@@ -764,7 +764,6 @@ export default function HomePage() {
         const newIdea = payload.new as Idea;
 
         setIdeas((prev) => {
-          // не дублюємо, якщо вже є
           if (prev.some((i) => i.id === newIdea.id)) return prev;
           return [newIdea, ...prev];
         });
@@ -774,21 +773,29 @@ export default function HomePage() {
       "postgres_changes",
       { event: "UPDATE", schema: "public", table: "ideas" },
       (payload) => {
-        const updated = payload.new as Idea;
+        const updatedIdea = payload.new as Idea;
 
         setIdeas((prev) =>
-          prev.map((idea) =>
-            idea.id === updated.id ? updated : idea
-          )
+          prev.map((i) => (i.id === updatedIdea.id ? updatedIdea : i))
         );
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "DELETE", schema: "public", table: "ideas" },
+      (payload) => {
+        const deletedId = payload.old.id as string;
+
+        setIdeas((prev) => prev.filter((i) => i.id !== deletedId));
       }
     )
     .subscribe();
 
   return () => {
-    supabaseBrowser.removeChannel(channel);
+    channel.unsubscribe();
   };
 }, []);
+
 
 
   const handleSort = (field: SortField) => {
