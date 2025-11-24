@@ -1023,7 +1023,43 @@ export default function HomePage() {
     </div>
   )}
 </header>
+{/* ABOUT ROOTA */}
+<div
+  style={{
+    marginBottom: "28px",
+    padding: "16px 20px",
+    borderRadius: "16px",
+    background:
+      "radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 60%) #0f172a",
+    border: "1px solid #1e293b",
+  }}
+>
+  <h2
+    style={{
+      fontSize: "18px",
+      fontWeight: 600,
+      marginBottom: "8px",
+      color: "#e2e8f0",
+    }}
+  >
+    About Roota
+  </h2>
 
+  <p
+    style={{
+      color: "#cbd5f5",
+      fontSize: "14px",
+      lineHeight: 1.55,
+      whiteSpace: "pre-wrap",
+    }}
+  >
+    Roota is an Ideas Stock Exchange — a live registry of ideas with proof
+    and pulse of interest.  
+    Each idea receives its own cryptographic proof token, a public record,
+    and a dynamic pulse score reflecting real-time validation by the
+    community.
+  </p>
+</div>
 
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
