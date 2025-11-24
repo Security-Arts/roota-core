@@ -975,38 +975,48 @@ export default function HomePage() {
   return (
     <main style={styles.page}>
       {/* HEADER */}
-      <header style={styles.headerTop}>
-        <div>
-          <div style={styles.titleRow}>
-            <h1 style={styles.title}>{t.appTitle}</h1>
+   <header style={styles.headerTop}>
+  <div>
+    <div style={styles.titleRow}>
+      <h1 style={styles.title}>{t.appTitle}</h1>
 
-            {/* language switcher */}
-            <div style={styles.langSwitcher}>
-              {(["en", "es", "ja"] as Locale[]).map((code) => (
-                <button
-                  key={code}
-                  style={{
-                    ...styles.langButton,
-                    ...(locale === code ? styles.langButtonActive : {}),
-                  }}
-                  onClick={() => setLocale(code)}
-                >
-                  {code.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
+      {/* language switcher */}
+      <div style={styles.langSwitcher}>
+        {(["en", "es", "ja"] as Locale[]).map((code) => (
+          <button
+            key={code}
+            style={{
+              ...styles.langButton,
+              ...(locale === code ? styles.langButtonActive : {}),
+            }}
+            onClick={() => setLocale(code)}
+          >
+            {code.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    </div>
 
-          <p style={styles.subtitle}>{t.tagline}</p>
-        </div>
-        <div style={styles.metaBlock}>
-          <div>{t.backend}</div>
-          <div>{t.endpoint}</div>
-          <div>{t.mode}</div>
-        </div>
-        <a href="/about">About Roota →</a>
+    <p style={styles.subtitle}>{t.tagline}</p>
 
-      </header>
+    {/* невеликий технічний рядок тільки для мобіли */}
+    {isMobile && (
+      <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
+        MVP • Supabase backend • /api/ideas
+      </p>
+    )}
+  </div>
+
+  {/* правий блок — тільки на десктопі/планшеті */}
+  {!isMobile && (
+    <div style={styles.metaBlock}>
+      <div>{t.backend}</div>
+      <div>{t.endpoint}</div>
+      <div>{t.mode}</div>
+    </div>
+  )}
+</header>
+
 
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
@@ -1067,9 +1077,166 @@ export default function HomePage() {
           </div>
         )}
 
-        {!loading && !error && sortedIdeas.length > 0 && (
-          <div style={styles.scrollArea}>
-            <table style={styles.table}>
+      {!loading && !error && sortedIdeas.length > 0 && (
+  isMobile ? (
+    // 🟣 МОБІЛЬНІ КАРТКИ
+    <div
+      style={{
+        padding: "8px 10px 10px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        maxHeight: 520,
+        overflowY: "auto",
+      }}
+    >
+      {sortedIdeas.map((idea) => {
+        const pulseStyle = getPulseBadgeStyle(idea.pulse);
+        return (
+          <div
+            key={idea.id}
+            style={{
+              borderRadius: 14,
+              border: "1px solid #1f2937",
+              background:
+                "radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 55%) #020617",
+              padding: "10px 12px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+            }}
+            onClick={() => setSelectedIdea(idea)}
+          >
+            {/* верх: назва + pulse */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 8,
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "#e5e7eb",
+                  flex: 1,
+                  marginRight: 6,
+                }}
+              >
+                {idea.title}
+              </div>
+              <span
+                style={{
+                  ...styles.pulseBadgeBase,
+                  ...pulseStyle,
+                  fontSize: 11,
+                }}
+              >
+                <span>⚡</span>
+                <span>{idea.pulse ?? 0}</span>
+              </span>
+            </div>
+
+            {/* опис */}
+            <div
+              style={{
+                fontSize: 12,
+                color: "#cbd5f5",
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {idea.description}
+            </div>
+
+            {/* мета */}
+            <div
+              style={{
+                marginTop: 4,
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 6,
+                fontSize: 11,
+                color: "#64748b",
+              }}
+            >
+              <span>
+                {idea.author || "anonymous"} · {formatDate(idea.created_at)}
+              </span>
+              {idea.proof_hash && (
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {idea.proof_hash.slice(0, 6)}…{idea.proof_hash.slice(-4)}
+                </span>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    // 🖥 ДЕСКТОП – ТАБЛИЦЯ (ТВОЯ СТАРА!)
+    <div style={styles.scrollArea}>
+      <table style={styles.table}>
+        <colgroup>
+          <col style={{ width: "18%" }} />
+          <col style={{ width: "32%" }} />
+          <col style={{ width: "18%" }} />
+          <col style={{ width: "12%" }} />
+          <col style={{ width: "12%" }} />
+          <col style={{ width: "8%" }} />
+        </colgroup>
+        <thead>
+          <tr style={styles.headRow}>
+            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
+              {t.table_idea}
+            </th>
+            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
+              {t.table_description}
+            </th>
+            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
+              {t.table_proof_token}
+            </th>
+            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
+              {t.table_pulse}
+            </th>
+            <th style={{ ...styles.thBase, ...styles.thWithRightBorder }}>
+              {t.table_author}
+            </th>
+            <th style={styles.thBase}>{t.table_date}</th>
+          </tr>
+        </thead>
+
+        {/* … залишаєш ВСІ твої TR, map() тощо без змін */}
+        <tbody>
+          {sortedIdeas.map((idea) => (
+            <tr
+              key={idea.id}
+              style={{
+                ...styles.rowBase,
+                ...(hoveredRowId === idea.id ? styles.rowHover : {}),
+              }}
+              onClick={() => setSelectedIdea(idea)}
+              onMouseEnter={() => setHoveredRowId(idea.id)}
+              onMouseLeave={() => setHoveredRowId(null)}
+            >
+              {/* всі твої <td> тут */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+)}
+
               <colgroup>
                 <col style={{ width: "18%" }} />
                 <col style={{ width: "32%" }} />
