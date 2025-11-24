@@ -1,138 +1,129 @@
 // app/about/page.tsx
 import Link from "next/link";
 
-export const metadata = {
-  title: "Roota · Ideas Stock Exchange",
-  description:
-    "Roota is a live registry of ideas with proof and pulse of interest.",
-};
+export const dynamic = "force-dynamic";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[#020617] text-white">
-      <div className="max-w-4xl mx-auto px-4 py-10">
-        {/* Top nav */}
-        <header className="flex items-center justify-between gap-4 mb-10">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-              Roota
-            </h1>
-            <p className="text-sm text-gray-400 mt-2">
-              Ideas Stock Exchange · a live registry of ideas with proof and
-              pulse of interest.
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Link
-              href="/"
-              className="text-xs px-4 py-2 rounded-full border border-gray-700 hover:border-gray-500 text-gray-200"
-            >
-              Open live stream
-            </Link>
-          </div>
-        </header>
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#020617",
+        color: "#e5e7eb",
+        padding: "32px 16px",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 800,
+          margin: "0 auto",
+        }}
+      >
+        <Link
+          href="/"
+          style={{
+            fontSize: 12,
+            color: "#9ca3af",
+            textDecoration: "none",
+          }}
+        >
+          ← Back to Roota stream
+        </Link>
 
-        {/* What is Roota */}
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-3">What is Roota?</h2>
-          <p className="text-sm text-gray-200 leading-relaxed">
-            Roota is a place where ideas don&apos;t get lost in chats or
-            notebooks. It&apos;s a live registry where each idea receives:
-          </p>
-          <ul className="mt-3 space-y-1 text-sm text-gray-300 list-disc list-inside">
-            <li>
-              <span className="font-medium">Proof</span> — a cryptographic
-              token (SHA-256) that fixes the moment and authorship.
-            </li>
-            <li>
-              <span className="font-medium">Pulse</span> — a living signal of
-              interest that can grow or fade over time.
-            </li>
-          </ul>
-        </section>
+        <h1
+          style={{
+            marginTop: 16,
+            fontSize: 28,
+            fontWeight: 700,
+          }}
+        >
+          About Roota
+        </h1>
 
-        {/* How it works */}
-        <section className="mb-10 grid gap-6 md:grid-cols-2">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">1 · Capture</h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              You create a new idea, write a short description and generate a
-              proof token. Roota stores it in a public registry backed by
-              Supabase.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">2 · Proof</h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Each idea gets a unique SHA-256 hash. This acts as a lightweight
-              &quot;proof-of-idea&quot; that can be referred to later in
-              decks, emails or investor conversations.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">3 · Pulse</h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Pulse reflects how alive the idea is. You can boost it, downgrade
-              it, and see which ideas keep attention over time.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">4 · Stream</h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              The main Roota stream shows ideas with filters, search and
-              sorting. It&apos;s a living surface of what you&apos;re thinking
-              about — not a static backlog.
-            </p>
-          </div>
-        </section>
+        <p
+          style={{
+            marginTop: 12,
+            fontSize: 14,
+            color: "#cbd5f5",
+            lineHeight: 1.7,
+          }}
+        >
+          Roota is an Ideas Stock Exchange — a live registry of ideas with
+          proof and pulse of interest. Each idea is timestamped, assigned a
+          cryptographic proof token, and tracked with a public pulse score
+          that reflects real-time validation by people who see the value.
+        </p>
 
-        {/* Who it's for */}
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-3">Who is Roota for?</h2>
-          <p className="text-sm text-gray-200 leading-relaxed mb-3">
-            Roota is built for people who generate more ideas than they can
-            execute:
-          </p>
-          <ul className="space-y-1 text-sm text-gray-300 list-disc list-inside">
-            <li>founders and product leaders</li>
-            <li>researchers and strategists</li>
-            <li>builders who prototype in public</li>
-          </ul>
-        </section>
+        <h2
+          style={{
+            marginTop: 24,
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          Proof (idea fingerprint)
+        </h2>
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: 14,
+            color: "#cbd5f5",
+            lineHeight: 1.7,
+          }}
+        >
+          Every idea in Roota can be bound to a SHA-256 proof token — a
+          one-way cryptographic fingerprint that fixes the content in time
+          without revealing any private details. It&apos;s a lightweight,
+          Web-native way to say: “this idea existed, here and now”.
+        </p>
 
-        {/* MVP status */}
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-3">MVP status</h2>
-          <ul className="space-y-1 text-sm text-gray-300 list-disc list-inside">
-            <li>✅ Public idea registry on Supabase</li>
-            <li>✅ Live stream with filters, search and pulse</li>
-            <li>✅ Per-idea public pages with proof token</li>
-            <li>✅ Pulse actions (+1 / −1) directly from the stream</li>
-            <li>⏳ Private spaces and invite-only boards</li>
-            <li>⏳ Paid features for founders and teams</li>
-          </ul>
-        </section>
+        <h2
+          style={{
+            marginTop: 24,
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          Pulse (signal of interest)
+        </h2>
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: 14,
+            color: "#cbd5f5",
+            lineHeight: 1.7,
+          }}
+        >
+          Pulse is a simple 0–10 score that represents living interest around
+          an idea. 1–2 means seed, 3–4 validated, 5+ high conviction. Over
+          time, pulse becomes a public trail of how attention, trust, and
+          conviction form around specific directions of thought.
+        </p>
 
-        {/* CTA */}
-        <section className="border-t border-gray-800 pt-6 mt-4 flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm">
-          <div className="text-gray-300">
-            <div className="font-semibold">What&apos;s next?</div>
-            <p className="text-gray-400 mt-1">
-              Next steps: private idea vaults, team spaces, and paid features
-              for tracking idea portfolios.
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Link
-              href="/"
-              className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 text-xs font-medium"
-            >
-              Open live idea stream
-            </Link>
-          </div>
-        </section>
+        <h2
+          style={{
+            marginTop: 24,
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          Why Roota exists
+        </h2>
+        <p
+          style={{
+            marginTop: 8,
+            fontSize: 14,
+            color: "#cbd5f5",
+            lineHeight: 1.7,
+          }}
+        >
+          Roota is not about finished products. It&apos;s a place for
+          half-formed, raw, and evolving ideas — especially those that don&apos;t
+          yet have a company, funding, or team behind them. It lets you fix
+          the root of your thinking, and then watch how the pulse evolves as
+          the world reacts.
+        </p>
       </div>
     </main>
   );
 }
-
