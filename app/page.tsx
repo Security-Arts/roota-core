@@ -75,10 +75,8 @@ interface Translations {
 const translations: Record<Locale, Translations> = {
   en: {
     appTitle: "Roota · Ideas Stock Exchange",
-    tagline: "A live registry of ideas with proof tokens and a visible pulse of interest.",
-    <p style={{ marginTop: 4, fontSize: 12, color: "#94a3b8" }}>
-  Roota is an idea hive – each thought gets its proof, pulse and room to bloom.
-</p>
+    tagline: "A live registry of ideas with proof tokens and a visible pulse of interest.
+      Roota is an idea hive – each thought gets its proof, pulse and room to bloom.",
     backend: "Backend: Supabase · Postgres",
     endpoint: "Endpoint: /api/ideas",
     mode: "Mode: Live MVP · Public ideas",
@@ -959,8 +957,24 @@ export default function Page() {
       {/* HEADER + About Roota */}
       <header style={styles.headerTop}>
         <div>
-          <div style={styles.titleRow}>
-            <h1 style={styles.title}>{t.appTitle}</h1>
+ <div style={styles.titleRow}>
+  <span
+    style={{
+      fontSize: 18,
+      marginRight: 6,
+      padding: "2px 6px",
+      borderRadius: 8,
+      background: "rgba(59,130,246,0.20)",
+      border: "1px solid rgba(59,130,246,0.35)",
+      display: "inline-flex",
+      alignItems: "center",
+    }}
+  >
+    🌱
+  </span>
+
+  <h1 style={styles.title}>{t.appTitle}</h1>
+
 
             {/* language switcher */}
             <div style={styles.langSwitcher}>
