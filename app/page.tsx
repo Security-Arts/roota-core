@@ -76,9 +76,9 @@ const translations: Record<Locale, Translations> = {
   en: {
     appTitle: "Roota · Ideas Stock Exchange",
     tagline: [
-  "A live registry of ideas with proof tokens and a visible pulse of interest.",
-  "Roota is an idea hive – each thought gets its proof, pulse and room to bloom.",
-],
+      "A live registry of ideas with proof tokens and a visible pulse of interest.",
+      "Roota is an idea hive – each thought gets its proof, pulse and room to bloom.",
+    ],
     backend: "Backend: Supabase · Postgres",
     endpoint: "Endpoint: /api/ideas",
     mode: "Mode: Live MVP · Public ideas",
@@ -120,10 +120,13 @@ const translations: Record<Locale, Translations> = {
     form_publishing: "Publishing…",
     form_publish: "Publish idea",
   },
+
   es: {
     appTitle: "Roota · Ideas con Prueba y Pulso",
-    tagline:
+    tagline: [
       "Un registro vivo de ideas con tokens de prueba y un pulso visible de interés.",
+      "Roota es una colmena de ideas: cada pensamiento obtiene su prueba, pulso y espacio para florecer.",
+    ],
     backend: "Backend: Supabase · Postgres",
     endpoint: "Endpoint: /api/ideas",
     mode: "Modo: MVP en vivo · Ideas públicas",
@@ -165,9 +168,13 @@ const translations: Record<Locale, Translations> = {
     form_publishing: "Publicando…",
     form_publish: "Publicar idea",
   },
+
   ja: {
     appTitle: "Roota · 証明とパルスを持つアイデア",
-    tagline: "証明トークンと可視化された関心のパルスを持つ、ライブなアイデアレジストリ。",
+    tagline: [
+      "証明トークンと可視化された関心のパルスを持つ、ライブなアイデアレジストリ。",
+      "Rootaはアイデアのハイブです – すべての思考が証明とパルスを得て、開花する場所。",
+    ],
     backend: "バックエンド: Supabase · Postgres",
     endpoint: "エンドポイント: /api/ideas",
     mode: "モード: ライブMVP · 公開アイデア",
@@ -995,10 +1002,12 @@ export default function Page() {
             </div>
           </div>
 
-         <div style={{ marginTop: 6 }}>
-  <p style={styles.subtitle}>{t.tagline[0]}</p>
-  <p style={styles.subtitle}>{t.tagline[1]}</p>
+<div style={{ marginTop: 6 }}>
+  {t.tagline.map((line, i) => (
+    <p key={i} style={styles.subtitle}>{line}</p>
+  ))}
 </div>
+
 
 
           {/* технічний рядок + About на мобілці */}
