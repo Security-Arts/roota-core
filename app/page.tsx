@@ -30,7 +30,7 @@ interface Idea {
 
 interface Translations {
   appTitle: string;
-  tagline: string;
+  tagline: string[];
   backend: string;
   endpoint: string;
   mode: string;
