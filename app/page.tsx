@@ -279,16 +279,18 @@ function getPulseLevelName(pulse: number | null | undefined, t: Translations) {
 
 const styles: Record<string, CSSProperties> = {
   page: {
-    minHeight: "100vh",
-    background:
-      "radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.14), #020617)",
-    color: "#e5e7eb",
-    padding: "20px 16px 40px",
-    fontFamily:
-      "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-    maxWidth: 1600,
-    margin: "0 auto",
-  },
+  minHeight: "100vh",
+  background:
+    "radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.14), #020617)",
+  color: "#e5e7eb",
+  padding: "20px 16px 40px",
+  fontFamily:
+    "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+  width: "100%",
+  maxWidth: "1600px",
+  margin: "0 auto",
+  boxSizing: "border-box",
+},
   headerTop: {
     display: "flex",
     justifyContent: "space-between",
