@@ -76,6 +76,9 @@ const translations: Record<Locale, Translations> = {
   en: {
     appTitle: "Roota · Ideas Stock Exchange",
     tagline: "A live registry of ideas with proof tokens and a visible pulse of interest.",
+    <p style={{ marginTop: 4, fontSize: 12, color: "#94a3b8" }}>
+  Roota is an idea hive – each thought gets its proof, pulse and room to bloom.
+</p>
     backend: "Backend: Supabase · Postgres",
     endpoint: "Endpoint: /api/ideas",
     mode: "Mode: Live MVP · Public ideas",
