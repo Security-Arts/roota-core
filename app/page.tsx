@@ -287,7 +287,7 @@ const styles: Record<string, CSSProperties> = {
   fontFamily:
     "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
   width: "100%",
-  maxWidth: "1600px",
+  maxWidth: "1400px",
   margin: "0 auto",
   boxSizing: "border-box",
 },
