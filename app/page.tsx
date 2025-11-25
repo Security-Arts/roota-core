@@ -1,5 +1,4 @@
 "use client";
-
 import React, {
   useCallback,
   useEffect,
@@ -343,13 +342,39 @@ const styles: Record<string, CSSProperties> = {
       "radial-gradient(circle at top left, rgba(59,130,246,0.35), transparent 60%) #020617",
     color: "#e5e7eb",
   },
-  subtitle: {
-    fontSize: 13,
-    color: "#9ca3af",
-    maxWidth: 560,
-    lineHeight: 1.4,
-    marginTop: 4,
+ subtitle: {
+  fontSize: 13,
+  color: "#9ca3af",
+  maxWidth: 560,
+  lineHeight: 1.45,
+  marginTop: 2,
+
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+
+  opacity: 0,
+  transform: "translateY(4px)",
+  transition: "opacity 400ms ease-out, transform 400ms ease-out",
+},
+  leafIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    background: "rgba(15,23,42,0.9)",
+    border: "1px solid #1f2937",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 22,
+    lineHeight: 1,
+    overflow: "visible",
   },
+
+  taglineIcon: {
+    fontSize: 14,
+  },
+
   metaBlock: {
     marginTop: 10,
     fontSize: 11,
@@ -739,7 +764,7 @@ function generateSimpleHash(input: string): string {
 export default function Page() {
   const [locale, setLocale] = useState<Locale>("en");
   const t = getTranslations(locale);
-
+  const [taglineVisible, setTaglineVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loading, setLoading] = useState(true);
@@ -761,6 +786,10 @@ export default function Page() {
   const [generatingProof, setGeneratingProof] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setTaglineVisible(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -964,110 +993,100 @@ export default function Page() {
   return (
     <main style={styles.page}>
       {/* HEADER + About Roota */}
-      <header style={styles.headerTop}>
-        <div>
- <div style={styles.titleRow}>
-  <span
-    style={{
-      fontSize: 18,
-      marginRight: 6,
-      padding: "2px 6px",
-      borderRadius: 8,
-      background: "rgba(59,130,246,0.20)",
-      border: "1px solid rgba(59,130,246,0.35)",
-      display: "inline-flex",
-      alignItems: "center",
-    }}
-  >
-    🌱
-  </span>
+     <header style={styles.headerTop}>
+  <div>
+    {/* верхній рядок: іконка рута + назва + мови */}
+    <div style={styles.titleRow}>
+      <div style={styles.leafIconBox}>🌱</div>
 
-  <h1 style={styles.title}>{t.appTitle}</h1>
+      <h1 style={styles.title}>{t.appTitle}</h1>
 
+      {/* language switcher */}
+      <div style={styles.langSwitcher}>
+        {(["en", "es", "ja"] as Locale[]).map((code) => (
+          <button
+            key={code}
+            style={{
+              ...styles.langButton,
+              ...(locale === code ? styles.langButtonActive : {}),
+            }}
+            onClick={() => setLocale(code)}
+          >
+            {code.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    </div>
 
-            {/* language switcher */}
-            <div style={styles.langSwitcher}>
-              {(["en", "es", "ja"] as Locale[]).map((code) => (
-                <button
-                  key={code}
-                  style={{
-                    ...styles.langButton,
-                    ...(locale === code ? styles.langButtonActive : {}),
-                  }}
-                  onClick={() => setLocale(code)}
-                >
-                  {code.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
+    {/* tagline: два рядки */}
+    <div style={{ marginTop: 6 }}>
+      <p style={styles.subtitle}>
+        <span style={styles.taglineIcon}>🌱</span>
+        {t.tagline[0]}
+      </p>
+      <p style={styles.subtitle}>
+        <span style={styles.taglineIcon}>🐝</span>
+        {t.tagline[1]}
+      </p>
+    </div>
 
-<div style={{ marginTop: 6 }}>
-  {t.tagline.map((line, i) => (
-    <p key={i} style={styles.subtitle}>{line}</p>
-  ))}
-</div>
-
-
-
-          {/* технічний рядок + About на мобілці */}
-          {isMobile && (
-            <>
-              <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
-                MVP • Supabase backend • /api/ideas
-              </p>
-              <div style={{ marginTop: 10 }}>
-                <Link
-                  href="/about"
-                  style={{
-                    display: "inline-block",
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    border: "1px solid #334155",
-                    fontSize: 12,
-                    textDecoration: "none",
-                    color: "#e5e7eb",
-                    background:
-                      "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
-                  }}
-                >
-                  About Roota
-                </Link>
-              </div>
-            </>
-          )}
+    {/* технічний рядок + About Roota на мобільних */}
+    {isMobile && (
+      <>
+        <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
+          MVP • Supabase backend • /api/ideas
+        </p>
+        <div style={{ marginTop: 10 }}>
+          <Link
+            href="/about"
+            style={{
+              display: "inline-block",
+              padding: "6px 12px",
+              borderRadius: 999,
+              border: "1px solid #334155",
+              fontSize: 12,
+              textDecoration: "none",
+              color: "#e5e7eb",
+              background:
+                "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+            }}
+          >
+            About Roota
+          </Link>
         </div>
+      </>
+    )}
+  </div>
 
-        {/* правий блок — тільки на десктопі/планшеті */}
-        {!isMobile && (
-          <div style={{ textAlign: "right" as const }}>
-            <Link
-              href="/about"
-              style={{
-                display: "inline-block",
-                marginBottom: 8,
-                padding: "6px 12px",
-                borderRadius: 999,
-                border: "1px solid #334155",
-                fontSize: 12,
-                textDecoration: "none",
-                color: "#e5e7eb",
-                background:
-                  "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
-              }}
-            >
-              About Roota
-            </Link>
+  {/* правий блок — тільки десктоп */}
+  {!isMobile && (
+    <div style={{ textAlign: "right" as const }}>
+      <Link
+        href="/about"
+        style={{
+          display: "inline-block",
+          marginBottom: 8,
+          padding: "6px 12px",
+          borderRadius: 999,
+          border: "1px solid #334155",
+          fontSize: 12,
+          textDecoration: "none",
+          color: "#e5e7eb",
+          background:
+            "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+        }}
+      >
+        About Roota
+      </Link>
 
-            <div style={styles.metaBlock}>
-              <div>{t.backend}</div>
-              <div>{t.endpoint}</div>
-              <div>{t.mode}</div>
-            </div>
-          </div>
-        )}
-      </header>
-
+      <div style={styles.metaBlock}>
+        <div>{t.backend}</div>
+        <div>{t.endpoint}</div>
+        <div>{t.mode}</div>
+      </div>
+    </div>
+  )}
+</header>
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
         <div style={styles.sectionTitle}>{t.liveStream}</div>
