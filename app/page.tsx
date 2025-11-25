@@ -75,8 +75,10 @@ interface Translations {
 const translations: Record<Locale, Translations> = {
   en: {
     appTitle: "Roota · Ideas Stock Exchange",
-    tagline: "A live registry of ideas with proof tokens and a visible pulse of interest.
-      Roota is an idea hive – each thought gets its proof, pulse and room to bloom.",
+    tagline: [
+  "A live registry of ideas with proof tokens and a visible pulse of interest.",
+  "Roota is an idea hive – each thought gets its proof, pulse and room to bloom.",
+],
     backend: "Backend: Supabase · Postgres",
     endpoint: "Endpoint: /api/ideas",
     mode: "Mode: Live MVP · Public ideas",
@@ -993,7 +995,11 @@ export default function Page() {
             </div>
           </div>
 
-          <p style={styles.subtitle}>{t.tagline}</p>
+         <div style={{ marginTop: 6 }}>
+  <p style={styles.subtitle}>{t.tagline[0]}</p>
+  <p style={styles.subtitle}>{t.tagline[1]}</p>
+</div>
+
 
           {/* технічний рядок + About на мобілці */}
           {isMobile && (
