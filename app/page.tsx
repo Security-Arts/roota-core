@@ -51,19 +51,20 @@ const styles: Record<string, CSSProperties> = {
     flexWrap: "wrap",
   },
 
-  leafIconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    background: "rgba(15,23,42,0.9)",
-    border: "1px solid #1f2937",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 22,
-    lineHeight: 1,
-    overflow: "visible",
-  },
+leafIconBox: {
+  width: 46,
+  height: 46,
+  borderRadius: 14,
+  background: "rgba(15,23,42,0.9)",
+  border: "1px solid #1f2937",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: 28,
+  lineHeight: 1.1,
+  paddingTop: 2,      // трохи опускаємо емодзі вниз, щоб ґрунт точно був видимий
+  overflow: "visible",
+},
 
   title: {
     fontSize: 22,
