@@ -1,4 +1,5 @@
 "use client";
+
 import React, {
   useCallback,
   useEffect,
@@ -8,298 +9,32 @@ import React, {
 } from "react";
 import Link from "next/link";
 
-type Locale = "en" | "es" | "ja";
-
-type PulseFilter = "all" | "1" | "3" | "5";
-
-type SortKey = "pulse" | "date";
-
-type SortDirection = "asc" | "desc";
-
-interface Idea {
-  id: string;
-  title: string;
-  description: string;
-  proof_hash?: string | null;
-  pulse?: number | null;
-  author?: string | null;
-  slug?: string | null;
-  created_at: string;
-}
-
-interface Translations {
-  appTitle: string;
-  tagline: string[];
-  backend: string;
-  endpoint: string;
-  mode: string;
-  liveStream: string;
-  newIdeaButton: string;
-  searchLabel: string;
-  searchPlaceholder: string;
-  pulseFilterLabel: string;
-  pulseFilter_all: string;
-  pulseFilter_1: string;
-  pulseFilter_3: string;
-  pulseFilter_5: string;
-  pulseLegend: string;
-  loading: string;
-  errorPrefix: string;
-  noIdeasForFilter: string;
-  table_idea: string;
-  table_description: string;
-  table_proof_token: string;
-  table_pulse: string;
-  table_author: string;
-  table_date: string;
-  pulseTooltip: string;
-  proofTokenLabel: string;
-  proofTokenMissing: string;
-  modal_created: string;
-  modal_author: string;
-  modal_proof_hash: string;
-  modal_close: string;
-  createIdeaTitle: string;
-  form_titleLabel: string;
-  form_descriptionLabel: string;
-  form_authorLabel: string;
-  form_proofLabel: string;
-  form_generating: string;
-  form_generateProof: string;
-  form_cancel: string;
-  form_publishing: string;
-  form_publish: string;
-}
-
-const translations: Record<Locale, Translations> = {
-  en: {
-    appTitle: "Roota · Ideas Stock Exchange",
-    tagline: [
-      "A live registry of ideas with proof tokens and a visible pulse of interest.",
-      "Roota is an idea hive – each thought gets its proof, pulse and room to bloom.",
-    ],
-    backend: "Backend: Supabase · Postgres",
-    endpoint: "Endpoint: /api/ideas",
-    mode: "Mode: Live MVP · Public ideas",
-    liveStream: "Ideas live stream",
-    newIdeaButton: "Publish new idea",
-    searchLabel: "Search",
-    searchPlaceholder: "Search by title or description…",
-    pulseFilterLabel: "Pulse filter",
-    pulseFilter_all: "All pulses",
-    pulseFilter_1: "Pulse ≥ 1",
-    pulseFilter_3: "Pulse ≥ 3",
-    pulseFilter_5: "Pulse ≥ 5",
-    pulseLegend:
-      "⚡ Pulse = interest level. +1 / −1 shows how the idea resonates with the hive.",
-    loading: "Loading ideas…",
-    errorPrefix: "Error",
-    noIdeasForFilter: "No ideas match the current filters.",
-    table_idea: "Idea",
-    table_description: "Description",
-    table_proof_token: "Proof token",
-    table_pulse: "Pulse",
-    table_author: "Author",
-    table_date: "Created",
-    pulseTooltip: "Pulse reflects community interest. Higher = more energy.",
-    proofTokenLabel: "Proof token",
-    proofTokenMissing: "Not generated",
-    modal_created: "Created",
-    modal_author: "Author",
-    modal_proof_hash: "Full proof hash",
-    modal_close: "Close",
-    createIdeaTitle: "Publish a new idea",
-    form_titleLabel: "Idea title",
-    form_descriptionLabel: "Idea description",
-    form_authorLabel: "Author name (optional)",
-    form_proofLabel: "Proof hash",
-    form_generating: "Generating proof…",
-    form_generateProof: "Generate proof hash",
-    form_cancel: "Cancel",
-    form_publishing: "Publishing…",
-    form_publish: "Publish idea",
-  },
-
-  es: {
-    appTitle: "Roota · Ideas con Prueba y Pulso",
-    tagline: [
-      "Un registro vivo de ideas con tokens de prueba y un pulso visible de interés.",
-      "Roota es una colmena de ideas: cada pensamiento obtiene su prueba, pulso y espacio para florecer.",
-    ],
-    backend: "Backend: Supabase · Postgres",
-    endpoint: "Endpoint: /api/ideas",
-    mode: "Modo: MVP en vivo · Ideas públicas",
-    liveStream: "Flujo en vivo de ideas",
-    newIdeaButton: "Publicar nueva idea",
-    searchLabel: "Buscar",
-    searchPlaceholder: "Buscar por título o descripción…",
-    pulseFilterLabel: "Filtro de pulso",
-    pulseFilter_all: "Todos los pulsos",
-    pulseFilter_1: "Pulso ≥ 1",
-    pulseFilter_3: "Pulso ≥ 3",
-    pulseFilter_5: "Pulso ≥ 5",
-    pulseLegend:
-      "⚡ El pulso = nivel de interés. +1 / −1 muestra cómo resuena la idea.",
-    loading: "Cargando ideas…",
-    errorPrefix: "Error",
-    noIdeasForFilter: "No hay ideas que coincidan con los filtros.",
-    table_idea: "Idea",
-    table_description: "Descripción",
-    table_proof_token: "Token de prueba",
-    table_pulse: "Pulso",
-    table_author: "Autor",
-    table_date: "Creado",
-    pulseTooltip: "El pulso refleja el interés de la comunidad.",
-    proofTokenLabel: "Token de prueba",
-    proofTokenMissing: "No generado",
-    modal_created: "Creado",
-    modal_author: "Autor",
-    modal_proof_hash: "Hash de prueba completo",
-    modal_close: "Cerrar",
-    createIdeaTitle: "Publicar nueva idea",
-    form_titleLabel: "Título de la idea",
-    form_descriptionLabel: "Descripción de la idea",
-    form_authorLabel: "Nombre del autor (opcional)",
-    form_proofLabel: "Hash de prueba",
-    form_generating: "Generando prueba…",
-    form_generateProof: "Generar hash de prueba",
-    form_cancel: "Cancelar",
-    form_publishing: "Publicando…",
-    form_publish: "Publicar idea",
-  },
-
-  ja: {
-    appTitle: "Roota · 証明とパルスを持つアイデア",
-    tagline: [
-      "証明トークンと可視化された関心のパルスを持つ、ライブなアイデアレジストリ。",
-      "Rootaはアイデアのハイブです – すべての思考が証明とパルスを得て、開花する場所。",
-    ],
-    backend: "バックエンド: Supabase · Postgres",
-    endpoint: "エンドポイント: /api/ideas",
-    mode: "モード: ライブMVP · 公開アイデア",
-    liveStream: "アイデア・ライブストリーム",
-    newIdeaButton: "新しいアイデアを公開",
-    searchLabel: "検索",
-    searchPlaceholder: "タイトルまたは説明で検索…",
-    pulseFilterLabel: "パルスフィルター",
-    pulseFilter_all: "すべてのパルス",
-    pulseFilter_1: "パルス ≥ 1",
-    pulseFilter_3: "パルス ≥ 3",
-    pulseFilter_5: "パルス ≥ 5",
-    pulseLegend:
-      "⚡ パルス = 関心レベル。+1 / −1 でアイデアへの共感を示します。",
-    loading: "アイデアを読み込み中…",
-    errorPrefix: "エラー",
-    noIdeasForFilter: "現在のフィルターに一致するアイデアはありません。",
-    table_idea: "アイデア",
-    table_description: "説明",
-    table_proof_token: "証明トークン",
-    table_pulse: "パルス",
-    table_author: "作者",
-    table_date: "作成日",
-    pulseTooltip: "パルスはコミュニティの関心を表します。",
-    proofTokenLabel: "証明トークン",
-    proofTokenMissing: "未生成",
-    modal_created: "作成日",
-    modal_author: "作者",
-    modal_proof_hash: "完全な証明ハッシュ",
-    modal_close: "閉じる",
-    createIdeaTitle: "新しいアイデアを公開",
-    form_titleLabel: "アイデアのタイトル",
-    form_descriptionLabel: "アイデアの説明",
-    form_authorLabel: "作者名（任意）",
-    form_proofLabel: "証明ハッシュ",
-    form_generating: "証明を生成中…",
-    form_generateProof: "証明ハッシュを生成",
-    form_cancel: "キャンセル",
-    form_publishing: "公開中…",
-    form_publish: "アイデアを公開",
-  },
-};
-
-function getTranslations(locale: Locale): Translations {
-  return translations[locale] ?? translations.en;
-}
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  if (Number.isNaN(date.getTime())) return dateString;
-  return date.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function shortHash(hash: string): string {
-  if (!hash) return "";
-  if (hash.length <= 10) return hash;
-  return `${hash.slice(0, 6)}…${hash.slice(-4)}`;
-}
-
-function getPulseBadgeStyle(pulse?: number | null): CSSProperties {
-  const value = pulse ?? 0;
-
-  if (value >= 5) {
-    // high
-    return {
-      background:
-        "radial-gradient(circle at top left, rgba(74,222,128,0.3), transparent 60%) #064e3b",
-      border: "1px solid rgba(34,197,94,0.7)",
-      color: "#bbf7d0",
-    };
-  }
-
-  if (value >= 3) {
-    // medium
-    return {
-      background:
-        "radial-gradient(circle at top left, rgba(96,165,250,0.3), transparent 60%) #0f172a",
-      border: "1px solid rgba(59,130,246,0.7)",
-      color: "#bfdbfe",
-    };
-  }
-
-  if (value >= 1) {
-    // low
-      return {
-      background:
-        "radial-gradient(circle at top left, rgba(251,191,36,0.25), transparent 60%) #111827",
-      border: "1px solid rgba(245,158,11,0.7)",
-      color: "#fef3c7",
-    };
-  }
-
-  // neutral / zero
-  return {
-    background: "rgba(15,23,42,0.9)",
-    border: "1px solid #1f2937",
-    color: "#9ca3af",
-  };
-}
-
-function getPulseLevelName(pulse: number | null | undefined, t: Translations) {
-  const value = pulse ?? 0;
-  if (value >= 5) return "High pulse";
-  if (value >= 3) return "Medium pulse";
-  if (value >= 1) return "Low pulse";
-  return "Dormant";
-}
+import {
+  Locale,
+  PulseFilter,
+  SortKey,
+  SortDirection,
+  Idea,
+} from "@/lib/types";
+import { getTranslations } from "@/lib/translations";
+import { getPulseBadgeStyle, getPulseLevel } from "@/lib/pulse";
+import { formatDate, shortHash, generateSimpleHash } from "@/lib/utils";
 
 const styles: Record<string, CSSProperties> = {
   page: {
-  minHeight: "100vh",
-  background:
-    "radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.14), #020617)",
-  color: "#e5e7eb",
-  padding: "20px 16px 40px",
-  fontFamily:
-    "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-  width: "100%",
-  maxWidth: "1400px",
-  margin: "0 auto",
-  boxSizing: "border-box",
-},
+    minHeight: "100vh",
+    background:
+      "radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.14), #020617)",
+    color: "#e5e7eb",
+    padding: "20px 16px 40px",
+    fontFamily:
+      "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+    width: "100%",
+    maxWidth: 1400,
+    margin: "0 auto",
+    boxSizing: "border-box",
+  },
+
   headerTop: {
     display: "flex",
     justifyContent: "space-between",
@@ -307,6 +42,7 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "flex-start",
     marginBottom: 24,
   },
+
   titleRow: {
     display: "flex",
     alignItems: "center",
@@ -314,49 +50,7 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: 6,
     flexWrap: "wrap",
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 650,
-    letterSpacing: 0.3,
-    color: "#f9fafb",
-  },
-  langSwitcher: {
-    display: "inline-flex",
-    gap: 4,
-    padding: 2,
-    borderRadius: 999,
-    border: "1px solid #1f2937",
-    background: "rgba(15,23,42,0.9)",
-  },
-  langButton: {
-    border: "none",
-    borderRadius: 999,
-    fontSize: 11,
-    padding: "3px 8px",
-    background: "transparent",
-    color: "#9ca3af",
-    cursor: "pointer",
-  },
-  langButtonActive: {
-    background:
-      "radial-gradient(circle at top left, rgba(59,130,246,0.35), transparent 60%) #020617",
-    color: "#e5e7eb",
-  },
- subtitle: {
-  fontSize: 13,
-  color: "#9ca3af",
-  maxWidth: 560,
-  lineHeight: 1.45,
-  marginTop: 2,
 
-  display: "flex",
-  alignItems: "center",
-  gap: 6,
-
-  opacity: 0,
-  transform: "translateY(4px)",
-  transition: "opacity 400ms ease-out, transform 400ms ease-out",
-},
   leafIconBox: {
     width: 40,
     height: 40,
@@ -371,6 +65,49 @@ const styles: Record<string, CSSProperties> = {
     overflow: "visible",
   },
 
+  title: {
+    fontSize: 22,
+    fontWeight: 650,
+    letterSpacing: 0.3,
+    color: "#f9fafb",
+  },
+
+  langSwitcher: {
+    display: "inline-flex",
+    gap: 4,
+    padding: 2,
+    borderRadius: 999,
+    border: "1px solid #1f2937",
+    background: "rgba(15,23,42,0.9)",
+  },
+
+  langButton: {
+    border: "none",
+    borderRadius: 999,
+    fontSize: 11,
+    padding: "3px 8px",
+    background: "transparent",
+    color: "#9ca3af",
+    cursor: "pointer",
+  },
+
+  langButtonActive: {
+    background:
+      "radial-gradient(circle at top left, rgba(59,130,246,0.35), transparent 60%) #020617",
+    color: "#e5e7eb",
+  },
+
+  subtitle: {
+    fontSize: 13,
+    color: "#9ca3af",
+    maxWidth: 560,
+    lineHeight: 1.45,
+    marginTop: 2,
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+  },
+
   taglineIcon: {
     fontSize: 14,
   },
@@ -382,6 +119,7 @@ const styles: Record<string, CSSProperties> = {
     textAlign: "right",
     lineHeight: 1.4,
   },
+
   sectionHeader: {
     marginTop: 8,
     marginBottom: 12,
@@ -390,17 +128,20 @@ const styles: Record<string, CSSProperties> = {
     gap: 12,
     alignItems: "center",
   },
+
   sectionTitle: {
     fontSize: 14,
     letterSpacing: 1.4,
     textTransform: "uppercase",
     color: "#9ca3af",
   },
+
   sectionRight: {
     display: "flex",
     alignItems: "center",
     gap: 8,
   },
+
   sectionCount: {
     fontSize: 11,
     padding: "4px 8px",
@@ -409,6 +150,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#9ca3af",
     background: "rgba(15,23,42,0.9)",
   },
+
   primaryButton: {
     borderRadius: 999,
     border: "1px solid #3b82f6",
@@ -419,6 +161,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "6px 14px",
     cursor: "pointer",
   },
+
   filtersBar: {
     marginBottom: 8,
     display: "flex",
@@ -427,20 +170,24 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "flex-end",
     flexWrap: "wrap",
   },
+
   filtersLeft: {
     display: "flex",
     flexWrap: "wrap",
     gap: 12,
   },
+
   filterGroup: {
     display: "flex",
     flexDirection: "column",
     gap: 4,
   },
+
   filterLabel: {
     fontSize: 11,
     color: "#9ca3af",
   },
+
   searchInput: {
     fontSize: 12,
     padding: "6px 9px",
@@ -450,6 +197,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#e5e7eb",
     minWidth: 180,
   },
+
   select: {
     fontSize: 12,
     padding: "6px 9px",
@@ -459,15 +207,18 @@ const styles: Record<string, CSSProperties> = {
     color: "#e5e7eb",
     minWidth: 130,
   },
+
   filtersRight: {
     fontSize: 11,
     color: "#9ca3af",
   },
+
   pulseLegend: {
     marginBottom: 10,
     fontSize: 11,
     color: "#6b7280",
   },
+
   tableWrapper: {
     borderRadius: 18,
     border: "1px solid #111827",
@@ -475,11 +226,13 @@ const styles: Record<string, CSSProperties> = {
       "linear-gradient(to bottom right, rgba(15,23,42,0.96), rgba(2,6,23,0.98))",
     padding: "10px 10px 12px",
   },
+
   loading: {
     padding: "16px 12px",
     fontSize: 12,
     color: "#9ca3af",
   },
+
   errorBox: {
     padding: "12px 10px",
     fontSize: 12,
@@ -489,22 +242,26 @@ const styles: Record<string, CSSProperties> = {
     border: "1px solid rgba(248,113,113,0.7)",
     marginBottom: 8,
   },
+
   scrollArea: {
     maxHeight: 520,
     overflowY: "auto",
     borderRadius: 14,
     border: "1px solid #111827",
   },
+
   table: {
     width: "100%",
     borderCollapse: "separate",
     borderSpacing: 0,
     fontSize: 12,
   },
+
   headRow: {
     background:
       "linear-gradient(to right, rgba(15,23,42,0.92), rgba(15,23,42,0.96))",
   },
+
   thBase: {
     textAlign: "left",
     padding: "8px 10px",
@@ -519,14 +276,17 @@ const styles: Record<string, CSSProperties> = {
       "linear-gradient(to right, rgba(15,23,42,0.96), rgba(15,23,42,0.98))",
     zIndex: 5,
   },
+
   thWithRightBorder: {
     borderRight: "1px solid #111827",
   },
+
   thPulseHeader: {
     display: "inline-flex",
     alignItems: "center",
     gap: 4,
   } as CSSProperties,
+
   tooltipIcon: {
     display: "inline-flex",
     alignItems: "center",
@@ -538,18 +298,22 @@ const styles: Record<string, CSSProperties> = {
     fontSize: 10,
     cursor: "default",
   },
+
   thPulseIcon: {
     fontSize: 11,
     color: "#6b7280",
   },
+
   rowBase: {
     backgroundColor: "#020617",
     cursor: "pointer",
   },
+
   rowHover: {
     background:
       "radial-gradient(circle at top left, rgba(37,99,235,0.18), transparent 60%) #020617",
   },
+
   tdBase: {
     padding: "8px 10px",
     borderBottom: "1px solid #0f172a",
@@ -557,20 +321,25 @@ const styles: Record<string, CSSProperties> = {
     color: "#e5e7eb",
     verticalAlign: "top",
   },
+
   tdWithRightBorder: {
     borderRight: "1px solid #0f172a",
   },
+
   ideaCell: {
     fontWeight: 500,
   },
+
   descCell: {
     color: "#9ca3af",
   },
+
   proofLabel: {
     fontSize: 10,
     color: "#6b7280",
     marginBottom: 3,
   },
+
   proofShort: {
     fontFamily: "monospace",
     fontSize: 11,
@@ -581,6 +350,7 @@ const styles: Record<string, CSSProperties> = {
     display: "inline-block",
     backgroundColor: "#020617",
   },
+
   pulseBadgeBase: {
     display: "inline-flex",
     alignItems: "center",
@@ -589,12 +359,14 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: 999,
     fontSize: 12,
   },
+
   emptyBox: {
     padding: "18px 12px",
     fontSize: 12,
     color: "#9ca3af",
     textAlign: "center",
   },
+
   modalOverlay: {
     position: "fixed",
     inset: 0,
@@ -605,6 +377,7 @@ const styles: Record<string, CSSProperties> = {
     zIndex: 50,
     padding: 12,
   },
+
   modalCard: {
     width: "100%",
     maxWidth: 520,
@@ -617,6 +390,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "14px 16px 16px",
     boxShadow: "0 18px 45px rgba(0,0,0,0.7)",
   },
+
   modalHeader: {
     display: "flex",
     justifyContent: "space-between",
@@ -624,16 +398,19 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "flex-start",
     marginBottom: 10,
   },
+
   modalTitle: {
     fontSize: 16,
     fontWeight: 600,
     color: "#f9fafb",
     marginBottom: 2,
   },
+
   modalMeta: {
     fontSize: 11,
     color: "#9ca3af",
   },
+
   modalClose: {
     borderRadius: 999,
     border: "1px solid #1f2937",
@@ -647,6 +424,7 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "center",
     cursor: "pointer",
   },
+
   modalTags: {
     display: "flex",
     flexWrap: "wrap",
@@ -655,12 +433,14 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: 8,
     fontSize: 12,
   },
+
   modalDesc: {
     fontSize: 13,
     color: "#e5e7eb",
     marginBottom: 10,
     lineHeight: 1.5,
   },
+
   modalProofBox: {
     borderRadius: 12,
     border: "1px solid #1f2937",
@@ -670,6 +450,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#9ca3af",
     marginBottom: 10,
   },
+
   modalProofCode: {
     marginTop: 4,
     fontFamily: "monospace",
@@ -677,6 +458,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#e5e7eb",
     wordBreak: "break-all",
   },
+
   modalFooter: {
     display: "flex",
     flexWrap: "wrap",
@@ -684,6 +466,7 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "flex-end",
     marginTop: 6,
   },
+
   modalButton: {
     borderRadius: 999,
     border: "1px solid #3b82f6",
@@ -694,6 +477,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "6px 12px",
     cursor: "pointer",
   },
+
   modalButtonSecondary: {
     borderRadius: 999,
     border: "1px solid #1f2937",
@@ -703,16 +487,19 @@ const styles: Record<string, CSSProperties> = {
     padding: "6px 12px",
     cursor: "pointer",
   },
+
   formGroup: {
     display: "flex",
     flexDirection: "column",
     gap: 4,
     marginBottom: 8,
   },
+
   formLabel: {
     fontSize: 11,
     color: "#9ca3af",
   },
+
   formInput: {
     fontSize: 12,
     padding: "6px 9px",
@@ -721,6 +508,7 @@ const styles: Record<string, CSSProperties> = {
     backgroundColor: "#020617",
     color: "#e5e7eb",
   },
+
   formTextarea: {
     fontSize: 12,
     padding: "6px 9px",
@@ -731,6 +519,7 @@ const styles: Record<string, CSSProperties> = {
     minHeight: 90,
     resize: "vertical",
   },
+
   formError: {
     fontSize: 11,
     color: "#fecaca",
@@ -751,19 +540,10 @@ function sortIcon(
   return direction === "asc" ? "↑" : "↓";
 }
 
-function generateSimpleHash(input: string): string {
-  let hash = 0;
-  for (let i = 0; i < input.length; i += 1) {
-    const chr = input.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0;
-  }
-  return Math.abs(hash).toString(16) + "-" + Date.now().toString(16);
-}
-
 export default function Page() {
   const [locale, setLocale] = useState<Locale>("en");
   const t = getTranslations(locale);
+
   const [taglineVisible, setTaglineVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [ideas, setIdeas] = useState<Idea[]>([]);
@@ -786,11 +566,14 @@ export default function Page() {
   const [generatingProof, setGeneratingProof] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+
+  // анімація теглайну
   useEffect(() => {
     const timer = setTimeout(() => setTaglineVisible(true), 50);
     return () => clearTimeout(timer);
   }, []);
 
+  // mobile breakpoint
   useEffect(() => {
     const handleResize = () => {
       if (typeof window !== "undefined") {
@@ -802,6 +585,7 @@ export default function Page() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // завантаження ідей
   useEffect(() => {
     let cancelled = false;
 
@@ -810,30 +594,21 @@ export default function Page() {
       setError(null);
       try {
         const res = await fetch("/api/ideas", { cache: "no-store" });
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
         const data = await res.json();
-        const loaded: Idea[] =
-          data?.ideas ??
-          data ??
-          [];
-        if (!cancelled) {
-          setIdeas(loaded);
-        }
+        const loaded: Idea[] = data?.ideas ?? data ?? [];
+        if (!cancelled) setIdeas(loaded);
       } catch (e: any) {
         if (!cancelled) {
           setError(e?.message || "Failed to load ideas");
         }
       } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        if (!cancelled) setLoading(false);
       }
     }
 
     loadIdeas();
-
     return () => {
       cancelled = true;
     };
@@ -868,7 +643,6 @@ export default function Page() {
         if (av === bv) return 0;
         return sortDirection === "asc" ? av - bv : bv - av;
       }
-      // date
       const at = new Date(a.created_at).getTime();
       const bt = new Date(b.created_at).getTime();
       if (at === bt) return 0;
@@ -879,10 +653,9 @@ export default function Page() {
 
   const totalIdeas = ideas.length;
   const visibleIdeas = filteredIdeas.length;
+
   const totalLabel =
-    totalIdeas === 0
-      ? "0/0 ideas"
-      : `${visibleIdeas}/${totalIdeas} ideas`;
+    totalIdeas === 0 ? "0/0 ideas" : `${visibleIdeas}/${totalIdeas} ideas`;
   const visibleLabel =
     totalIdeas === 0
       ? "No ideas yet. Be the first to publish."
@@ -899,35 +672,31 @@ export default function Page() {
         setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
       } else {
         setSortKey(key);
-        setSortDirection(key === "pulse" ? "desc" : "desc");
+        setSortDirection("desc");
       }
     },
     [sortKey]
   );
 
-  const handlePulseChange = useCallback(
-    async (id: string, delta: 1 | -1) => {
-      try {
-        // Optimistic update
-        setIdeas((prev) =>
-          prev.map((idea) =>
-            idea.id === id
-              ? { ...idea, pulse: (idea.pulse ?? 0) + delta }
-              : idea
-          )
-        );
+  const handlePulseChange = useCallback(async (id: string, delta: 1 | -1) => {
+    try {
+      setIdeas((prev) =>
+        prev.map((idea) =>
+          idea.id === id
+            ? { ...idea, pulse: (idea.pulse ?? 0) + delta }
+            : idea
+        )
+      );
 
-        await fetch(`/api/ideas/${id}/pulse`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ delta }),
-        });
-      } catch {
-        // If it fails, you could refetch or rollback; for now ignore
-      }
-    },
-    []
-  );
+      await fetch(`/api/ideas/${id}/pulse`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta }),
+      });
+    } catch {
+      // можна додати rollback або refetch, поки ігноруємо
+    }
+  }, []);
 
   const handleGenerateProof = useCallback(() => {
     setFormError(null);
@@ -974,8 +743,8 @@ export default function Page() {
       }
 
       const created: Idea = await res.json();
-
       setIdeas((prev) => [created, ...prev]);
+
       setShowCreateModal(false);
       setNewTitle("");
       setNewDescription("");
@@ -993,100 +762,106 @@ export default function Page() {
   return (
     <main style={styles.page}>
       {/* HEADER + About Roota */}
-     <header style={styles.headerTop}>
-  <div>
-    {/* верхній рядок: іконка рута + назва + мови */}
-    <div style={styles.titleRow}>
-      <div style={styles.leafIconBox}>🌱</div>
+      <header style={styles.headerTop}>
+        <div>
+          {/* верхній рядок: іконка рута + назва + мови */}
+          <div style={styles.titleRow}>
+            <div style={styles.leafIconBox}>🌱</div>
 
-      <h1 style={styles.title}>{t.appTitle}</h1>
+            <h1 style={styles.title}>{t.appTitle}</h1>
 
-      {/* language switcher */}
-      <div style={styles.langSwitcher}>
-        {(["en", "es", "ja"] as Locale[]).map((code) => (
-          <button
-            key={code}
-            style={{
-              ...styles.langButton,
-              ...(locale === code ? styles.langButtonActive : {}),
-            }}
-            onClick={() => setLocale(code)}
-          >
-            {code.toUpperCase()}
-          </button>
-        ))}
-      </div>
-    </div>
+            <div style={styles.langSwitcher}>
+              {(["en", "es", "ja"] as Locale[]).map((code) => (
+                <button
+                  key={code}
+                  style={{
+                    ...styles.langButton,
+                    ...(locale === code ? styles.langButtonActive : {}),
+                  }}
+                  onClick={() => setLocale(code)}
+                >
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
 
-    {/* tagline: два рядки */}
-    <div style={{ marginTop: 6 }}>
-      <p style={styles.subtitle}>
-        <span style={styles.taglineIcon}>🌱</span>
-        {t.tagline[0]}
-      </p>
-      <p style={styles.subtitle}>
-        <span style={styles.taglineIcon}>🐝</span>
-        {t.tagline[1]}
-      </p>
-    </div>
+          {/* tagline: два рядки з легкою анімацією */}
+          <div style={{ marginTop: 6 }}>
+            {t.tagline.map((line, i) => (
+              <p
+                key={i}
+                style={{
+                  ...styles.subtitle,
+                  opacity: taglineVisible ? 1 : 0,
+                  transform: taglineVisible
+                    ? "translateY(0)"
+                    : "translateY(4px)",
+                  transition:
+                    "opacity 400ms ease-out, transform 400ms ease-out",
+                  transitionDelay: `${i * 80}ms`,
+                }}
+              >
+                <span style={styles.taglineIcon}>
+                  {i === 0 ? "🌱" : "🐝"}
+                </span>
+                {line}
+              </p>
+            ))}
+          </div>
 
-    {/* технічний рядок + About Roota на мобільних */}
-    {isMobile && (
-      <>
-        <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
-          MVP • Supabase backend • /api/ideas
-        </p>
-        <div style={{ marginTop: 10 }}>
-          <Link
-            href="/about"
-            style={{
-              display: "inline-block",
-              padding: "6px 12px",
-              borderRadius: 999,
-              border: "1px solid #334155",
-              fontSize: 12,
-              textDecoration: "none",
-              color: "#e5e7eb",
-              background:
-                "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
-            }}
-          >
-            About Roota
-          </Link>
+          {/* технічний рядок + About Roota на мобільних */}
+          {isMobile && (
+            <>
+              <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
+                MVP • Supabase backend • /api/ideas
+              </p>
+              <div style={{ marginTop: 10 }}>
+                <Link
+                  href="/about"
+                  style={{
+                    display: "inline-block",
+                    padding: "6px 12px",
+                    borderRadius: 999,
+                    border: "1px solid #334155",
+                    fontSize: 12,
+                    textDecoration: "none",
+                    color: "#e5e7eb",
+                    background:
+                      "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+                  }}
+                >
+                  About Roota
+                </Link>
+              </div>
+            </>
+          )}
         </div>
-      </>
-    )}
-  </div>
 
-  {/* правий блок — тільки десктоп */}
-  {!isMobile && (
-    <div style={{ textAlign: "right" as const }}>
-      <Link
-        href="/about"
-        style={{
-          display: "inline-block",
-          marginBottom: 8,
-          padding: "6px 12px",
-          borderRadius: 999,
-          border: "1px solid #334155",
-          fontSize: 12,
-          textDecoration: "none",
-          color: "#e5e7eb",
-          background:
-            "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
-        }}
-      >
-        About Roota
-      </Link>
+        {/* правий блок — тільки десктоп (тільки кнопка About, без backend/mode) */}
+        {!isMobile && (
+          <div style={{ textAlign: "right" as const }}>
+            <Link
+              href="/about"
+              style={{
+                display: "inline-block",
+                marginBottom: 8,
+                padding: "6px 12px",
+                borderRadius: 999,
+                border: "1px solid #334155",
+                fontSize: 12,
+                textDecoration: "none",
+                color: "#e5e7eb",
+                background:
+                  "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+              }}
+            >
+              About Roota
+            </Link>
+          </div>
+        )}
+      </header>
 
-      <div style={styles.metaBlock}>
-        <div>{t.backend}</div>
-        <div>{t.endpoint}</div>
-        <div>{t.mode}</div>
-      </div>
-    </div>
-  )}
-</header>
       {/* SECTION HEADER */}
       <div style={styles.sectionHeader}>
         <div style={styles.sectionTitle}>{t.liveStream}</div>
@@ -1518,7 +1293,7 @@ export default function Page() {
               >
                 <span>⚡</span>
                 <span>{selectedIdea.pulse ?? 0}</span>
-                <span>· {getPulseLevelName(selectedIdea.pulse, t)}</span>
+                <span>· {getPulseLevel(selectedIdea.pulse, t)}</span>
               </span>
               <span style={{ color: "#e5e7eb" }}>
                 {t.modal_author}:{" "}
