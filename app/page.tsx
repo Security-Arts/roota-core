@@ -1,5 +1,5 @@
 "use client";
-
+import { RootaLogo } from "@/components/RootaLogo";
 import React, {
   useCallback,
   useEffect,
@@ -52,17 +52,14 @@ const styles: Record<string, CSSProperties> = {
   },
 
 leafIconBox: {
-  width: 46,
-  height: 46,
+  width: 44,
+  height: 44,
   borderRadius: 14,
   background: "rgba(15,23,42,0.9)",
   border: "1px solid #1f2937",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 28,
-  lineHeight: 1.1,
-  paddingTop: 2,      // трохи опускаємо емодзі вниз, щоб ґрунт точно був видимий
   overflow: "visible",
 },
 
@@ -767,8 +764,9 @@ export default function Page() {
         <div>
           {/* верхній рядок: іконка рута + назва + мови */}
           <div style={styles.titleRow}>
-            <div style={styles.leafIconBox}>🌱</div>
-
+          <div style={styles.leafIconBox}>
+  <RootaLogo size={28} />
+</div>
             <h1 style={styles.title}>{t.appTitle}</h1>
 
             <div style={styles.langSwitcher}>
