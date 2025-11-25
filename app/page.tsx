@@ -286,7 +286,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "20px 16px 40px",
     fontFamily:
       "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-    maxWidth: 1180,
+    maxWidth: 1600,
     margin: "0 auto",
   },
   headerTop: {
