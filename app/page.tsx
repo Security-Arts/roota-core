@@ -74,7 +74,7 @@ interface Translations {
 
 const translations: Record<Locale, Translations> = {
   en: {
-    appTitle: "Roota · Ideas with Proof & Pulse",
+    appTitle: "Roota · Ideas Stock Exchange",
     tagline: "A live registry of ideas with proof tokens and a visible pulse of interest.",
     backend: "Backend: Supabase · Postgres",
     endpoint: "Endpoint: /api/ideas",
