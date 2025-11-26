@@ -765,7 +765,7 @@ export default function Page() {
           {/* верхній рядок: іконка рута + назва + мови */}
           <div style={styles.titleRow}>
           <div style={styles.leafIconBox}>
-  <RootaLogo size={28} />
+  <RootaLogo size={40} />
 </div>
             <h1 style={styles.title}>{t.appTitle}</h1>
 
@@ -810,31 +810,26 @@ export default function Page() {
           </div>
 
           {/* технічний рядок + About Roota на мобільних */}
-          {isMobile && (
-            <>
-              <p style={{ marginTop: 6, fontSize: 10, color: "#64748b" }}>
-                MVP • Supabase backend • /api/ideas
-              </p>
-              <div style={{ marginTop: 10 }}>
-                <Link
-                  href="/about"
-                  style={{
-                    display: "inline-block",
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    border: "1px solid #334155",
-                    fontSize: 12,
-                    textDecoration: "none",
-                    color: "#e5e7eb",
-                    background:
-                      "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
-                  }}
-                >
-                  About Roota
-                </Link>
-              </div>
-            </>
-          )}
+  {isMobile && (
+  <div style={{ marginTop: 10 }}>
+    <Link
+      href="/about"
+      style={{
+        display: "inline-block",
+        padding: "6px 12px",
+        borderRadius: 999,
+        border: "1px solid #334155",
+        fontSize: 12,
+        textDecoration: "none",
+        color: "#e5e7eb",
+        background:
+          "radial-gradient(circle at top left, rgba(59,130,246,0.25), transparent 60%) #020617",
+      }}
+    >
+      About Roota
+    </Link>
+  </div>
+)}
         </div>
 
         {/* правий блок — тільки десктоп (тільки кнопка About, без backend/mode) */}
