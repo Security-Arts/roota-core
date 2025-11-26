@@ -14,7 +14,7 @@ export default function LandingPage() {
       width: "100%",
       maxWidth: 900,
       margin: "0 auto",
-      boxSizing: "border-box",
+      boxSizing: "border-box" as const,
     },
 
     badgeRow: {
