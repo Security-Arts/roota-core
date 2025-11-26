@@ -96,16 +96,23 @@ leafIconBox: {
   },
 
   subtitle: {
-    fontSize: 13,
-    color: "#9ca3af",
-    maxWidth: 560,
-    lineHeight: 1.45,
-    marginTop: 2,
-    display: "flex",
-    alignItems: "center",
-    gap: 6,
-  },
+  fontSize: 13,
+  color: "#9ca3af",
+  maxWidth: 560,
+  lineHeight: 1.45,
+  marginTop: 2,
 
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+
+  opacity: 0,
+  transform: "translateY(4px)",
+  transition: "opacity 400ms ease-out, transform 400ms ease-out",
+},
+taglineIcon: {
+  fontSize: 14,
+},
   taglineIcon: {
     fontSize: 14,
   },
@@ -786,30 +793,24 @@ export default function Page() {
           </div>
 
           {/* tagline: два рядки з легкою анімацією */}
-          <div style={{ marginTop: 6 }}>
-            {t.tagline.map((line, i) => (
-              <p
-                key={i}
-                style={{
-                  ...styles.subtitle,
-                  opacity: taglineVisible ? 1 : 0,
-                  transform: taglineVisible
-                    ? "translateY(0)"
-                    : "translateY(4px)",
-                  transition:
-                    "opacity 400ms ease-out, transform 400ms ease-out",
-                  transitionDelay: `${i * 80}ms`,
-                }}
-              >
-                <span style={styles.taglineIcon}>
-                  {i === 0 ? "🌱" : "🐝"}
-                </span>
-                {line}
-              </p>
-            ))}
-          </div>
-
-          {/* технічний рядок + About Roota на мобільних */}
+{/* tagline: два рядки з анімацією */}
+<div style={{ marginTop: 6 }}>
+  {t.tagline.map((line, i) => (
+    <p
+      key={i}
+      style={{
+        ...styles.subtitle,
+        opacity: taglineVisible ? 1 : 0,
+        transform: taglineVisible ? "translateY(0)" : "translateY(4px)",
+        transitionDelay: `${i * 80}ms`,
+      }}
+    >
+      <span style={styles.taglineIcon}>{i === 0 ? "🌱" : "🐝"}</span>
+      {line}
+    </p>
+  ))}
+</div>
+     {/* технічний рядок + About Roota на мобільних */}
   {isMobile && (
   <div style={{ marginTop: 10 }}>
     <Link
