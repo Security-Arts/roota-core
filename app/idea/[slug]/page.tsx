@@ -132,7 +132,7 @@ export default async function IdeaPage({
 
   const created = new Date(idea.created_at);
 
-  // 🕒 автоматичний локаль за Accept-Language
+  // 🔹 Авто-визначення локалі за Accept-Language
   const hdrs = headers();
   const acceptLang = hdrs.get("accept-language") || "";
   const userLocale = acceptLang.split(",")[0] || "en-US";
@@ -158,7 +158,7 @@ export default async function IdeaPage({
         </div>
       </header>
 
-      {/* 🔧 Layout тепер керується класом .idea-layout (CSS нижче) */}
+      {/* layout керується .idea-layout з globals.css */}
       <section className="idea-layout">
         {/* Left: root note */}
         <article style={styles.card}>
