@@ -153,9 +153,9 @@ export default function AboutPage() {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Root, hive, bees &amp; bloom</h2>
         <p style={styles.paragraph}>
-          The name Roota comes from <em>root</em> — the origin point. Ideas grow,
-          and Roota is the soil where they take hold instead of evaporating into
-          noise.
+          The name Roota comes from <em>root</em> — the origin point. Ideas
+          grow, and Roota is the soil where they take hold instead of
+          evaporating into noise.
         </p>
         <p style={styles.paragraph}>
           In Ukrainian, “Roota” echoes “рута” — a resilient traditional flower.
@@ -240,13 +240,13 @@ export default function AboutPage() {
         <h2 style={styles.sectionTitle}>How Roota will make money</h2>
         <p style={styles.paragraph}>
           Roota doesn&apos;t charge for ideas or take a cut from collaboration.
-          The hive is meant to stay an open and neutral space — a living registry
-          where proof and pulse can grow without friction.
+          The hive is meant to stay an open and neutral space — a living
+          registry where proof and pulse can grow without friction.
         </p>
         <p style={styles.paragraph}>
           Monetization will appear only where it adds real leverage — around the
-          registry, not inside it. These layers are optional and designed to help
-          people work with ideas more effectively:
+          registry, not inside it. These layers are optional and designed to
+          help people work with ideas more effectively:
         </p>
         <ul style={styles.list}>
           <li style={styles.listItem}>
@@ -291,13 +291,55 @@ export default function AboutPage() {
           </li>
         </ul>
         <p style={styles.paragraph}>
-          Roota itself does not take commissions and does not mediate agreements.
-          It stays a neutral ground — a clean map of what sparks interest.
+          Roota itself does not take commissions and does not mediate
+          agreements. It stays a neutral ground — a clean map of what sparks
+          interest.
         </p>
         <p style={styles.paragraph}>
           Over time, optional tools may appear: private workspaces, co-creation
           boards, investor dashboards. But the core remains simple:
           <strong> Roota helps people who care about the same idea find each other.</strong>
+        </p>
+      </section>
+
+      {/* MATCHMAKING TOOLKIT */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Matchmaking Toolkit</h2>
+        <p style={styles.paragraph}>
+          Although anyone can browse ideas and sort them by pulse, the
+          Matchmaking Toolkit goes further. It transforms scattered signals into
+          meaningful patterns — showing where momentum is forming before it
+          becomes obvious.
+        </p>
+        <p style={styles.paragraph}>
+          Instead of manually scanning lists, the toolkit helps reveal:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>
+            emerging clusters of interest inside the hive,
+          </li>
+          <li style={styles.listItem}>
+            sudden pulse spikes within a niche or theme,
+          </li>
+          <li style={styles.listItem}>
+            early &quot;swarms&quot; of attention around a direction,
+          </li>
+          <li style={styles.listItem}>
+            pulse velocity — how fast an idea is gaining or losing momentum,
+          </li>
+          <li style={styles.listItem}>
+            cross-links between ideas that start forming a route.
+          </li>
+        </ul>
+        <p style={styles.paragraph}>
+          It does not direct deals or mediate negotiations. It simply helps the
+          right people notice the right ideas at the right time — a quiet layer
+          of intelligence sitting on top of the public hive.
+        </p>
+        <p style={styles.paragraph}>
+          This is optional. The public registry remains open and free. The
+          toolkit is an added lens for studios, investors, researchers and teams
+          who want to see the deeper structure behind the pulse.
         </p>
       </section>
 
