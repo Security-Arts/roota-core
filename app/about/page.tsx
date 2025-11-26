@@ -28,12 +28,12 @@ const styles = {
     letterSpacing: "0.12em",
     color: "#a5b4fc",
   },
-  badge: {
-    padding: "2px 8px",
-    borderRadius: 999,
-    border: "1px solid "#4338ca",
-    background: "rgba(30,64,175,0.3)",
-  },
+badge: {
+  padding: "2px 8px",
+  borderRadius: 999,
+  border: "1px solid #4338ca",
+  background: "rgba(30,64,175,0.3)",
+},
   title: {
     fontSize: 32,
     fontWeight: 700,
