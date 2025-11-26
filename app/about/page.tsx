@@ -363,9 +363,7 @@ export default function AboutPage() {
         </ul>
 
         <p style={styles.paragraph}>
-          The public idea registry remains open and neutral. All paid layers are
-          designed to add leverage for people who work with ideas seriously —
-          not to lock anyone out.
+    The public idea registry stays open and neutral. Paid layers exist only to give more leverage to those who work deeply with ideas — never to restrict access.
         </p>
       </section>
 
