@@ -1,167 +1,189 @@
 // app/idea/[id]/page.tsx
-import { supabase } from "@/lib/supabase";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-
-export const dynamic = "force-dynamic";
+import { supabase } from "@/lib/supabase";
 
 type Idea = {
   id: string;
   title: string;
   description: string | null;
+  author: string | null;
   proof_hash: string | null;
   pulse: number | null;
-  author: string | null;
   created_at: string;
-  updated_at: string | null;
 };
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleString("en-GB", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background:
+      "radial-gradient(circle at top left, rgba(56,189,248,0.12), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.14), #020617)",
+    color: "#e5e7eb",
+    padding: "24px 16px 40px",
+    fontFamily:
+      "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+    width: "100%",
+    maxWidth: "900px",
+    margin: "0 auto",
+    boxSizing: "border-box" as const,
+  },
+  backLink: {
+    fontSize: 13,
+    color: "#9ca3af",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 16,
+  },
+  header: {
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 600,
+    letterSpacing: "-0.02em",
+    marginBottom: 8,
+  },
+  metaRow: {
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: 10,
+    fontSize: 12,
+    color: "#9ca3af",
+  },
+  layoutRow: {
+    display: "grid",
+    gridTemplateColumns: "minmax(0, 2.2fr) minmax(0, 1fr)",
+    gap: 24,
+  },
+  card: {
+    background: "rgba(15,23,42,0.9)",
+    borderRadius: 16,
+    border: "1px solid rgba(148,163,184,0.25)",
+    padding: 18,
+  },
+  cardTitle: {
+    fontSize: 13,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.16em",
+    color: "#9ca3af",
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 14,
+    lineHeight: 1.6,
+    color: "#e5e7eb",
+    whiteSpace: "pre-wrap" as const,
+  },
+  proofRow: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: 6,
+    fontSize: 12,
+    color: "#e5e7eb",
+    wordBreak: "break-all" as const,
+  },
+  proofLabel: {
+    fontSize: 11,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.16em",
+    color: "#9ca3af",
+  },
+  pulseValue: {
+    fontSize: 24,
+    fontWeight: 600,
+  },
+  branchesPlaceholder: {
+    fontSize: 13,
+    color: "#9ca3af",
+    marginTop: 8,
+  },
+} as const;
 
-function getPulseLabel(pulse: number | null) {
-  const v = pulse ?? 0;
-  if (v >= 5) return "High conviction";
-  if (v >= 3) return "Validated";
-  if (v >= 1) return "Seed";
-  return "None";
-}
-
-export default async function IdeaPage({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  // -----------------------------
-  // 1) Пошук по UUID (id)
-  // -----------------------------
-  const { data: byId, error: errById } = await supabase
+async function getIdeaById(id: string): Promise<Idea | null> {
+  const { data, error } = await supabase
     .from("ideas")
     .select("*")
     .eq("id", id)
-    .maybeSingle();
+    .single();
 
-  let idea: Idea | null = null;
-
-  if (byId && !errById) {
-    idea = byId as Idea;
-  } else {
-    // -----------------------------
-    // 2) Якщо не знайдено — шукаємо по slug
-    // -----------------------------
-    const { data: bySlug, error: errBySlug } = await supabase
-      .from("ideas")
-      .select("*")
-      .eq("slug", id)
-      .maybeSingle();
-
-    if (bySlug && !errBySlug) {
-      idea = bySlug as Idea;
-    }
+  if (error || !data) {
+    console.error("Idea not found:", error);
+    return null;
   }
 
-  // -----------------------------
-  // 3) Якщо нема ні по id, ні по slug → 404
-  // -----------------------------
+  return data as Idea;
+}
+
+export default async function IdeaPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const idea = await getIdeaById(params.id);
+
   if (!idea) {
-    return notFound();
+    notFound();
   }
 
-  // ---------------------------------------------------
-  // 4) Page rendering — все нижче лишаємо як у тебе було
-  // ---------------------------------------------------
+  const created = new Date(idea.created_at);
+  const createdLabel = created.toLocaleDateString("uk-UA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
   return (
-    <main className="min-h-screen bg-[#020617] text-white">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <header className="flex items-center justify-between gap-4 mb-8">
-          <div>
-            <Link href="/" className="text-xs text-gray-400 hover:text-gray-200">
-              ← Back to Roota stream
-            </Link>
-            <h1 className="text-2xl md:text-3xl font-semibold mt-3">{idea.title}</h1>
-            <p className="text-[11px] text-gray-500 mt-2">
-              by <span className="text-gray-200">{idea.author || "anonymous"}</span>{" "}
-              · {formatDate(idea.created_at)}
-            </p>
-          </div>
+    <main style={styles.page}>
+      <a href="/" style={styles.backLink}>
+        ← Back to hive
+      </a>
 
-          <div className="flex flex-col items-end gap-2">
-            <span className="text-[10px] tracking-wide uppercase text-gray-400">Pulse</span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/70 bg-emerald-500/10 px-3 py-1">
-              <span className="text-sm">⚡</span>
-              <span className="text-lg font-semibold text-emerald-400">
-                {idea.pulse ?? 0}
-              </span>
-            </span>
-            <span className="text-[11px] text-gray-400">{getPulseLabel(idea.pulse)}</span>
-          </div>
-        </header>
+      <header style={styles.header}>
+        <h1 style={styles.title}>{idea.title}</h1>
+        <div style={styles.metaRow}>
+          <span>Created: {createdLabel}</span>
+          {idea.author && <span>· By {idea.author}</span>}
+          <span>· ID: {idea.id.slice(0, 8)}…</span>
+        </div>
+      </header>
 
-        {idea.description && (
-          <section className="mb-8">
-            <h2 className="text-sm font-semibold text-gray-300 mb-2">Description</h2>
-            <p className="text-sm leading-relaxed text-gray-100 whitespace-pre-wrap">
-              {idea.description}
-            </p>
-          </section>
-        )}
+      <section style={styles.layoutRow}>
+        {/* Left: root-лог ідеї */}
+        <article style={styles.card}>
+          <div style={styles.cardTitle}>Root log</div>
+          <p style={styles.description}>
+            {idea.description || "No description yet. This idea is still rooting."}
+          </p>
+        </article>
 
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-300 mb-2">Proof token (SHA-256)</h2>
-          {idea.proof_hash ? (
-            <div className="rounded-lg border border-gray-700 bg-black/30 px-3 py-2">
-              <code className="block text-[11px] font-mono break-all text-gray-100">
-                {idea.proof_hash}
-              </code>
+        {/* Right: proof / pulse / branches */}
+        <aside style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={styles.card}>
+            <div style={styles.cardTitle}>Proof & pulse</div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={styles.proofRow}>
+                <span style={styles.proofLabel}>Proof hash</span>
+                <span>{idea.proof_hash || "—"}</span>
+              </div>
+
+              <div style={styles.proofRow}>
+                <span style={styles.proofLabel}>Pulse of interest</span>
+                <span style={styles.pulseValue}>{idea.pulse ?? 0}</span>
+              </div>
             </div>
-          ) : (
-            <p className="text-xs text-gray-500">No proof token stored for this idea.</p>
-          )}
-        </section>
- <section className="mt-8">
-  <div className="border-t border-gray-800 pt-4 pb-2" />
-
-  <div className="mt-3 rounded-xl border border-gray-800 bg-black/30 px-4 py-3 flex flex-col gap-3 text-[11px] text-gray-400">
-    <div className="flex items-center gap-2 text-gray-300">
-      <span className="text-[10px]">◎</span>
-      <span>Roota · live registry of ideas with proof and pulse of interest</span>
-    </div>
-
-    <div className="flex flex-wrap gap-4">
-      <div className="space-y-1">
-        <div className="uppercase tracking-wide text-[10px] text-gray-500">
-          Idea ID
-        </div>
-        <div className="font-mono break-all text-gray-200">
-          {idea.id}
-        </div>
-      </div>
-
-      <div className="space-y-1">
-        <div className="uppercase tracking-wide text-[10px] text-gray-500">
-          Created
-        </div>
-        <div>{formatDate(idea.created_at)}</div>
-      </div>
-
-      {idea.updated_at && (
-        <div className="space-y-1">
-          <div className="uppercase tracking-wide text-[10px] text-gray-500">
-            Last updated
           </div>
-          <div>{formatDate(idea.updated_at)}</div>
-        </div>
-      )}
-    </div>
-  </div>
-</section>
 
-      </div>
+          <div style={styles.card}>
+            <div style={styles.cardTitle}>Branches</div>
+            <p style={styles.branchesPlaceholder}>
+              Branches (idea routes, hives, bee-activity) will live here.
+              For now this idea is a single root in the hive.
+            </p>
+          </div>
+        </aside>
+      </section>
     </main>
   );
 }
