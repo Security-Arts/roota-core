@@ -288,8 +288,7 @@ export default function AboutPage() {
           teams, studios, funds and accelerators. Think of them as GitHub
           private repos for ideas: companies keep their internal idea pipeline,
           track internal signals, collaborate through branches and keep a full
-          proof + pulse history. Pricing could follow simple tiers (for example
-          $9 / $29 / $99 depending on seats and volume).
+          proof + pulse history.
         </p>
 
         <p style={styles.paragraph}>
