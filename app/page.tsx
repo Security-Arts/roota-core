@@ -110,9 +110,6 @@ leafIconBox: {
   transform: "translateY(4px)",
   transition: "opacity 400ms ease-out, transform 400ms ease-out",
 },
-taglineIcon: {
-  fontSize: 14,
-},
   taglineIcon: {
     fontSize: 14,
   },
