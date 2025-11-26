@@ -79,7 +79,7 @@ export default function LandingPage() {
       marginTop: 32,
       display: "flex",
       gap: 16,
-      flexWrap: "wrap",
+      flexWrap: "wrap" as const,
     },
     ctaButtonPrimary: {
       borderRadius: 999,
