@@ -235,7 +235,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-      {/* MONETIZATION */}
+         {/* MONETIZATION */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>How Roota will make money</h2>
         <p style={styles.paragraph}>
@@ -244,27 +244,95 @@ export default function AboutPage() {
           registry where proof and pulse can grow without friction.
         </p>
         <p style={styles.paragraph}>
-          Monetization will appear only where it adds real leverage — around the
-          registry, not inside it. These layers are optional and designed to
-          help people work with ideas more effectively:
+          Monetization lives <em>around</em> the registry, not inside it. The
+          paid layers are optional tools for people and teams who want more
+          structure, insight or automation:
+        </p>
+
+        <p style={styles.paragraph}>
+          <strong>1) Private Hive spaces</strong> — private repositories for
+          teams, studios, funds and accelerators. Think of them as GitHub
+          private repos for ideas: companies keep their internal idea pipeline,
+          track internal signals, collaborate through branches and keep a full
+          proof + pulse history. Pricing could follow simple tiers (for example
+          $9 / $29 / $99 depending on seats and volume).
+        </p>
+
+        <p style={styles.paragraph}>
+          <strong>2) Advanced Pulse Analytics (Pro layer)</strong> — dashboards
+          for people who want to see the deeper structure of the hive:
         </p>
         <ul style={styles.list}>
+          <li style={styles.listItem}>fastest-growing pulse signals,</li>
           <li style={styles.listItem}>
-            <strong>Private or invite-only hives</strong> for teams, studios and
-            innovation groups.
+            high-energy clusters and interaction heatmaps,
           </li>
+          <li style={styles.listItem}>analytics by authors and themes,</li>
+          <li style={styles.listItem}>AI-powered signal mining.</li>
+        </ul>
+        <p style={styles.paragraph}>
+          This Pro layer is interesting for venture funds, product studios,
+          consulting firms and R&amp;D teams — anyone who wants to treat ideas
+          as a portfolio, not a to-do list.
+        </p>
+
+        <p style={styles.paragraph}>
+          <strong>3) Bee-Agents as a service</strong> — autonomous agents that
+          work on top of the hive:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>find similar and related ideas,</li>
+          <li style={styles.listItem}>cluster portfolios and routes,</li>
+          <li style={styles.listItem}>suggest next steps or possible branches,</li>
+          <li style={styles.listItem}>open adjacent branches and directions,</li>
           <li style={styles.listItem}>
-            <strong>Advanced proof &amp; pulse analytics</strong> for trend
-            spotting, clustering and portfolio-level insight.
-          </li>
-          <li style={styles.listItem}>
-            <strong>Bee-agents as a service</strong> — autonomous scouts that
-            monitor niches, cluster ideas and surface emerging signals.
+            help with &quot;completing&quot; ideas (AI builder support).
           </li>
         </ul>
         <p style={styles.paragraph}>
-          The public idea registry will remain open. Paid tools will enhance the
-          experience — never restrict it.
+          Bee-agents are the core AI monetization layer: instead of taking a
+          commission, Roota sells intelligence and automation around ideas.
+        </p>
+
+        <p style={styles.paragraph}>
+          <strong>4) Matchmaking Toolkit (no commission)</strong> — Roota doesn&apos;t
+          broker deals or take a percentage. The toolkit is a SaaS layer that
+          helps investors, studios and partners:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>
+            surface high-pulse ideas within specific niches,
+          </li>
+          <li style={styles.listItem}>spot early, weak but rising signals,</li>
+          <li style={styles.listItem}>
+            generate &quot;bloom candidates&quot; lists — ideas that might be
+            ready for execution or deeper exploration.
+          </li>
+        </ul>
+        <p style={styles.paragraph}>
+          Anyone can manually sort ideas by pulse. The toolkit goes further by
+          turning scattered signals into patterns: clusters, velocity and early
+          swarms of attention.
+        </p>
+
+        <p style={styles.paragraph}>
+          <strong>5) Enterprise &amp; studio setups</strong> — for larger
+          players (VC funds, corporate innovation labs, product studios, R&amp;D
+          teams), Roota can offer:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>private installations and dedicated hives,</li>
+          <li style={styles.listItem}>custom Bee-agent configurations,</li>
+          <li style={styles.listItem}>
+            integrations with existing tools (Notion, Jira, internal wikis),
+          </li>
+          <li style={styles.listItem}>white-label options.</li>
+        </ul>
+
+        <p style={styles.paragraph}>
+          The public idea registry remains open and neutral. All paid layers are
+          designed to add leverage for people who work with ideas seriously —
+          not to lock anyone out.
         </p>
       </section>
 
