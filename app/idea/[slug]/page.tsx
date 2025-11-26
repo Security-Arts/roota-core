@@ -1,5 +1,6 @@
 // app/idea/[slug]/page.tsx
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { supabase } from "@/lib/supabase";
 
 type Idea = {
@@ -52,11 +53,6 @@ const styles = {
     fontSize: 12,
     color: "#9ca3af",
   },
-  layoutRow: {
-    display: "grid",
-    gridTemplateColumns: "minmax(0, 2.2fr) minmax(0, 1fr)",
-    gap: 24,
-  },
   card: {
     background: "rgba(15,23,42,0.9)",
     borderRadius: 16,
@@ -82,13 +78,20 @@ const styles = {
     gap: 6,
     fontSize: 12,
     color: "#e5e7eb",
-    wordBreak: "break-all" as const,
   },
   proofLabel: {
     fontSize: 11,
     textTransform: "uppercase" as const,
     letterSpacing: "0.16em",
     color: "#9ca3af",
+    whiteSpace: "nowrap" as const,
+  },
+  proofHashValue: {
+    fontSize: 11,
+    fontFamily:
+      "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    lineHeight: 1.4,
+    overflowWrap: "anywhere" as const,
   },
   pulseValue: {
     fontSize: 24,
@@ -128,7 +131,13 @@ export default async function IdeaPage({
   }
 
   const created = new Date(idea.created_at);
-  const createdLabel = created.toLocaleDateString("uk-UA", {
+
+  // 🕒 автоматичний локаль за Accept-Language
+  const hdrs = headers();
+  const acceptLang = hdrs.get("accept-language") || "";
+  const userLocale = acceptLang.split(",")[0] || "en-US";
+
+  const createdLabel = created.toLocaleDateString(userLocale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -149,10 +158,11 @@ export default async function IdeaPage({
         </div>
       </header>
 
-      <section style={styles.layoutRow}>
-        {/* Left: root-лог ідеї */}
+      {/* 🔧 Layout тепер керується класом .idea-layout (CSS нижче) */}
+      <section className="idea-layout">
+        {/* Left: root note */}
         <article style={styles.card}>
-          <div style={styles.cardTitle}>Root log</div>
+          <div style={styles.cardTitle}>Root note</div>
           <p style={styles.description}>
             {idea.description || "No description yet. This idea is still rooting."}
           </p>
@@ -166,7 +176,9 @@ export default async function IdeaPage({
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={styles.proofRow}>
                 <span style={styles.proofLabel}>Proof hash</span>
-                <span>{idea.proof_hash || "—"}</span>
+                <span style={styles.proofHashValue}>
+                  {idea.proof_hash || "—"}
+                </span>
               </div>
 
               <div style={styles.proofRow}>
@@ -179,8 +191,8 @@ export default async function IdeaPage({
           <div style={styles.card}>
             <div style={styles.cardTitle}>Branches</div>
             <p style={styles.branchesPlaceholder}>
-              Branches (idea routes, hives, bee-activity) will live here.
-              For now this idea is a single root in the hive.
+              Branches (idea routes, hives, bee-activity) will live here. For
+              now this idea is a single root in the hive.
             </p>
           </div>
         </aside>
