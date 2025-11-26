@@ -31,7 +31,7 @@ const styles = {
   badge: {
     padding: "2px 8px",
     borderRadius: 999,
-    border: "1px solid #4338ca",
+    border: "1px solid "#4338ca",
     background: "rgba(30,64,175,0.3)",
   },
   title: {
@@ -240,6 +240,79 @@ export default function AboutPage() {
           Next steps include: autonomous bee-agents, richer idea graph
           visualisations, and curated &quot;bloom&quot; boards for ideas that
           are ready to move into execution.
+        </p>
+      </section>
+
+      {/* MONETIZATION */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>How Roota will make money</h2>
+        <p style={styles.paragraph}>
+          Right now Roota is in an open, exploratory phase. There are{" "}
+          <strong>no fees, no subscriptions and no commissions</strong> for
+          publishing or browsing ideas. The hive is focused on one thing:
+          capturing proof and pulse in a clean way.
+        </p>
+        <p style={styles.paragraph}>
+          If Roota proves useful, monetization will live{" "}
+          <em>around</em> the registry, not against it. Possible future layers
+          include:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>
+            <strong>private or invite-only hives</strong> for teams, studios or
+            investors,
+          </li>
+          <li style={styles.listItem}>
+            <strong>advanced pulse &amp; proof analytics</strong> for tracking
+            idea portfolios,
+          </li>
+          <li style={styles.listItem}>
+            <strong>Bee-agents as a service</strong> that scout, cluster or
+            validate ideas for specific problems.
+          </li>
+        </ul>
+        <p style={styles.paragraph}>
+          The core registry of ideas — the place where proof and pulse live — is
+          meant to stay open. Optional paid layers will appear only where they
+          genuinely add leverage, not friction.
+        </p>
+      </section>
+
+      {/* COLLABORATION AROUND IDEAS */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Collaboration around ideas</h2>
+        <p style={styles.paragraph}>
+          Roota doesn’t force ideas into pitches or deals — but it does create a
+          clean way to <strong>signal interest</strong> and track where energy
+          naturally goes. If someone discovers an idea in the hive and wants to
+          join, support or invest in it, the path is simple:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>
+            reach out to the author via the public idea page,
+          </li>
+          <li style={styles.listItem}>
+            build a branch (a related idea or extension) that moves it forward,
+          </li>
+          <li style={styles.listItem}>
+            or offer resources — time, skills, funding — directly around the
+            idea.
+          </li>
+        </ul>
+        <p style={styles.paragraph}>
+          Roota itself does not take a commission or mediate deals. The hive is
+          simply a <strong>neutral ground</strong> where ideas become visible,
+          traceable and easier to build on. All collaboration happens directly
+          between people who care about the same spark.
+        </p>
+        <p style={styles.paragraph}>
+          Over time, Roota may introduce optional tools — private hives for
+          teams, shared workspaces for idea execution, and matchmaking for
+          investors looking for emerging signals. But the core flow remains:
+          <strong>
+            {" "}
+            if an idea resonates with someone, Roota helps them find each other.
+          </strong>
         </p>
       </section>
 
