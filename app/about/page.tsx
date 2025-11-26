@@ -111,7 +111,7 @@ export default function AboutPage() {
       <header style={styles.header}>
         <div style={styles.badgeRow}>
           <span style={styles.badge}>Roota</span>
-          <span>Ideas Stock Exchange</span>
+          <span>Ideas Stock Exchange · Proof &amp; Pulse</span>
         </div>
         <h1 style={styles.title}>About Roota</h1>
         <p style={styles.subtitle}>
@@ -143,8 +143,8 @@ export default function AboutPage() {
           </li>
         </ul>
         <p style={styles.paragraph}>
-          The goal is not to gamify ideas, but to keep a persistent trail of
-          how thinking evolves — from raw sparks to mature concepts.
+          The goal is not to gamify ideas, but to keep a persistent trail of how
+          thinking evolves — from raw sparks to mature concepts.
         </p>
       </section>
 
@@ -157,20 +157,26 @@ export default function AboutPage() {
           root instead of disappearing.
         </p>
         <p style={styles.paragraph}>
+          In Ukrainian, “Roota” also quietly echoes “рута” — a traditional rue
+          flower that often symbolises protection, resilience and quiet
+          strength. That association fits how Roota treats ideas: fragile at
+          first, but capable of becoming something strong and persistent.
+        </p>
+        <p style={styles.paragraph}>
           The <strong>hive</strong> metaphor is about collective energy. A hive
           is never static: it hums, it reacts, it adapts. In Roota, each idea
           lives inside this hive of activity.
         </p>
         <p style={styles.paragraph}>
           <strong>Bees</strong> are future agents and people who add ideas,
-          react, upvote or downvote pulse, and move concepts forward. They don&apos;t
-          own the hive — they make it alive.
+          react, upvote or downvote pulse, and move concepts forward. They
+          don&apos;t own the hive — they make it alive.
         </p>
         <p style={styles.paragraph}>
           <strong>Bloom</strong> is what happens when an idea builds enough
           proof and pulse to find its path into a product, project or
-          investment. Roota doesn&apos;t promise success — it documents the journey
-          towards bloom.
+          investment. Roota doesn&apos;t promise success — it documents the
+          journey towards bloom.
         </p>
         <div style={styles.tagRow}>
           <span style={styles.tag}>🌱 Root — registry of ideas</span>
