@@ -1,0 +1,19 @@
+/* Базовий reset можна додати потім, зараз тільки те, що треба */
+
+.idea-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* На мобілках — одна колонка, блоки йдуть один під одним */
+@media (max-width: 768px) {
+  .idea-layout {
+    display: block;
+  }
+
+  .idea-layout > aside {
+    margin-top: 16px;
+  }
+}
