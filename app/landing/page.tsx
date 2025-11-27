@@ -166,6 +166,39 @@ export default function LandingPage() {
           what's gaining attention, which directions grow, and where early energy forms.
         </p>
       </section>
+      {/* SECTION: Why Roota Exists */}
+<section style={styles.section}>
+  <h2 style={styles.sectionTitle}>Why Roota Exists</h2>
+
+  <p style={styles.paragraph}>
+    Most ideas don’t fail — they simply never get a chance to live. They appear
+    in messages, notebooks and late-night thoughts… and vanish before anyone
+    ever sees their potential.
+  </p>
+
+  <p style={styles.paragraph}>
+    Roota exists to give ideas a home — a living environment where they gather
+    <strong> proof</strong>, build <strong>pulse</strong>, and attract the
+    attention of people who actually feel them.
+  </p>
+
+  <p style={styles.paragraph}>
+    On other platforms, ideas compete for <strong>applause</strong>.  
+    On Roota, ideas grow through <strong>heartbeat</strong>.
+  </p>
+
+  <p style={styles.paragraph}>
+    Applause is momentary — a spike of attention.  
+    Heartbeat is persistent — it shows life, resonance, and momentum.
+  </p>
+
+  <p style={styles.paragraph}>
+    Roota is not a stage. It’s a hive — warm, collective, alive. A place where 
+    ideas cross-pollinate instead of fight for visibility, and where attention
+    accumulates as creative energy.
+  </p>
+</section>
+
 
       {/* SECTION: Roadmap snapshot */}
       <section style={styles.section}>
