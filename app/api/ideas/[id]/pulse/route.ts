@@ -67,21 +67,23 @@ export async function POST(
 
   // 3) логуємо подію в pulse_events
   const userAgent = req.headers.get("user-agent") ?? null;
+const { error: eventError } = await supabase
+  .from("pulse_events")
+  .insert({
+    idea_id: id,
+    hive_id: idea.hive_id ?? null,
+    delta,
+    source: "ui",     // теперішнє джерело
+    user_id: null,    // додамо після auth
+    agent_id: null,   // для майбутніх Bee-агентів
+    context: {
+      user_agent: userAgent,
+      via: "roota-core-ui",
+    },
+    idea_title_snapshot: idea.title,
+    idea_slug_snapshot: idea.slug,
+  });
 
-  const { error: eventError } = await supabase
-    .from("pulse_events")
-    .insert({
-      idea_id: id,
-      hive_id: idea.hive_id ?? null,
-      delta,
-      source: "ui",          // зараз усе йде з інтерфейсу
-      user_id: null,         // додамо пізніше, коли буде auth
-      agent_id: null,        // для Bee-агентів
-      context: {
-        user_agent: userAgent,
-        via: "roota-core-ui",
-      },
-    });
 
   if (eventError) {
     console.error(
