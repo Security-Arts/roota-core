@@ -2,6 +2,14 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+type IdeaRow = {
+  id: string;
+  pulse: number | null;
+  hive_id: string | null;
+  title: string | null;
+  slug: string | null;
+};
+
 export async function POST(
   req: Request,
   { params }: { params: { id: string } }
@@ -33,20 +41,22 @@ export async function POST(
     );
   }
 
-  // 1) читаємо поточне значення + hive_id
-  const { data: idea, error: ideaError } = await supabase
+  // 1) читаємо поточне значення + hive_id + title/slug для snapshot
+  const { data: ideaRaw, error: ideaError } = await supabase
     .from("ideas")
-    .select("id, pulse, hive_id")
+    .select("id, pulse, hive_id, title, slug")
     .eq("id", id)
     .single();
 
-  if (ideaError || !idea) {
+  if (ideaError || !ideaRaw) {
     console.error("pulse: idea not found or select error:", ideaError);
     return NextResponse.json(
       { ok: false, error: "Idea not found" },
       { status: 404 }
     );
   }
+
+  const idea = ideaRaw as IdeaRow;
 
   const currentPulse = idea.pulse ?? 0;
   const newPulse = currentPulse + delta;
@@ -67,15 +77,14 @@ export async function POST(
 
   // 3) логуємо подію в pulse_events
   const userAgent = req.headers.get("user-agent") ?? null;
-const { error: eventError } = await supabase
-  .from("pulse_events")
-  .insert({
+
+  const { error: eventError } = await supabase.from("pulse_events").insert({
     idea_id: id,
     hive_id: idea.hive_id ?? null,
     delta,
-    source: "ui",     // теперішнє джерело
-    user_id: null,    // додамо після auth
-    agent_id: null,   // для майбутніх Bee-агентів
+    source: "ui", // зараз усе йде з інтерфейсу
+    user_id: null, // додамо пізніше, коли буде auth
+    agent_id: null, // для Bee-агентів
     context: {
       user_agent: userAgent,
       via: "roota-core-ui",
@@ -84,12 +93,12 @@ const { error: eventError } = await supabase
     idea_slug_snapshot: idea.slug,
   });
 
-
   if (eventError) {
     console.error(
       "pulse: event insert error (pulse updated anyway):",
       eventError
     );
+    // але pulse уже оновлений, тому не ламаємо відповідь
   }
 
   return NextResponse.json(
