@@ -153,9 +153,9 @@ export default function AboutPage() {
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Root, hive, bees &amp; bloom</h2>
         <p style={styles.paragraph}>
-          The name Roota comes from <em>root</em> — the origin point. Ideas
-          grow, and Roota is the soil where they take hold instead of
-          evaporating into noise.
+          The name Roota comes from <em>root</em> — the origin point. Ideas grow,
+          and Roota is the soil where they take hold instead of evaporating into
+          noise.
         </p>
         <p style={styles.paragraph}>
           In Ukrainian, “Roota” echoes “рута” — a resilient traditional flower.
@@ -203,6 +203,38 @@ export default function AboutPage() {
         </p>
       </section>
 
+      {/* ON-CHAIN PROOF & DUAL-LAYER TOKENS */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>On-chain proof &amp; dual-layer tokens</h2>
+        <p style={styles.paragraph}>
+          Right now, every idea in Roota gets a <strong>local cryptographic hash</strong> —
+          a lightweight proof stored in the registry itself. That&apos;s the first layer:
+          fast, simple and enough for most everyday ideas.
+        </p>
+        <p style={styles.paragraph}>
+          Over time, Roota will add an optional <strong>on-chain layer</strong> for those
+          who want stronger guarantees or long-term verification. Selected ideas will be
+          able to anchor their proof tokens on public blockchains (for example Polygon
+          or Base), via:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>
+            a minimal <strong>on-chain timestamp</strong> — a transaction that simply
+            records the hash and time, or
+          </li>
+          <li style={styles.listItem}>
+            an optional <strong>NFT-style proof token</strong> that carries the idea&apos;s
+            hash and metadata as a portable digital artefact.
+          </li>
+        </ul>
+        <p style={styles.paragraph}>
+          This creates a dual-layer model: local proof for everyday flow, and on-chain
+          proof for ideas that need a public, tamper-resistant anchor beyond Roota
+          itself. Blockchain stays optional — a tool to strengthen authenticity, not a
+          requirement to use the hive.
+        </p>
+      </section>
+
       {/* WHAT ROOTA IS NOT */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>What Roota is not</h2>
@@ -229,13 +261,46 @@ export default function AboutPage() {
           <li style={styles.listItem}>share public idea pages.</li>
         </ul>
         <p style={styles.paragraph}>
-          Next phases include autonomous Bee-agents, idea clustering, and
-          curated &quot;bloom boards&quot; for concepts ready for execution or
-          exploration.
+          Next phases include autonomous Bee-agents, idea clustering, curated
+          &quot;bloom boards&quot; — and optional on-chain proof for ideas that
+          need a stronger anchor in time.
         </p>
       </section>
 
-       {/* COLLABORATION */}
+      {/* MONETIZATION */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>How Roota will make money</h2>
+        <p style={styles.paragraph}>
+          Roota doesn&apos;t charge for ideas or take a cut from collaboration.
+          The hive is meant to stay an open and neutral space — a living registry
+          where proof and pulse can grow without friction.
+        </p>
+        <p style={styles.paragraph}>
+          Monetization will appear only where it adds real leverage — around the
+          registry, not inside it. These layers are optional and designed to help
+          people work with ideas more effectively:
+        </p>
+        <ul style={styles.list}>
+          <li style={styles.listItem}>
+            <strong>Private or invite-only hives</strong> for teams, studios and
+            innovation groups.
+          </li>
+          <li style={styles.listItem}>
+            <strong>Advanced proof &amp; pulse analytics</strong> for trend
+            spotting, clustering and portfolio-level insight.
+          </li>
+          <li style={styles.listItem}>
+            <strong>Bee-agents as a service</strong> — autonomous scouts that
+            monitor niches, cluster ideas and surface emerging signals.
+          </li>
+        </ul>
+        <p style={styles.paragraph}>
+          Roota keeps the public hive open. The tools you can pay for exist to
+          amplify ideas — not to gate them.
+        </p>
+      </section>
+
+      {/* COLLABORATION */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Collaboration around ideas</h2>
         <p style={styles.paragraph}>
@@ -258,9 +323,8 @@ export default function AboutPage() {
           </li>
         </ul>
         <p style={styles.paragraph}>
-          Roota itself does not take commissions and does not mediate
-          agreements. It stays a neutral ground — a clean map of what sparks
-          interest.
+          Roota itself does not take commissions and does not mediate agreements.
+          It stays a neutral ground — a clean map of what sparks interest.
         </p>
         <p style={styles.paragraph}>
           Over time, optional tools may appear: private workspaces, co-creation
@@ -269,105 +333,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-         {/* MONETIZATION */}
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>How Roota will make money</h2>
-        <p style={styles.paragraph}>
-          Roota doesn&apos;t charge for ideas or take a cut from collaboration.
-          The hive is meant to stay an open and neutral space — a living
-          registry where proof and pulse can grow without friction.
-        </p>
-        <p style={styles.paragraph}>
-          Monetization lives <em>around</em> the registry, not inside it. The
-          paid layers are optional tools for people and teams who want more
-          structure, insight or automation:
-        </p>
-
-        <p style={styles.paragraph}>
-          <strong>1) Private Hive spaces</strong> — private repositories for
-          teams, studios, funds and accelerators. Think of them as GitHub
-          private repos for ideas: companies keep their internal idea pipeline,
-          track internal signals, collaborate through branches and keep a full
-          proof + pulse history.
-        </p>
-
-        <p style={styles.paragraph}>
-          <strong>2) Advanced Pulse Analytics (Pro layer)</strong> — dashboards
-          for people who want to see the deeper structure of the hive:
-        </p>
-        <ul style={styles.list}>
-          <li style={styles.listItem}>fastest-growing pulse signals,</li>
-          <li style={styles.listItem}>
-            high-energy clusters and interaction heatmaps,
-          </li>
-          <li style={styles.listItem}>analytics by authors and themes,</li>
-          <li style={styles.listItem}>AI-powered signal mining.</li>
-        </ul>
-        <p style={styles.paragraph}>
-          This Pro layer is interesting for venture funds, product studios,
-          consulting firms and R&amp;D teams — anyone who wants to treat ideas
-          as a portfolio, not a to-do list.
-        </p>
-
-        <p style={styles.paragraph}>
-          <strong>3) Bee-Agents as a service</strong> — autonomous agents that
-          work on top of the hive:
-        </p>
-        <ul style={styles.list}>
-          <li style={styles.listItem}>find similar and related ideas,</li>
-          <li style={styles.listItem}>cluster portfolios and routes,</li>
-          <li style={styles.listItem}>suggest next steps or possible branches,</li>
-          <li style={styles.listItem}>open adjacent branches and directions,</li>
-          <li style={styles.listItem}>
-            help with &quot;completing&quot; ideas (AI builder support).
-          </li>
-        </ul>
-        <p style={styles.paragraph}>
-          Bee-agents are the core AI monetization layer: instead of taking a
-          commission, Roota sells intelligence and automation around ideas.
-        </p>
-
-        <p style={styles.paragraph}>
-          <strong>4) Matchmaking Toolkit (no commission)</strong> — Roota doesn&apos;t
-          broker deals or take a percentage. The toolkit is a SaaS layer that
-          helps investors, studios and partners:
-        </p>
-        <ul style={styles.list}>
-          <li style={styles.listItem}>
-            surface high-pulse ideas within specific niches,
-          </li>
-          <li style={styles.listItem}>spot early, weak but rising signals,</li>
-          <li style={styles.listItem}>
-            generate &quot;bloom candidates&quot; lists — ideas that might be
-            ready for execution or deeper exploration.
-          </li>
-        </ul>
-        <p style={styles.paragraph}>
-          Anyone can manually sort ideas by pulse. The toolkit goes further by
-          turning scattered signals into patterns: clusters, velocity and early
-          swarms of attention.
-        </p>
-
-        <p style={styles.paragraph}>
-          <strong>5) Enterprise &amp; studio setups</strong> — for larger
-          players (VC funds, corporate innovation labs, product studios, R&amp;D
-          teams), Roota can offer:
-        </p>
-        <ul style={styles.list}>
-          <li style={styles.listItem}>private installations and dedicated hives,</li>
-          <li style={styles.listItem}>custom Bee-agent configurations,</li>
-          <li style={styles.listItem}>
-            integrations with existing tools (Notion, Jira, internal wikis),
-          </li>
-          <li style={styles.listItem}>white-label options.</li>
-        </ul>
-
-        <p style={styles.paragraph}>
-    The public idea registry stays open and neutral. Paid layers exist only to give more leverage to those who work deeply with ideas — never to restrict access.
-        </p>
-      </section>
-
-             {/* BACK LINK */}
+      {/* BACK LINK */}
       <Link href="/" style={styles.backLink}>
         <span>← Back to live ideas stream</span>
       </Link>
