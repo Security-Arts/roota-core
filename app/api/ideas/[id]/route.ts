@@ -1,8 +1,8 @@
-// app/api/ideas/[id]/pulse/route.ts
+// app/api/ideas/[id]/route.ts
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function POST(
+export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
@@ -15,75 +15,19 @@ export async function POST(
     );
   }
 
-  let body: any;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "Invalid JSON" },
-      { status: 400 }
-    );
-  }
-
-  const delta = Number(body?.delta);
-  if (delta !== 1 && delta !== -1) {
-    return NextResponse.json(
-      { ok: false, error: "delta must be +1 or -1" },
-      { status: 400 }
-    );
-  }
-
-  // 1) Читаємо поточне значення pulse
-  const { data: idea, error: ideaError } = await supabase
+  const { data, error } = await supabase
     .from("ideas")
-    .select("id, pulse")
+    .select("*")
     .eq("id", id)
     .single();
 
-  if (ideaError || !idea) {
-    console.error("pulse: idea not found or select error:", ideaError);
+  if (error || !data) {
+    console.error("GET /api/ideas/[id] error:", error);
     return NextResponse.json(
       { ok: false, error: "Idea not found" },
       { status: 404 }
     );
   }
 
-  const currentPulse = idea.pulse ?? 0;
-  const newPulse = currentPulse + delta;
-
-  // 2) Оновлюємо поле pulse в ideas
-  const { error: updateError } = await supabase
-    .from("ideas")
-    .update({ pulse: newPulse })
-    .eq("id", id);
-
-  if (updateError) {
-    console.error("pulse: update error:", updateError);
-    return NextResponse.json(
-      { ok: false, error: "Failed to update pulse" },
-      { status: 500 }
-    );
-  }
-
-  // 3) Логуємо подію в pulse_events
-  const { error: eventError } = await supabase
-    .from("pulse_events")
-    .insert({
-      idea_id: id,
-      delta,
-    });
-
-  if (eventError) {
-    // важливо: навіть якщо event не записався, pulse уже оновлений
-    console.error("pulse: event insert error (pulse updated anyway):", eventError);
-  }
-
-  return NextResponse.json(
-    {
-      ok: true,
-      idea_id: id,
-      pulse: newPulse,
-    },
-    { status: 200 }
-  );
+  return NextResponse.json(data, { status: 200 });
 }
