@@ -33,9 +33,10 @@ export async function POST(
     );
   }
 
+  // 1) читаємо поточне значення + hive_id
   const { data: idea, error: ideaError } = await supabase
     .from("ideas")
-    .select("id, pulse")
+    .select("id, pulse, hive_id")
     .eq("id", id)
     .single();
 
@@ -50,6 +51,7 @@ export async function POST(
   const currentPulse = idea.pulse ?? 0;
   const newPulse = currentPulse + delta;
 
+  // 2) оновлюємо поле pulse в ideas
   const { error: updateError } = await supabase
     .from("ideas")
     .update({ pulse: newPulse })
@@ -63,11 +65,22 @@ export async function POST(
     );
   }
 
+  // 3) логуємо подію в pulse_events
+  const userAgent = req.headers.get("user-agent") ?? null;
+
   const { error: eventError } = await supabase
     .from("pulse_events")
     .insert({
       idea_id: id,
+      hive_id: idea.hive_id ?? null,
       delta,
+      source: "ui",          // зараз усе йде з інтерфейсу
+      user_id: null,         // додамо пізніше, коли буде auth
+      agent_id: null,        // для Bee-агентів
+      context: {
+        user_agent: userAgent,
+        via: "roota-core-ui",
+      },
     });
 
   if (eventError) {
