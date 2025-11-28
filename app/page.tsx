@@ -27,7 +27,7 @@ export default function LandingPage() {
       fontFamily:
         "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
       width: "100%",
-      maxWidth: 900,
+      maxWidth: 1400,
       margin: "0 auto",
       boxSizing: "border-box" as const,
     },
