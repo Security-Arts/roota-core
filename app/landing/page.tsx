@@ -107,20 +107,19 @@ export default function LandingPage() {
       {/* HEADER */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>Roota</span>
-        <span>Ideas Stock Exchange — Proof & Pulse</span>
+        <span>Ideas Stock Exchange — Proof &amp; Pulse</span>
       </div>
 
       <h1 style={styles.title}>Ideas deserve a home, not a feed.</h1>
 
       <p style={styles.subtitle}>
-        Roota turns raw thoughts into timestamped records with <strong>proof</strong>{' '}
-        and <strong>pulse</strong>.  
-        It’s a live hive — a place where ideas take root, grow and become visible
-        to people who care.
+        Roota turns raw thoughts into timestamped records with{" "}
+        <strong>proof</strong> and <strong>pulse</strong>. It’s a live hive — a
+        place where ideas take root, grow and become visible to people who care.
       </p>
 
       <div style={styles.ctaRow}>
-        <Link href="/" style={styles.ctaButtonPrimary}>
+        <Link href="/hive" style={styles.ctaButtonPrimary}>
           Enter the Hive
         </Link>
         <Link href="/about" style={styles.ctaButtonSecondary}>
@@ -133,21 +132,25 @@ export default function LandingPage() {
         <h2 style={styles.sectionTitle}>How Roota works</h2>
 
         <p style={styles.paragraph}>
-          Every idea in Roota becomes a structured, verifiable entry — not a disappearing note.
+          Every idea in Roota becomes a structured, verifiable entry — not a
+          disappearing note.
         </p>
 
         <ul style={styles.list}>
           <li style={styles.listItem}>
-            📌 <strong>Proof token</strong> — a hash that anchors your idea in time.
+            📌 <strong>Proof token</strong> — a hash that anchors your idea in
+            time.
           </li>
           <li style={styles.listItem}>
             ⚡ <strong>Pulse</strong> — a signal of attention and momentum.
           </li>
           <li style={styles.listItem}>
-            🌱 <strong>Branches</strong> — related ideas that expand or refine the original.
+            🌱 <strong>Branches</strong> — related ideas that expand or refine
+            the original.
           </li>
           <li style={styles.listItem}>
-            🐝 <strong>Bees</strong> — people and agents who interact, explore and build.
+            🐝 <strong>Bees</strong> — people and agents who interact, explore
+            and build.
           </li>
         </ul>
       </section>
@@ -157,48 +160,40 @@ export default function LandingPage() {
         <h2 style={styles.sectionTitle}>Why it matters</h2>
 
         <p style={styles.paragraph}>
-          Most ideas die in chats and notebooks. Roota gives them a place to live — 
-          a transparent, timestamped history of how they evolve.
+          Most ideas die in chats and notebooks. Roota gives them a place to
+          live — a transparent, timestamped history of how they evolve.
         </p>
 
         <p style={styles.paragraph}>
-          The hive turns scattered thoughts into a map of signals: 
-          what's gaining attention, which directions grow, and where early energy forms.
+          The hive turns scattered thoughts into a map of signals: what&apos;s
+          gaining attention, which directions grow, and where early energy
+          forms.
         </p>
       </section>
-      {/* SECTION: Why Roota Exists */}
-<section style={styles.section}>
-  <h2 style={styles.sectionTitle}>Why Roota Exists</h2>
 
-  <p style={styles.paragraph}>
-    Most ideas don’t fail — they simply never get a chance to live. They appear
-    in messages, notebooks and late-night thoughts… and vanish before anyone
-    ever sees their potential.
-  </p>
+      {/* SECTION: Why Roota exists (heartbeat vs applause) */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Why Roota exists</h2>
 
-  <p style={styles.paragraph}>
-    Roota exists to give ideas a home — a living environment where they gather
-    <strong> proof</strong>, build <strong>pulse</strong>, and attract the
-    attention of people who actually feel them.
-  </p>
+        <p style={styles.paragraph}>
+          Most platforms treat ideas like a show: you launch, get a burst of
+          attention, and then the crowd moves on. That&apos;s applause.
+        </p>
 
-  <p style={styles.paragraph}>
-    On other platforms, ideas compete for <strong>applause</strong>.  
-    On Roota, ideas grow through <strong>heartbeat</strong>.
-  </p>
+        <p style={styles.paragraph}>
+          Roota is built for something quieter and deeper —{" "}
+          <strong>serцебиття ідей</strong>. Instead of one loud launch day, it
+          tracks whether an idea keeps attracting energy over time: new
+          branches, new votes, new proofs.
+        </p>
 
-  <p style={styles.paragraph}>
-    Applause is momentary — a spike of attention.  
-    Heartbeat is persistent — it shows life, resonance, and momentum.
-  </p>
-
-  <p style={styles.paragraph}>
-    Roota is not a stage. It’s a hive — warm, collective, alive. A place where 
-    ideas cross-pollinate instead of fight for visibility, and where attention
-    accumulates as creative energy.
-  </p>
-</section>
-
+        <p style={styles.paragraph}>
+          If Product Hunt is about the moment everyone claps, Roota is about the{" "}
+          <strong>pulse that doesn&apos;t stop</strong>. It&apos;s less “look
+          what I shipped” and more “дивись, ця думка все ще жива, і до неї
+          повертаються”.
+        </p>
+      </section>
 
       {/* SECTION: Roadmap snapshot */}
       <section style={styles.section}>
@@ -206,21 +201,21 @@ export default function LandingPage() {
 
         <ul style={styles.list}>
           <li style={styles.listItem}>🤖 Autonomous Bee-agents</li>
-          <li style={styles.listItem}>📊 Pulse & proof analytics dashboards</li>
-          <li style={styles.listItem}>🎨 Idea clustering & bloom boards</li>
-          <li style={styles.listItem}>🔒 Private hives for teams & studios</li>
+          <li style={styles.listItem}>📊 Pulse &amp; proof analytics dashboards</li>
+          <li style={styles.listItem}>🎨 Idea clustering &amp; bloom boards</li>
+          <li style={styles.listItem}>🔒 Private hives for teams &amp; studios</li>
           <li style={styles.listItem}>🌐 Matchmaking toolkit for investors</li>
         </ul>
 
         <p style={styles.paragraph}>
-          Roota keeps the public hive open.  
-          Paid tools exist to amplify ideas — not to gate them.
+          Roota keeps the public hive open. Paid tools exist to{" "}
+          <strong>amplify ideas</strong> — not to gate them.
         </p>
       </section>
 
       {/* BOTTOM CTA */}
       <div style={styles.ctaRow}>
-        <Link href="/" style={styles.ctaButtonPrimary}>
+        <Link href="/hive" style={styles.ctaButtonPrimary}>
           Explore live ideas
         </Link>
         <Link href="/about" style={styles.ctaButtonSecondary}>
