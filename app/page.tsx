@@ -32,6 +32,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 32,
+    gap: 16,
+  },
+  brandLink: {
+    textDecoration: "none",
+    color: "inherit",
   },
   brand: {
     display: "flex",
@@ -66,6 +71,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#9ca3af",
   },
 
+  rightTop: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+  },
+
   nav: {
     display: "flex",
     gap: 6,
@@ -81,14 +92,25 @@ const styles: { [key: string]: React.CSSProperties } = {
     textDecoration: "none",
     border: "1px solid transparent",
   },
-  navLinkActive: {
+  navLinkIdle: {
+    color: "#9ca3af",
+  },
+  navLinkAccent: {
     borderColor: "#1d4ed8",
     background:
       "radial-gradient(circle at top left, rgba(37,99,235,0.45), transparent 60%) #020617",
     color: "#e5e7eb",
   },
-  navLinkIdle: {
+
+  langToggle: {
+    fontSize: 11,
     color: "#9ca3af",
+    display: "flex",
+    gap: 4,
+  },
+  langActive: {
+    color: "#e5e7eb",
+    fontWeight: 500,
   },
 
   badgeRow: {
@@ -233,7 +255,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 4,
   },
 
-  // PH vs Roota
   compareGrid: {
     display: "grid",
     gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)",
@@ -263,7 +284,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#9ca3af",
   },
 
-  // Personas
   personaGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(3, minmax(0,1fr))",
@@ -284,7 +304,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 4,
   },
 
-  // Live signals
   liveHeaderRow: {
     display: "flex",
     justifyContent: "space-between",
@@ -357,6 +376,14 @@ export default function LandingPage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loadingIdeas, setLoadingIdeas] = useState(false);
 
+  // anchor scroll helper
+  const scrollToHive = () => {
+    const el = document.getElementById("hive-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   useEffect(() => {
     let cancelled = false;
 
@@ -368,7 +395,6 @@ export default function LandingPage() {
         const data = await res.json();
         const list: Idea[] = data?.ideas ?? data ?? [];
 
-        // sort by created_at desc, take top 4
         const sorted = [...list].sort(
           (a, b) =>
             new Date(b.created_at).getTime() -
@@ -392,44 +418,48 @@ export default function LandingPage() {
     <main style={styles.page}>
       {/* TOP BAR */}
       <div style={styles.topBar}>
-        <Link href="/" style={styles.brand}>
-          <div style={styles.brandMark}>⚡</div>
-          <div style={styles.brandText}>
-            <span style={styles.brandTitle}>ROOTA</span>
-            <span style={styles.brandTagline}>
-              Ideas Stock Exchange · Proof &amp; Pulse
-            </span>
+        <Link href="/landing" style={styles.brandLink}>
+          <div style={styles.brand}>
+            <div style={styles.brandMark}>⚡</div>
+            <div style={styles.brandText}>
+              <span style={styles.brandTitle}>ROOTA</span>
+              <span style={styles.brandTagline}>
+                Ideas Stock Exchange · Proof &amp; Pulse
+              </span>
+            </div>
           </div>
         </Link>
 
-        <nav style={styles.nav}>
-          <span
-            style={{
-              ...styles.navLinkBase,
-              ...styles.navLinkActive,
-            }}
-          >
-            Landing
-          </span>
-          <Link
-            href="/"
-            style={{
-              ...styles.navLinkBase,
-              ...styles.navLinkIdle,
-            }}
-          >
-            Hive
-          </Link>
-          <Link
-            href="/about"
-            style={{
-              ...styles.navLinkBase,
-              ...styles.navLinkIdle,
-            }}
-          >
-            About
-          </Link>
-        </nav>
+        <div style={styles.rightTop}>
+          <div style={styles.langToggle}>
+            <span style={styles.langActive}>EN</span>
+            <span>·</span>
+            <span>UA</span>
+          </div>
+
+          <nav style={styles.nav}>
+            <button
+              type="button"
+              onClick={scrollToHive}
+              style={{
+                ...styles.navLinkBase,
+                ...styles.navLinkAccent,
+                cursor: "pointer",
+              }}
+            >
+              Hive
+            </button>
+            <Link
+              href="/about"
+              style={{
+                ...styles.navLinkBase,
+                ...styles.navLinkIdle,
+              }}
+            >
+              About
+            </Link>
+          </nav>
+        </div>
       </div>
 
       {/* HERO */}
@@ -449,9 +479,13 @@ export default function LandingPage() {
           </p>
 
           <div style={styles.ctaRow}>
-            <Link href="/" style={styles.ctaButtonPrimary}>
+            <button
+              type="button"
+              onClick={scrollToHive}
+              style={{ ...styles.ctaButtonPrimary, cursor: "pointer" }}
+            >
               Enter the Hive
-            </Link>
+            </button>
             <Link href="/about" style={styles.ctaButtonSecondary}>
               Why Roota exists
             </Link>
@@ -461,21 +495,21 @@ export default function LandingPage() {
         <aside style={styles.heroSideCard}>
           <div style={styles.heroSideTitle}>Heartbeat, not applause</div>
           <p>
-            Product launches chase applause — a spike of attention and швидкий
-            забуття. Roota фіксує інше: серцебиття ідей. Кожен proof додає
-            шар часу, а кожен pulse — порцію енергії.
+            Product launches chase applause — a spike of attention, then
+            silence. Roota tracks the heartbeat of ideas: every proof fixes a
+            moment in time, every pulse adds energy.
           </p>
           <div style={styles.heroSideRow}>
             <div>
-              <div style={styles.heroSideLabel}>Signals you see</div>
+              <div style={styles.heroSideLabel}>Visible signals</div>
               <div style={styles.heroSideValue}>
-                Proof tokens · Pulse · Live ideas stream
+                Proof tokens, pulse changes, live idea pages.
               </div>
             </div>
             <div>
-              <div style={styles.heroSideLabel}>Signals you don&apos;t see</div>
+              <div style={styles.heroSideLabel}>Missing on purpose</div>
               <div style={styles.heroSideValue}>
-                Screenshots, pitch decks, vanity metrics — тут їх немає.
+                Screenshots, pitch decks and vanity likes don&apos;t live here.
               </div>
             </div>
           </div>
@@ -487,36 +521,40 @@ export default function LandingPage() {
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
           <div style={styles.sectionHint}>
-            Ideas die in chats and notebooks. Roota keeps their heartbeat.
+            Ideas usually die in chats and notebooks. Roota keeps their
+            heartbeat.
           </div>
         </div>
 
         <div style={styles.twoColText}>
           <div>
             <p style={styles.paragraph}>
-              Більшість ідей живе у фрагментах: notes, Notion-сторінки,
-              телеграм-чати, голосові. Їх складно показати, неможливо відстежити
-              і майже нереально довести, що вони взагалі існували.
+              Most ideas live in fragments: notes, Notion pages, chat threads,
+              voice messages. They&apos;re hard to show, impossible to track and
+              nearly impossible to prove.
             </p>
             <p style={styles.paragraph}>
-              Roota перетворює думки на запис:{" "}
-              <strong>timestamped proof token</strong>, публічний опис і{" "}
-              <strong>pulse</strong>, який показує, як змінюється увага.
+              Roota turns thoughts into records: a{" "}
+              <strong>timestamped proof token</strong>, public context and{" "}
+              <strong>pulse</strong> that shows how attention moves.
             </p>
           </div>
 
           <div>
             <p style={styles.paragraph}>
-              Разом це створює живий реєстр ідей — не список лончів, а карту
-              того, про що думають люди і що болить просто зараз.
+              Together this becomes a living registry of ideas — not a list of
+              launches, but a map of what people care about and when.
             </p>
             <ul style={styles.miniList}>
-              <li style={styles.miniItem}>⏱ Proof — “ця ідея була тут, тоді”.</li>
               <li style={styles.miniItem}>
-                ⚡ Pulse — “наскільки сильно вона резонує”.
+                ⏱ Proof — “this idea existed here, in this form, on this date”.
               </li>
               <li style={styles.miniItem}>
-                🐝 Hive — простір, де ідеї запилюють одна одну, а не змагаються.
+                ⚡ Pulse — “this is how strongly it resonates over time”.
+              </li>
+              <li style={styles.miniItem}>
+                🐝 Hive — a space where ideas cross-pollinate instead of
+                compete.
               </li>
             </ul>
           </div>
@@ -528,7 +566,8 @@ export default function LandingPage() {
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Heartbeat, not applause</h2>
           <div style={styles.sectionHint}>
-            Product Hunt показує запуск. Roota показує життя до й після.
+            Product Hunt shows launches. Roota shows the life of ideas before
+            and after.
           </div>
         </div>
 
@@ -537,13 +576,13 @@ export default function LandingPage() {
             <div style={styles.compareTag}>Launch stage</div>
             <div style={styles.compareTitle}>Product Hunt</div>
             <p style={styles.paragraph}>
-              Каталог готових продуктів. День уваги, апвоути, скріншоти,
-              красиві лончі.
+              A catalogue of finished products. One day of attention, upvotes,
+              screenshots and a clean launch.
             </p>
             <ul style={styles.miniList}>
-              <li style={styles.miniItem}>“Ми вже зробили”.</li>
-              <li style={styles.miniItem}>Фокус на хайпі й трафіку.</li>
-              <li style={styles.miniItem}>Аплодисменти — потім тиша.</li>
+              <li style={styles.miniItem}>“We already built it.”</li>
+              <li style={styles.miniItem}>Focus on hype and traffic.</li>
+              <li style={styles.miniItem}>Applause, then scroll and forget.</li>
             </ul>
           </div>
 
@@ -551,16 +590,16 @@ export default function LandingPage() {
             <div style={styles.compareTag}>Idea stage</div>
             <div style={styles.compareTitle}>Roota</div>
             <p style={styles.paragraph}>
-              Середовище народження ідей. Proof, pulse і слід того, як думка
-              стає напрямком.
+              A growth space for ideas. Proof, pulse and a visible trail of how
+              a thought becomes a direction.
             </p>
             <ul style={styles.miniList}>
-              <li style={styles.miniItem}>“Воно тільки починає рости”.</li>
+              <li style={styles.miniItem}>“It&apos;s just starting to grow.”</li>
               <li style={styles.miniItem}>
-                Фокус на життєздатності та енергії, а не на лайках.
+                Focus on viability and energy, not likes.
               </li>
               <li style={styles.miniItem}>
-                Серцебиття ідей — не одноразовий пост.
+                Heartbeat of ideas — not a one-off post.
               </li>
             </ul>
           </div>
@@ -572,7 +611,8 @@ export default function LandingPage() {
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Who uses the hive</h2>
           <div style={styles.sectionHint}>
-            Roota не продає ідеї. Вона показує, що живе і куди росте.
+            Roota doesn&apos;t sell ideas. It reveals what&apos;s alive and
+            where energy gathers.
           </div>
         </div>
 
@@ -580,31 +620,31 @@ export default function LandingPage() {
           <div style={styles.personaCard}>
             <div style={styles.personaTitle}>Makers & founders</div>
             <p>
-              Фіксують сирі концепти, дивляться, що резонує, і перетворюють{" "}
-              bloom-ідеї на проекти, продукти чи side-hustles.
+              Capture raw concepts, watch which ones resonate, and turn bloom
+              candidates into projects, products or side ventures.
             </p>
           </div>
 
           <div style={styles.personaCard}>
             <div style={styles.personaTitle}>Studios & teams</div>
             <p>
-              Ведуть власні приватні hives, трекають внутрішні сигнали, бачать,
-              які напрямки набирають енергію в команді.
+              Run private hives, track internal signals and see which
+              directions organically gain energy inside the group.
             </p>
           </div>
 
           <div style={styles.personaCard}>
             <div style={styles.personaTitle}>Funds & scouts</div>
             <p>
-              Дивляться на ранні сигнали — ніші, де proof + pulse ростуть ще до
-              того, як з’являються пітчдеки.
+              Look at early signals — pockets where proof + pulse rise before
+              pitch decks appear on the surface.
             </p>
           </div>
         </div>
       </section>
 
-      {/* LIVE SIGNALS */}
-      <section style={styles.section}>
+      {/* LIVE SIGNALS / HIVE */}
+      <section id="hive-section" style={styles.section}>
         <div style={styles.liveHeaderRow}>
           <div style={styles.sectionTitle}>Live signals from the hive</div>
           <div style={styles.sectionHint}>
@@ -658,15 +698,19 @@ export default function LandingPage() {
       <div style={styles.bottomCta}>
         <div style={{ maxWidth: 520 }}>
           <p style={styles.paragraph}>
-            Roota keeps the public hive open and neutral. Proof and pulse are
-            public — paywalls з’являються тільки там, де вони дають реальне
-            плече: приватні hives, аналітика, Bee-agents.
+            Roota keeps the public hive open and neutral. Proof and pulse stay
+            public — paid layers appear only where they add real leverage:
+            private hives, analytics and Bee-agents.
           </p>
         </div>
         <div style={styles.ctaRow}>
-          <Link href="/" style={styles.ctaButtonPrimary}>
+          <button
+            type="button"
+            onClick={scrollToHive}
+            style={{ ...styles.ctaButtonPrimary, cursor: "pointer" }}
+          >
             Explore the Hive
-          </Link>
+          </button>
           <Link href="/about" style={styles.ctaButtonSecondary}>
             Read the full story
           </Link>
