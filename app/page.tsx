@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { RootaLogo } from "@/components/RootaLogo";
 
 type Idea = {
   id: string;
@@ -12,49 +13,147 @@ type Idea = {
   pulse: number | null;
 };
 
-// Простий SVG-логотип Roota з двома листками вгору
-const RootaLogo: React.FC<{ size?: number }> = ({ size = 32 }) => {
-  const viewBoxSize = 64;
+type Lang = "en" | "es" | "ja";
 
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
-      aria-hidden="true"
-    >
-      {/* Стебло */}
-      <path
-        d="M32 40 C31.5 36 31.3 32 31.3 28 C31.3 26.8 32.7 26.8 32.7 28 C32.7 32 32.5 36 32 40 Z"
-        fill="#4ade80"
-      />
-      {/* Лівий листок */}
-      <path
-        d="M30 28 C22 26, 20 20, 22 16 C26 16, 30 18, 32 22 C31 24, 30.5 26, 30 28 Z"
-        fill="#4ade80"
-      />
-      {/* Правий листок */}
-      <path
-        d="M34 28 C42 26, 44 20, 42 16 C38 16, 34 18, 32 22 C33 24, 33.5 26, 34 28 Z"
-        fill="#22c55e"
-      />
-      {/* Легке світіння-ореол */}
-      <circle
-        cx="32"
-        cy="24"
-        r="18"
-        fill="url(#rootalight)"
-        opacity={0.7}
-      />
-      <defs>
-        <radialGradient id="rootalight" cx="50%" cy="30%" r="70%">
-          <stop offset="0%" stopColor="#bbf7d0" />
-          <stop offset="40%" stopColor="#4ade80" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-    </svg>
-  );
+const copy: Record<
+  Lang,
+  {
+    appTitle: string;
+    tagline: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    heroCtaPrimary: string;
+    heroCtaSecondary: string;
+    whyTitle: string;
+    whyHint: string;
+    whyP1: string;
+    whyP2: string;
+    whyP3: string;
+    hbTitle: string;
+    hbHint: string;
+    hbLaunchTitle: string;
+    hbLaunchBody: string;
+    hbRootaTitle: string;
+    hbRootaBody: string;
+    whoTitle: string;
+    whoHint: string;
+    bottomText: string;
+    liveTitle: string;
+    liveHint: string;
+    liveEmpty: string;
+    liveMetaSuffix: string;
+    exploreHive: string;
+    readStory: string;
+  }
+> = {
+  en: {
+    appTitle: "Roota · Ideas Stock Exchange",
+    tagline: "A live registry of ideas with proof and pulse.",
+    heroTitle: "Ideas deserve a home, not a feed.",
+    heroSubtitle:
+      "Roota turns raw thoughts into timestamped records with proof and pulse. It’s a live hive — a place where ideas take root, grow and stay visible to people who actually care.",
+    heroCtaPrimary: "Enter the Hive",
+    heroCtaSecondary: "Why Roota exists",
+    whyTitle: "Why Roota exists",
+    whyHint: "Ideas usually die in chats and notebooks. Roota keeps their heartbeat.",
+    whyP1:
+      "Most ideas live in fragments: notes, Notion pages, chat threads, voice messages. They’re hard to show, impossible to track and nearly impossible to prove.",
+    whyP2:
+      "Roota turns thoughts into records: a timestamped proof token, public context and pulse that shows how attention moves.",
+    whyP3:
+      "Together this becomes a living registry of ideas — not a list of launches, but a map of what people care about and when.",
+    hbTitle: "Heartbeat, not applause",
+    hbHint: "Launches chase applause. Roota listens to the ongoing heartbeat of ideas.",
+    hbLaunchTitle: "Launch mode",
+    hbLaunchBody:
+      "A polished announcement, one spike of attention, screenshots and a day of noise. Then everyone scrolls away.",
+    hbRootaTitle: "Roota mode",
+    hbRootaBody:
+      "A growth space for ideas. Proof, pulse and a visible trail of how a thought becomes a direction — long before or after a launch.",
+    whoTitle: "Who uses the hive",
+    whoHint:
+      "Roota doesn’t sell ideas. It reveals what’s alive and where energy quietly gathers.",
+    bottomText:
+      "Roota keeps the public hive open and neutral. Proof and pulse stay visible — paid layers appear only where they add real leverage: private hives, analytics and Bee-agents.",
+    liveTitle: "Live signals from the hive",
+    liveHint: "Realtime pulse — no screenshots, just what’s alive now.",
+    liveEmpty: "No signals yet. Be the first bee to publish an idea.",
+    liveMetaSuffix: "· proof & pulse on record",
+    exploreHive: "Explore the Hive",
+    readStory: "Read the full story",
+  },
+  es: {
+    appTitle: "Roota · Bolsa de Ideas",
+    tagline: "Un registro vivo de ideas con prueba y pulso.",
+    heroTitle: "Las ideas merecen un hogar, no solo un feed.",
+    heroSubtitle:
+      "Roota convierte pensamientos crudos en registros con marca de tiempo, prueba y pulso. Una colmena viva donde las ideas echan raíces y se vuelven visibles para quien realmente se preocupa.",
+    heroCtaPrimary: "Entrar a la colmena",
+    heroCtaSecondary: "Por qué existe Roota",
+    whyTitle: "Por qué existe Roota",
+    whyHint:
+      "La mayoría de las ideas mueren en chats y cuadernos. Roota conserva su latido.",
+    whyP1:
+      "Muchas ideas viven en fragmentos: notas, páginas sueltas, hilos de chat, audios. Son difíciles de mostrar, de seguir y casi imposibles de probar.",
+    whyP2:
+      "Roota convierte pensamientos en registros: un token de prueba con marca de tiempo, contexto público y un pulso que muestra cómo se mueve la atención.",
+    whyP3:
+      "Así se forma un registro vivo de ideas — no una lista de lanzamientos, sino un mapa de lo que importa y cuándo.",
+    hbTitle: "Latido, no aplausos",
+    hbHint: "Los lanzamientos buscan aplausos. Roota escucha el latido continuo de las ideas.",
+    hbLaunchTitle: "Modo lanzamiento",
+    hbLaunchBody:
+      "Un anuncio pulido, un pico de atención, capturas de pantalla y un día de ruido. Después, todos deslizan hacia abajo.",
+    hbRootaTitle: "Modo Roota",
+    hbRootaBody:
+      "Un espacio de crecimiento para ideas. Prueba, pulso y un rastro visible de cómo un pensamiento se convierte en dirección.",
+    whoTitle: "Quién usa la colmena",
+    whoHint:
+      "Roota no vende ideas. Muestra qué está vivo y dónde se junta la energía.",
+    bottomText:
+      "Roota mantiene la colmena pública abierta y neutral. La prueba y el pulso son visibles — las capas de pago solo aparecen donde añaden verdadera ventaja: colmenas privadas, analíticas y agentes Bee.",
+    liveTitle: "Señales en vivo de la colmena",
+    liveHint: "Pulso en tiempo real — sin capturas, solo lo que está vivo ahora.",
+    liveEmpty: "Todavía no hay señales. Sé la primera abeja en publicar una idea.",
+    liveMetaSuffix: "· prueba y pulso registrados",
+    exploreHive: "Explorar la colmena",
+    readStory: "Leer la historia completa",
+  },
+  ja: {
+    appTitle: "Roota · アイデア取引所",
+    tagline: "証拠とパルスを持つ生きたアイデアレジストリ。",
+    heroTitle: "アイデアにはフィードではなく居場所が必要だ。",
+    heroSubtitle:
+      "Roota は、生の思いつきをタイムスタンプ付きのレコードに変えます。Proof と Pulse を持つハイブとして、アイデアが根を張り、成長し、本当に気にする人の目に触れ続けます。",
+    heroCtaPrimary: "ハイブに入る",
+    heroCtaSecondary: "Roota が存在する理由",
+    whyTitle: "Roota が存在する理由",
+    whyHint: "多くのアイデアはチャットやメモで死んでいく。Roota はその鼓動を残します。",
+    whyP1:
+      "アイデアの多くは断片として存在します。メモ、ノート、チャット、ボイスメッセージ。見せにくく、追跡しづらく、証明することはほぼ不可能です。",
+    whyP2:
+      "Roota は思考をレコードに変えます。タイムスタンプ付きの Proof トークン、公開コンテキスト、そして注意の動きを示す Pulse。",
+    whyP3:
+      "それらが合わさることで、生きたアイデアレジストリになります。ローンチのリストではなく、いつ・何に人々が心を動かされているかの地図です。",
+    hbTitle: "拍手ではなく鼓動",
+    hbHint: "ローンチは拍手を追いかける。Roota はアイデアの鼓動を聞き続ける。",
+    hbLaunchTitle: "ローンチモード",
+    hbLaunchBody:
+      "磨き上げられた発表、一瞬の注目、スクリーンショットと一日のノイズ。その後はスクロールされて終わります。",
+    hbRootaTitle: "Roota モード",
+    hbRootaBody:
+      "アイデアのための成長空間。Proof と Pulse、そして思考が方向性になるまでの可視化された軌跡。",
+    whoTitle: "ハイブを使う人たち",
+    whoHint: "Roota はアイデアを売る場ではありません。何が生きていて、どこにエネルギーが集まるかを見せます。",
+    bottomText:
+      "Roota はパブリックハイブを開かれた中立な場として保ちます。Proof と Pulse は公開され、課金レイヤーは本当にレバレッジを生む場所だけに現れます：プライベートハイブ、アナリティクス、Bee エージェントなど。",
+    liveTitle: "ハイブからのライブシグナル",
+    liveHint: "リアルタイムの Pulse — スクリーンショットではなく、今生きているものだけ。",
+    liveEmpty: "まだシグナルはありません。最初の蜂としてアイデアを投稿しましょう。",
+    liveMetaSuffix: "· 証拠とパルスが記録されています",
+    exploreHive: "ハイブを探検する",
+    readStory: "ストーリーを読む",
+  },
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
@@ -69,14 +168,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: "100%",
     maxWidth: 1100,
     margin: "0 auto",
-    boxSizing: "border-box",
+    boxSizing: "border-box" as const,
   },
 
   topBar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 32,
+    marginBottom: 28,
     gap: 16,
   },
   brandLink: {
@@ -86,20 +185,17 @@ const styles: { [key: string]: React.CSSProperties } = {
   brand: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
+    gap: 12,
   },
   brandMark: {
-    width: 32,
-    height: 32,
-    borderRadius: "999px",
-    background:
-      "radial-gradient(circle at 30% 20%, rgba(96,165,250,0.9), transparent 60%)",
-    border: "1px solid rgba(129,140,248,0.8)",
-    boxShadow: "0 0 0 1px rgba(15,23,42,0.9), 0 12px 35px rgba(15,23,42,0.9)",
+    width: 44,
+    height: 44,
+    borderRadius: 18,
+    background: "#020617",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden",
+    boxShadow: "0 12px 30px rgba(15,23,42,0.9)",
   },
   brandText: {
     display: "flex",
@@ -109,7 +205,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   brandTitle: {
     fontSize: 16,
     fontWeight: 600,
-    letterSpacing: "0.22em",
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
   },
   brandTagline: {
     fontSize: 11,
@@ -120,6 +217,26 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: "flex",
     alignItems: "center",
     gap: 14,
+  },
+
+  langToggle: {
+    fontSize: 11,
+    color: "#9ca3af",
+    display: "flex",
+    gap: 4,
+  },
+  langButton: {
+    border: "none",
+    background: "transparent",
+    padding: "2px 6px",
+    borderRadius: 999,
+    cursor: "pointer",
+    fontSize: 11,
+  },
+  langActive: {
+    backgroundColor: "rgba(15,23,42,0.9)",
+    color: "#e5e7eb",
+    border: "1px solid #1d4ed8",
   },
 
   nav: {
@@ -136,9 +253,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: 999,
     textDecoration: "none",
     border: "1px solid transparent",
-  },
-  navLinkIdle: {
+    background: "transparent",
     color: "#9ca3af",
+    cursor: "pointer",
   },
   navLinkAccent: {
     borderColor: "#1d4ed8",
@@ -147,24 +264,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#e5e7eb",
   },
 
-  langToggle: {
-    fontSize: 11,
-    color: "#9ca3af",
-    display: "flex",
-    gap: 4,
-  },
-  langActive: {
-    color: "#e5e7eb",
-    fontWeight: 500,
-  },
-
   badgeRow: {
     display: "flex",
     gap: 8,
     alignItems: "center",
     marginBottom: 14,
     fontSize: 11,
-    textTransform: "uppercase",
+    textTransform: "uppercase" as const,
     letterSpacing: "0.12em",
     color: "#a5b4fc",
   },
@@ -192,7 +298,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   subtitle: {
     fontSize: 16,
     color: "#cbd5f5",
-    maxWidth: 620,
+    maxWidth: 640,
     lineHeight: 1.6,
     marginBottom: 22,
   },
@@ -201,7 +307,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginTop: 4,
     display: "flex",
     gap: 14,
-    flexWrap: "wrap",
+    flexWrap: "wrap" as const,
   },
   ctaButtonPrimary: {
     borderRadius: 999,
@@ -235,7 +341,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   heroSideTitle: {
     fontSize: 13,
-    textTransform: "uppercase",
+    textTransform: "uppercase" as const,
     letterSpacing: "0.16em",
     color: "#a5b4fc",
     marginBottom: 6,
@@ -270,7 +376,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 14,
     fontWeight: 600,
     color: "#e5e7eb",
-    textTransform: "uppercase",
+    textTransform: "uppercase" as const,
     letterSpacing: "0.14em",
   },
   sectionHint: {
@@ -411,15 +517,18 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderTop: "1px solid #1f2937",
     display: "flex",
     justifyContent: "space-between",
-    flexWrap: "wrap",
+    flexWrap: "wrap" as const,
     gap: 16,
     alignItems: "center",
   },
 };
 
-export default function LandingPage() {
+export default function RootaHomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loadingIdeas, setLoadingIdeas] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
+
+  const t = copy[lang];
 
   const scrollToHive = () => {
     const el = document.getElementById("hive-section");
@@ -465,24 +574,30 @@ export default function LandingPage() {
         <Link href="/" style={styles.brandLink}>
           <div style={styles.brand}>
             <div style={styles.brandMark}>
-              <RootaLogo size={22} />
+              <RootaLogo size={32} />
             </div>
             <div style={styles.brandText}>
-              <span style={styles.brandTitle}>ROOTA</span>
-              <span style={styles.brandTagline}>
-                Ideas Stock Exchange · Proof &amp; Pulse
-              </span>
+              <span style={styles.brandTitle}>Roota</span>
+              <span style={styles.brandTagline}>{t.tagline}</span>
             </div>
           </div>
         </Link>
 
         <div style={styles.rightTop}>
           <div style={styles.langToggle}>
-            <span style={styles.langActive}>EN</span>
-            <span>·</span>
-            <span>ES</span>
-            <span>·</span>
-            <span>日本語</span>
+            {(["en", "es", "ja"] as Lang[]).map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setLang(code)}
+                style={{
+                  ...styles.langButton,
+                  ...(lang === code ? styles.langActive : {}),
+                }}
+              >
+                {code.toUpperCase()}
+              </button>
+            ))}
           </div>
 
           <nav style={styles.nav}>
@@ -492,16 +607,22 @@ export default function LandingPage() {
               style={{
                 ...styles.navLinkBase,
                 ...styles.navLinkAccent,
-                cursor: "pointer",
               }}
             >
               Hive
             </button>
             <Link
+              href="/landing"
+              style={{
+                ...styles.navLinkBase,
+              }}
+            >
+              Overview
+            </Link>
+            <Link
               href="/about"
               style={{
                 ...styles.navLinkBase,
-                ...styles.navLinkIdle,
               }}
             >
               About
@@ -513,18 +634,13 @@ export default function LandingPage() {
       {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
-        <span>IDEAS DESERVE A HOME, NOT A FEED.</span>
+        <span>Ideas stock exchange · proof &amp; pulse</span>
       </div>
 
       <section style={styles.heroGrid}>
         <div>
-          <h1 style={styles.title}>Ideas deserve a home, not a feed.</h1>
-          <p style={styles.subtitle}>
-            Roota turns raw thoughts into timestamped records with{" "}
-            <strong>proof</strong> and <strong>pulse</strong>. It&apos;s a live
-            hive — a place where ideas take root, grow and stay visible to
-            people who actually care.
-          </p>
+          <h1 style={styles.title}>{t.heroTitle}</h1>
+          <p style={styles.subtitle}>{t.heroSubtitle}</p>
 
           <div style={styles.ctaRow}>
             <button
@@ -532,20 +648,20 @@ export default function LandingPage() {
               onClick={scrollToHive}
               style={{ ...styles.ctaButtonPrimary, cursor: "pointer" }}
             >
-              Enter the Hive
+              {t.heroCtaPrimary}
             </button>
             <Link href="/about" style={styles.ctaButtonSecondary}>
-              Why Roota exists
+              {t.heroCtaSecondary}
             </Link>
           </div>
         </div>
 
         <aside style={styles.heroSideCard}>
-          <div style={styles.heroSideTitle}>Heartbeat, not applause</div>
+          <div style={styles.heroSideTitle}>{t.hbTitle}</div>
           <p>
-            Product launches chase applause — a spike of attention, then
-            silence. Roota tracks the heartbeat of ideas: every proof fixes a
-            moment in time, every pulse adds energy.
+            Launches chase applause — a spike of attention and then silence.
+            Roota tracks the heartbeat of ideas: every proof fixes a moment in
+            time, every pulse adds energy.
           </p>
           <div style={styles.heroSideRow}>
             <div>
@@ -567,32 +683,18 @@ export default function LandingPage() {
       {/* WHY ROOTA EXISTS */}
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
-          <h2 style={styles.sectionTitle}>Why Roota exists</h2>
-          <div style={styles.sectionHint}>
-            Ideas usually die in chats and notebooks. Roota keeps their
-            heartbeat.
-          </div>
+          <h2 style={styles.sectionTitle}>{t.whyTitle}</h2>
+          <div style={styles.sectionHint}>{t.whyHint}</div>
         </div>
 
         <div style={styles.twoColText}>
           <div>
-            <p style={styles.paragraph}>
-              Most ideas live in fragments: notes, Notion pages, chat threads,
-              voice messages. They&apos;re hard to show, impossible to track and
-              nearly impossible to prove.
-            </p>
-            <p style={styles.paragraph}>
-              Roota turns thoughts into records: a{" "}
-              <strong>timestamped proof token</strong>, public context and{" "}
-              <strong>pulse</strong> that shows how attention moves.
-            </p>
+            <p style={styles.paragraph}>{t.whyP1}</p>
+            <p style={styles.paragraph}>{t.whyP2}</p>
           </div>
 
           <div>
-            <p style={styles.paragraph}>
-              Together this becomes a living registry of ideas — not a list of
-              launches, but a map of what people care about and when.
-            </p>
+            <p style={styles.paragraph}>{t.whyP3}</p>
             <ul style={styles.miniList}>
               <li style={styles.miniItem}>
                 ⏱ Proof — “this idea existed here, in this form, on this date”.
@@ -612,58 +714,46 @@ export default function LandingPage() {
       {/* HEARTBEAT VS APPLAUSE */}
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
-          <h2 style={styles.sectionTitle}>Heartbeat, not applause</h2>
-          <div style={styles.sectionHint}>
-            Product Hunt shows launches. Roota shows the life of ideas before
-            and after.
-          </div>
+          <h2 style={styles.sectionTitle}>{t.hbTitle}</h2>
+          <div style={styles.sectionHint}>{t.hbHint}</div>
         </div>
 
         <div style={styles.compareGrid}>
           <div style={styles.compareCard}>
-            <div style={styles.compareTag}>Launch stage</div>
-            <div style={styles.compareTitle}>Product Hunt</div>
-            <p style={styles.paragraph}>
-              A catalogue of finished products. One day of attention, upvotes,
-              screenshots and a clean launch.
-            </p>
+            <div style={styles.compareTag}>Launch mode</div>
+            <div style={styles.compareTitle}>{t.hbLaunchTitle}</div>
+            <p style={styles.paragraph}>{t.hbLaunchBody}</p>
             <ul style={styles.miniList}>
-              <li style={styles.miniItem}>“We already built it.”</li>
-              <li style={styles.miniItem}>Focus on hype and traffic.</li>
+              <li style={styles.miniItem}>One day of attention.</li>
+              <li style={styles.miniItem}>Focus on hype and screenshots.</li>
               <li style={styles.miniItem}>Applause, then scroll and forget.</li>
             </ul>
           </div>
 
           <div style={styles.compareCard}>
-            <div style={styles.compareTag}>Idea stage</div>
-            <div style={styles.compareTitle}>Roota</div>
-            <p style={styles.paragraph}>
-              A growth space for ideas. Proof, pulse and a visible trail of how
-              a thought becomes a direction.
-            </p>
+            <div style={styles.compareTag}>Idea mode</div>
+            <div style={styles.compareTitle}>{t.hbRootaTitle}</div>
+            <p style={styles.paragraph}>{t.hbRootaBody}</p>
             <ul style={styles.miniList}>
               <li style={styles.miniItem}>
-                “It&apos;s just starting to grow.”
+                Ideas are captured early, not only at launch.
               </li>
               <li style={styles.miniItem}>
-                Focus on viability and energy, not likes.
+                Energy is measured by proof and pulse, not vanity.
               </li>
               <li style={styles.miniItem}>
-                Heartbeat of ideas — not a one-off post.
+                A long, visible heartbeat instead of a single clap.
               </li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* WHO USES THE HIVE */}
+      {/* WHO IT'S FOR */}
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
-          <h2 style={styles.sectionTitle}>Who uses the hive</h2>
-          <div style={styles.sectionHint}>
-            Roota doesn&apos;t sell ideas. It reveals what&apos;s alive and
-            where energy gathers.
-          </div>
+          <h2 style={styles.sectionTitle}>{t.whoTitle}</h2>
+          <div style={styles.sectionHint}>{t.whoHint}</div>
         </div>
 
         <div style={styles.personaGrid}>
@@ -678,8 +768,8 @@ export default function LandingPage() {
           <div style={styles.personaCard}>
             <div style={styles.personaTitle}>Studios & teams</div>
             <p>
-              Run private hives, track internal signals and see which
-              directions organically gain energy inside the group.
+              Run private hives, track internal signals and see which directions
+              organically gain energy inside the group.
             </p>
           </div>
 
@@ -696,20 +786,14 @@ export default function LandingPage() {
       {/* LIVE SIGNALS / HIVE */}
       <section id="hive-section" style={styles.section}>
         <div style={styles.liveHeaderRow}>
-          <div style={styles.sectionTitle}>Live signals from the hive</div>
-          <div style={styles.sectionHint}>
-            Realtime pulse — no screenshots, just what&apos;s alive now.
-          </div>
+          <div style={styles.sectionTitle}>{t.liveTitle}</div>
+          <div style={styles.sectionHint}>{t.liveHint}</div>
         </div>
 
-        {loadingIdeas && (
-          <p style={styles.sectionHint}>Loading latest ideas…</p>
-        )}
+        {loadingIdeas && <p style={styles.sectionHint}>Loading latest ideas…</p>}
 
         {!loadingIdeas && ideas.length === 0 && (
-          <p style={styles.sectionHint}>
-            No signals yet. Be the first bee to publish an idea.
-          </p>
+          <p style={styles.sectionHint}>{t.liveEmpty}</p>
         )}
 
         {!loadingIdeas && ideas.length > 0 && (
@@ -720,11 +804,11 @@ export default function LandingPage() {
                   <div style={styles.liveTitle}>{idea.title}</div>
                   <div style={styles.liveDesc}>{idea.description}</div>
                   <div style={styles.liveMeta}>
-                    {new Date(idea.created_at).toLocaleDateString()} · proof &
-                    pulse on record
+                    {new Date(idea.created_at).toLocaleDateString()}{" "}
+                    {t.liveMetaSuffix}
                   </div>
                 </div>
-                <div style={{ textAlign: "right" }}>
+                <div style={{ textAlign: "right" as const }}>
                   <div style={styles.livePulsePill}>
                     <span>⚡</span>
                     <span>{idea.pulse ?? 0}</span>
@@ -747,11 +831,7 @@ export default function LandingPage() {
       {/* BOTTOM CTA */}
       <div style={styles.bottomCta}>
         <div style={{ maxWidth: 520 }}>
-          <p style={styles.paragraph}>
-            Roota keeps the public hive open and neutral. Proof and pulse stay
-            public — paid layers appear only where they add real leverage:
-            private hives, analytics and Bee-agents.
-          </p>
+          <p style={styles.paragraph}>{t.bottomText}</p>
         </div>
         <div style={styles.ctaRow}>
           <button
@@ -759,10 +839,10 @@ export default function LandingPage() {
             onClick={scrollToHive}
             style={{ ...styles.ctaButtonPrimary, cursor: "pointer" }}
           >
-            Explore the Hive
+            {t.exploreHive}
           </button>
           <Link href="/about" style={styles.ctaButtonSecondary}>
-            Read the full story
+            {t.readStory}
           </Link>
         </div>
       </div>
