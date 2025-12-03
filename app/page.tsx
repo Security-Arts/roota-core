@@ -12,6 +12,51 @@ type Idea = {
   pulse: number | null;
 };
 
+// Простий SVG-логотип Roota з двома листками вгору
+const RootaLogo: React.FC<{ size?: number }> = ({ size = 32 }) => {
+  const viewBoxSize = 64;
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
+      aria-hidden="true"
+    >
+      {/* Стебло */}
+      <path
+        d="M32 40 C31.5 36 31.3 32 31.3 28 C31.3 26.8 32.7 26.8 32.7 28 C32.7 32 32.5 36 32 40 Z"
+        fill="#4ade80"
+      />
+      {/* Лівий листок */}
+      <path
+        d="M30 28 C22 26, 20 20, 22 16 C26 16, 30 18, 32 22 C31 24, 30.5 26, 30 28 Z"
+        fill="#4ade80"
+      />
+      {/* Правий листок */}
+      <path
+        d="M34 28 C42 26, 44 20, 42 16 C38 16, 34 18, 32 22 C33 24, 33.5 26, 34 28 Z"
+        fill="#22c55e"
+      />
+      {/* Легке світіння-ореол */}
+      <circle
+        cx="32"
+        cy="24"
+        r="18"
+        fill="url(#rootalight)"
+        opacity={0.7}
+      />
+      <defs>
+        <radialGradient id="rootalight" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#bbf7d0" />
+          <stop offset="40%" stopColor="#4ade80" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+    </svg>
+  );
+};
+
 const styles: { [key: string]: React.CSSProperties } = {
   page: {
     minHeight: "100vh",
@@ -24,7 +69,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: "100%",
     maxWidth: 1100,
     margin: "0 auto",
-    boxSizing: "border-box" as const,
+    boxSizing: "border-box",
   },
 
   topBar: {
@@ -44,8 +89,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: 10,
   },
   brandMark: {
-    width: 26,
-    height: 26,
+    width: 32,
+    height: 32,
     borderRadius: "999px",
     background:
       "radial-gradient(circle at 30% 20%, rgba(96,165,250,0.9), transparent 60%)",
@@ -54,7 +99,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 14,
+    overflow: "hidden",
   },
   brandText: {
     display: "flex",
@@ -119,7 +164,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     marginBottom: 14,
     fontSize: 11,
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "0.12em",
     color: "#a5b4fc",
   },
@@ -156,7 +201,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginTop: 4,
     display: "flex",
     gap: 14,
-    flexWrap: "wrap" as const,
+    flexWrap: "wrap",
   },
   ctaButtonPrimary: {
     borderRadius: 999,
@@ -190,7 +235,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   heroSideTitle: {
     fontSize: 13,
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "0.16em",
     color: "#a5b4fc",
     marginBottom: 6,
@@ -225,7 +270,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 14,
     fontWeight: 600,
     color: "#e5e7eb",
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "0.14em",
   },
   sectionHint: {
@@ -366,7 +411,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderTop: "1px solid #1f2937",
     display: "flex",
     justifyContent: "space-between",
-    flexWrap: "wrap" as const,
+    flexWrap: "wrap",
     gap: 16,
     alignItems: "center",
   },
@@ -376,7 +421,6 @@ export default function LandingPage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loadingIdeas, setLoadingIdeas] = useState(false);
 
-  // anchor scroll helper
   const scrollToHive = () => {
     const el = document.getElementById("hive-section");
     if (el) {
@@ -418,9 +462,11 @@ export default function LandingPage() {
     <main style={styles.page}>
       {/* TOP BAR */}
       <div style={styles.topBar}>
-        <Link href="/landing" style={styles.brandLink}>
+        <Link href="/" style={styles.brandLink}>
           <div style={styles.brand}>
-            <div style={styles.brandMark}>⚡</div>
+            <div style={styles.brandMark}>
+              <RootaLogo size={22} />
+            </div>
             <div style={styles.brandText}>
               <span style={styles.brandTitle}>ROOTA</span>
               <span style={styles.brandTagline}>
@@ -434,7 +480,9 @@ export default function LandingPage() {
           <div style={styles.langToggle}>
             <span style={styles.langActive}>EN</span>
             <span>·</span>
-            <span>UA</span>
+            <span>ES</span>
+            <span>·</span>
+            <span>日本語</span>
           </div>
 
           <nav style={styles.nav}>
@@ -594,7 +642,9 @@ export default function LandingPage() {
               a thought becomes a direction.
             </p>
             <ul style={styles.miniList}>
-              <li style={styles.miniItem}>“It&apos;s just starting to grow.”</li>
+              <li style={styles.miniItem}>
+                “It&apos;s just starting to grow.”
+              </li>
               <li style={styles.miniItem}>
                 Focus on viability and energy, not likes.
               </li>
@@ -606,7 +656,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* WHO IT'S FOR */}
+      {/* WHO USES THE HIVE */}
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Who uses the hive</h2>
@@ -674,7 +724,7 @@ export default function LandingPage() {
                     pulse on record
                   </div>
                 </div>
-                <div style={{ textAlign: "right" as const }}>
+                <div style={{ textAlign: "right" }}>
                   <div style={styles.livePulsePill}>
                     <span>⚡</span>
                     <span>{idea.pulse ?? 0}</span>
