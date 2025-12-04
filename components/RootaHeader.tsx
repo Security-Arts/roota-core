@@ -12,19 +12,25 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     left: 0,
     right: 0,
     zIndex: 40,
-    backdropFilter: "blur(16px)",
-    background:
-      "linear-gradient(to bottom, rgba(15,23,42,0.98), rgba(15,23,42,0.94), rgba(15,23,42,0.88))",
-    borderBottom: "1px solid rgba(15,23,42,0.9)",
+    display: "flex",
+    justifyContent: "center",
+    pointerEvents: "none",
   },
   inner: {
-    maxWidth: 1120,
-    margin: "0 auto",
-    padding: "14px 20px 10px",
+    marginTop: 12,
+    width: "100%",
+    maxWidth: 1100,
+    padding: "10px 20px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 20,
+    gap: 16,
+    borderRadius: 999,
+    background:
+      "linear-gradient(90deg, rgba(15,23,42,0.96), rgba(15,23,42,0.9))",
+    border: "1px solid rgba(30,64,175,0.7)",
+    boxShadow: "0 18px 55px rgba(15,23,42,0.9)",
+    pointerEvents: "auto",
   },
   left: {
     display: "flex",
@@ -38,17 +44,18 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
   },
   brandName: {
     fontSize: 16,
-    fontWeight: 600,
     letterSpacing: "0.24em",
+    fontWeight: 600,
   },
   brandTagline: {
     fontSize: 11,
     color: "#9ca3af",
   },
+
   navWrap: {
     display: "flex",
     alignItems: "center",
-    gap: 16,
+    gap: 14,
   },
   nav: {
     display: "flex",
@@ -56,14 +63,14 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     padding: 3,
     borderRadius: 999,
     border: "1px solid #1f2937",
-    background: "rgba(2,6,23,0.95)",
+    background: "rgba(2,6,23,0.96)",
     fontSize: 12,
   },
   navBtnBase: {
-    padding: "5px 16px",
+    padding: "6px 16px",
     borderRadius: 999,
-    textDecoration: "none",
     border: "1px solid transparent",
+    textDecoration: "none",
     cursor: "pointer",
   },
   navBtnActive: {
@@ -75,37 +82,39 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
   navBtnIdle: {
     color: "#9ca3af",
   },
+
   langs: {
     display: "flex",
-    gap: 6,
+    gap: 4,
     fontSize: 11,
-    color: "#9ca3af",
-    alignItems: "center",
   },
   langChip: {
-    padding: "3px 10px",
+    padding: "3px 8px",
     borderRadius: 999,
     border: "1px solid transparent",
     cursor: "pointer",
+    color: "#9ca3af",
   },
   langChipActive: {
-    borderColor: "#1d4ed8",
-    background: "rgba(15,23,42,0.95)",
+    borderColor: "#4f46e5",
     color: "#e5e7eb",
+    background: "rgba(31,41,55,0.9)",
   },
+
+  // responsive tweaks
+  "@media (max-width: 720px)": {},
 };
 
-const langs: Array<"EN" | "ES" | "JA"> = ["EN", "ES", "JA"];
+const langs = ["EN", "ES", "JA"] as const;
+type Lang = (typeof langs)[number];
 
 export function RootaHeader() {
   const pathname = usePathname();
-  const [activeLang, setActiveLang] = useState<"EN" | "ES" | "JA">("EN");
-  // ...
-}
+  const [activeLang, setActiveLang] = useState<Lang>("EN");
 
   const isHive = pathname === "/" || pathname === "/hive";
-  const isAbout = pathname === "/about";
   const isOverview = pathname === "/landing";
+  const isAbout = pathname === "/about";
 
   return (
     <header style={headerStyles.wrap}>
@@ -127,7 +136,7 @@ export function RootaHeader() {
           {/* Nav */}
           <nav style={headerStyles.nav}>
             <Link
-              href="/hive"
+              href="/"
               style={{
                 ...headerStyles.navBtnBase,
                 ...(isHive ? headerStyles.navBtnActive : headerStyles.navBtnIdle),
@@ -136,7 +145,7 @@ export function RootaHeader() {
               Hive
             </Link>
             <Link
-              href="/"
+              href="/landing"
               style={{
                 ...headerStyles.navBtnBase,
                 ...(isOverview
@@ -157,7 +166,7 @@ export function RootaHeader() {
             </Link>
           </nav>
 
-          {/* Langs – поки що клієнтський стейт, без реального i18n */}
+          {/* Lang toggle – поки що декоративний */}
           <div style={headerStyles.langs}>
             {langs.map((l) => (
               <button
