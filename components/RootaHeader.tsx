@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RootaLogo } from "@/components/RootaLogo";
@@ -98,7 +99,9 @@ const langs: Array<"EN" | "ES" | "JA"> = ["EN", "ES", "JA"];
 
 export function RootaHeader() {
   const pathname = usePathname();
-  const [activeLang, setActiveLang] = React.useState<"EN" | "ES" | "JA">("EN");
+  const [activeLang, setActiveLang] = useState<"EN" | "ES" | "JA">("EN");
+  // ...
+}
 
   const isHive = pathname === "/" || pathname === "/hive";
   const isAbout = pathname === "/about";
