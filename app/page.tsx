@@ -18,7 +18,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background:
       "radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.18), #020617)",
     color: "#e5e7eb",
-    padding: "32px 20px 56px",
+    padding: "96px 20px 56px", // трохи відступу зверху під fixed header
     fontFamily:
       "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
     width: "100%",
@@ -27,6 +27,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxSizing: "border-box" as const,
   },
 
+  // TOP BADGE
   badgeRow: {
     display: "flex",
     gap: 8,
@@ -44,6 +45,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: "rgba(30,64,175,0.35)",
   },
 
+  // HERO
   heroGrid: {
     display: "grid",
     gridTemplateColumns: "minmax(0, 2.1fr) minmax(0, 1.4fr)",
@@ -51,11 +53,24 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "flex-start",
     marginBottom: 40,
   },
+  heroGridMobile: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 24,
+    marginBottom: 32,
+  },
+
   title: {
     fontSize: 40,
     fontWeight: 700,
     letterSpacing: "-0.03em",
     marginBottom: 14,
+  },
+  titleMobile: {
+    fontSize: 30,
+    fontWeight: 700,
+    letterSpacing: "-0.03em",
+    marginBottom: 12,
   },
   subtitle: {
     fontSize: 16,
@@ -63,6 +78,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     maxWidth: 620,
     lineHeight: 1.6,
     marginBottom: 22,
+  },
+  subtitleMobile: {
+    fontSize: 15,
+    color: "#cbd5f5",
+    maxWidth: 600,
+    lineHeight: 1.5,
+    marginBottom: 18,
   },
 
   ctaRow: {
@@ -91,37 +113,39 @@ const styles: { [key: string]: React.CSSProperties } = {
     textDecoration: "none",
   },
 
+  // DESKTOP HEARTBEAT CARD (праворуч від hero)
   heroSideCard: {
     borderRadius: 18,
     border: "1px solid #1f2937",
     padding: "14px 16px 16px",
     background:
-      "radial-gradient(circle at top left, rgba(15,118,110,0.6), transparent 60%) #020617",
+      "linear-gradient(135deg, rgba(16,185,129,0.45), rgba(30,64,175,0.45))",
     fontSize: 13,
-    color: "#cbd5f5",
+    color: "#e5e7eb",
     lineHeight: 1.6,
   },
   heroSideTitle: {
     fontSize: 13,
     textTransform: "uppercase" as const,
     letterSpacing: "0.16em",
-    color: "#a5b4fc",
-    marginBottom: 6,
+    color: "#bbf7d0",
+    marginBottom: 8,
   },
   heroSideRow: {
     display: "flex",
     flexDirection: "column",
-    gap: 6,
-    marginTop: 6,
+    gap: 8,
+    marginTop: 4,
   },
   heroSideLabel: {
     fontSize: 12,
-    color: "#9ca3af",
+    color: "#d1fae5",
   },
   heroSideValue: {
     fontSize: 13,
   },
 
+  // GENERIC SECTION
   section: {
     marginTop: 32,
     paddingTop: 24,
@@ -152,26 +176,40 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 10,
   },
 
-  twoColText: {
-    display: "grid",
-    gridTemplateColumns: "minmax(0,1.3fr) minmax(0,1.3fr)",
-    gap: 28,
+  // MOBILE HEARTBEAT CARDS
+  heartbeatCardList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginTop: 4,
   },
-
-  miniList: {
-    margin: "4px 0 6px 0",
-    paddingLeft: 18,
-    fontSize: 14,
-    color: "#cbd5f5",
+  heartbeatCard: {
+    borderRadius: 16,
+    border: "1px solid #064e3b",
+    padding: "10px 12px",
+    background:
+      "radial-gradient(circle at top left, rgba(16,185,129,0.55), transparent 60%) #022c22",
+    fontSize: 13,
+    color: "#d1fae5",
+    lineHeight: 1.5,
   },
-  miniItem: {
+  heartbeatCardTitle: {
+    fontSize: 13,
+    fontWeight: 600,
     marginBottom: 4,
   },
 
+  // WHO USES THE HIVE
   personaGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(3, minmax(0,1fr))",
     gap: 16,
+    marginTop: 10,
+  },
+  personaGridMobile: {
+    display: "grid",
+    gridTemplateColumns: "minmax(0,1fr)",
+    gap: 12,
     marginTop: 10,
   },
   personaCard: {
@@ -188,6 +226,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 4,
   },
 
+  // LIVE HIVE
   liveHeaderRow: {
     display: "flex",
     justifyContent: "space-between",
@@ -244,6 +283,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: 4,
   },
 
+  // BOTTOM CTA
   bottomCta: {
     marginTop: 32,
     paddingTop: 20,
@@ -254,20 +294,34 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: 16,
     alignItems: "center",
   },
-
-  // мобільні
-  "@media (max-width: 768px)": {},
 };
 
-export default function OverviewPage() {
+export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loadingIdeas, setLoadingIdeas] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // simple responsive flag
+  useEffect(() => {
+    const check = () => {
+      if (typeof window !== "undefined") {
+        setIsMobile(window.innerWidth < 768);
+      }
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // scroll to hive
   const scrollToHive = () => {
     const el = document.getElementById("hive-section");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
+  // load last ideas
   useEffect(() => {
     let cancelled = false;
 
@@ -300,16 +354,19 @@ export default function OverviewPage() {
 
   return (
     <main style={styles.page}>
-      {/* HERO */}
+      {/* TOP BADGE UNDER HEADER */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
         <span>IDEAS DESERVE A HOME, NOT A FEED.</span>
       </div>
 
-      <section style={styles.heroGrid}>
+      {/* HERO */}
+      <section style={isMobile ? styles.heroGridMobile : styles.heroGrid}>
         <div>
-          <h1 style={styles.title}>Ideas deserve a home, not a feed.</h1>
-          <p style={styles.subtitle}>
+          <h1 style={isMobile ? styles.titleMobile : styles.title}>
+            Ideas deserve a home, not a feed.
+          </h1>
+          <p style={isMobile ? styles.subtitleMobile : styles.subtitle}>
             Roota turns raw thoughts into timestamped records with{" "}
             <strong>proof</strong> and <strong>pulse</strong>. It&apos;s a live
             hive — a place where ideas take root, grow and stay visible to
@@ -330,31 +387,71 @@ export default function OverviewPage() {
           </div>
         </div>
 
-        <aside style={styles.heroSideCard}>
-          <div style={styles.heroSideTitle}>Heartbeat, not applause</div>
-          <p>
-            Launches chase applause — a spike of attention and then silence.
-            Roota tracks the heartbeat of ideas: every proof fixes a moment in
-            time, every pulse adds energy.
-          </p>
-          <div style={styles.heroSideRow}>
-            <div>
-              <div style={styles.heroSideLabel}>Visible signals</div>
-              <div style={styles.heroSideValue}>
-                Proof tokens, pulse changes, live idea pages.
+        {/* права картка — лише на desktop / tablet */}
+        {!isMobile && (
+          <aside style={styles.heroSideCard}>
+            <div style={styles.heroSideTitle}>Heartbeat, not applause</div>
+            <p>
+              Launches chase applause — a spike of attention and then silence.
+              Roota tracks the heartbeat of ideas: every proof fixes a moment in
+              time, every pulse adds energy.
+            </p>
+            <div style={styles.heroSideRow}>
+              <div>
+                <div style={styles.heroSideLabel}>Visible signals</div>
+                <div style={styles.heroSideValue}>
+                  Proof tokens, pulse changes, live idea pages.
+                </div>
+              </div>
+              <div>
+                <div style={styles.heroSideLabel}>Missing on purpose</div>
+                <div style={styles.heroSideValue}>
+                  Screenshots, pitch decks and vanity likes don&apos;t live
+                  here.
+                </div>
               </div>
             </div>
-            <div>
-              <div style={styles.heroSideLabel}>Missing on purpose</div>
-              <div style={styles.heroSideValue}>
-                Screenshots, pitch decks and vanity likes don&apos;t live here.
+          </aside>
+        )}
+      </section>
+
+      {/* MOBILE HEARTBEAT CARDS – замість вузької вертикальної колони */}
+      {isMobile && (
+        <section style={styles.section}>
+          <div style={styles.sectionTitleRow}>
+            <h2 style={styles.sectionTitle}>How Roota feels</h2>
+            <div style={styles.sectionHint}>
+              Short cards instead of one long column.
+            </div>
+          </div>
+
+          <div style={styles.heartbeatCardList}>
+            <div style={styles.heartbeatCard}>
+              <div style={styles.heartbeatCardTitle}>Proof &amp; pulse</div>
+              <div>
+                Every idea gets a timestamped proof token and a live pulse that
+                can rise or fall as attention moves.
+              </div>
+            </div>
+            <div style={styles.heartbeatCard}>
+              <div style={styles.heartbeatCardTitle}>Visible signals</div>
+              <div>
+                You see changes over time: ideas that wake up, slow down or
+                quietly keep beating in the background.
+              </div>
+            </div>
+            <div style={styles.heartbeatCard}>
+              <div style={styles.heartbeatCardTitle}>What doesn&apos;t live here</div>
+              <div>
+                No vanity screenshots, no pitch decks, no likes for the sake of
+                likes. Just the heartbeat of ideas.
               </div>
             </div>
           </div>
-        </aside>
-      </section>
+        </section>
+      )}
 
-      {/* WHY ROOTA EXISTS */}
+      {/* WHY ROOTA EXISTS – компактний текст для всіх екранів */}
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
@@ -364,39 +461,17 @@ export default function OverviewPage() {
           </div>
         </div>
 
-        <div style={styles.twoColText}>
-          <div>
-            <p style={styles.paragraph}>
-              Most ideas live in fragments: notes, pages, chat threads, voice
-              messages. They&apos;re hard to show, impossible to track and
-              nearly impossible to prove.
-            </p>
-            <p style={styles.paragraph}>
-              Roota turns thoughts into records: a{" "}
-              <strong>timestamped proof token</strong>, public context and{" "}
-              <strong>pulse</strong> that shows how attention moves.
-            </p>
-          </div>
-
-          <div>
-            <p style={styles.paragraph}>
-              Together this becomes a living registry of ideas — not a list of
-              launches, but a map of what people care about and when.
-            </p>
-            <ul style={styles.miniList}>
-              <li style={styles.miniItem}>
-                ⏱ Proof — “this idea existed here, in this form, on this date”.
-              </li>
-              <li style={styles.miniItem}>
-                ⚡ Pulse — “this is how strongly it resonates over time”.
-              </li>
-              <li style={styles.miniItem}>
-                🐝 Hive — a space where ideas cross-pollinate instead of
-                compete.
-              </li>
-            </ul>
-          </div>
-        </div>
+        <p style={styles.paragraph}>
+          Most ideas live in fragments: notes, Notion pages, chat threads, voice
+          messages. They&apos;re hard to show, impossible to track and nearly
+          impossible to prove.
+        </p>
+        <p style={styles.paragraph}>
+          Roota turns thoughts into records: a{" "}
+          <strong>timestamped proof token</strong>, context and{" "}
+          <strong>pulse</strong> that shows how attention moves over time. The
+          hive becomes a living registry of what people care about and when.
+        </p>
       </section>
 
       {/* WHO USES THE HIVE */}
@@ -409,7 +484,7 @@ export default function OverviewPage() {
           </div>
         </div>
 
-        <div style={styles.personaGrid}>
+        <div style={isMobile ? styles.personaGridMobile : styles.personaGrid}>
           <div style={styles.personaCard}>
             <div style={styles.personaTitle}>Makers &amp; founders</div>
             <p>
@@ -436,7 +511,7 @@ export default function OverviewPage() {
         </div>
       </section>
 
-      {/* LIVE SIGNALS */}
+      {/* LIVE HIVE */}
       <section id="hive-section" style={styles.section}>
         <div style={styles.liveHeaderRow}>
           <div style={styles.sectionTitle}>Live signals from the hive</div>
@@ -463,7 +538,7 @@ export default function OverviewPage() {
                   <div style={styles.liveTitle}>{idea.title}</div>
                   <div style={styles.liveDesc}>{idea.description}</div>
                   <div style={styles.liveMeta}>
-                    {new Date(idea.created_at).toLocaleDateString()} · proof &
+                    {new Date(idea.created_at).toLocaleDateString()} · proof &amp;
                     pulse on record
                   </div>
                 </div>
