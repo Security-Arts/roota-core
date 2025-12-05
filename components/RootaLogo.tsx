@@ -1,7 +1,7 @@
 // components/RootaLogo.tsx
 import React from "react";
 
-export function RootaLogo({ size = 44 }: { size?: number }) {
+export function RootaLogo({ size = 28 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -11,7 +11,7 @@ export function RootaLogo({ size = 44 }: { size?: number }) {
     >// components/RootaLogo.tsx
 import React from "react";
 
-export function RootaLogo({ size = 44 }: { size?: number }) {
+export function RootaLogo({ size = 28 }: { size?: number }) {
   return (
     <svg
       width={size}
