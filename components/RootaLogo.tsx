@@ -1,5 +1,13 @@
+// components/RootaLogo.tsx
+
+import React from "react";
+
 // Простий SVG-логотип Roota з двома листками вгору
-const RootaLogo: React.FC<{ size?: number }> = ({ size = 44 }) => {
+export interface RootaLogoProps {
+  size?: number;
+}
+
+export const RootaLogo: React.FC<RootaLogoProps> = ({ size = 44 }) => {
   const viewBoxSize = 64;
 
   return (
@@ -10,14 +18,8 @@ const RootaLogo: React.FC<{ size?: number }> = ({ size = 44 }) => {
       aria-hidden="true"
     >
       {/* Темний квадрат із заокругленням */}
-      <rect
-        x="8"
-        y="8"
-        width="48"
-        height="48"
-        rx="14"
-        fill="#020617"
-      />
+      <rect x="8" y="8" width="48" height="48" rx="14" fill="#020617" />
+
       {/* Легке зовнішнє світіння */}
       <rect
         x="8"
@@ -31,17 +33,40 @@ const RootaLogo: React.FC<{ size?: number }> = ({ size = 44 }) => {
 
       {/* Стебло */}
       <path
-        d="M32 40 C31.5 36 31.3 32 31.3 28 C31.3 26.8 32.7 26.8 32.7 28 C32.7 32 32.5 36 32 40 Z"
+        d="
+          M32 40
+          C31.6 36, 31.4 32, 31.4 28.5
+           31.4 27.5, 31.8 27, 32 27
+           32.2 27, 32.6 27.5, 32.6 28.5
+           32.6 32, 32.4 36, 32 40
+          Z
+        "
         fill="#4ade80"
       />
-      {/* Лівий листок */}
+
+      {/* Лівий листок — вужчий і вище */}
       <path
-        d="M30 28 C22 26, 20 20, 22 16 C26 16, 30 18, 32 22 C31 24, 30.5 26, 30 28 Z"
+        d="
+          M30 27.5
+          C27.2 26.5, 25.6 23.7, 26.1 20.6
+           26.6 18.4, 28.4 17.3, 30.2 17.3
+           31.6 17.3, 32.9 18.0, 33.8 19.4
+           33.1 21.6, 31.8 24.3, 30 27.5
+          Z
+        "
         fill="#4ade80"
       />
-      {/* Правий листок */}
+
+      {/* Правий листок — дзеркальний, вужчий і вище */}
       <path
-        d="M34 28 C42 26, 44 20, 42 16 C38 16, 34 18, 32 22 C33 24, 33.5 26, 34 28 Z"
+        d="
+          M34 27.5
+          C36.8 26.5, 38.4 23.7, 37.9 20.6
+           37.4 18.4, 35.6 17.3, 33.8 17.3
+           32.4 17.3, 31.1 18.0, 30.2 19.4
+           30.9 21.6, 32.2 24.3, 34 27.5
+          Z
+        "
         fill="#22c55e"
       />
 
@@ -55,3 +80,5 @@ const RootaLogo: React.FC<{ size?: number }> = ({ size = 44 }) => {
     </svg>
   );
 };
+
+export default RootaLogo;
