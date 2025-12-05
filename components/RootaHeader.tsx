@@ -1,9 +1,10 @@
+// components/RootaHeader.tsx
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RootaLogo } from "@/components/RootaLogo";
+import { RootaLogo } from "./RootaLogo";
 
 const headerStyles: { [key: string]: React.CSSProperties } = {
   wrap: {
@@ -12,15 +13,24 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     left: 0,
     right: 0,
     zIndex: 40,
-    padding: "10px 20px",
-    background:
-      "linear-gradient(to bottom, rgba(15,23,42,0.96), rgba(15,23,42,0.88))",
-    borderBottom: "1px solid rgba(15,23,42,0.9)",
-    backdropFilter: "blur(14px)",
+    display: "flex",
+    justifyContent: "center",
+    pointerEvents: "none",
   },
   inner: {
-    maxWidth: 1100,
-    margin: "0 auto",
+    pointerEvents: "auto",
+    marginTop: 12,
+    marginLeft: 12,
+    marginRight: 12,
+    padding: "10px 14px",
+    maxWidth: 1120,
+    width: "100%",
+    borderRadius: 999,
+    border: "1px solid rgba(30,64,175,0.55)",
+    background:
+      "linear-gradient(120deg, rgba(15,23,42,0.95), rgba(15,23,42,0.85))",
+    boxShadow:
+      "0 18px 45px rgba(15,23,42,0.9), 0 0 0 1px rgba(15,23,42,0.9)",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -29,7 +39,7 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
   left: {
     display: "flex",
     alignItems: "center",
-    gap: 12,
+    gap: 10,
   },
   brandTitle: {
     display: "flex",
@@ -37,63 +47,50 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     gap: 2,
   },
   brandName: {
-    fontSize: 16,
-    letterSpacing: "0.22em",
+    fontSize: 15,
     fontWeight: 600,
+    letterSpacing: "0.2em",
   },
   brandTagline: {
     fontSize: 11,
     color: "#9ca3af",
   },
+
   navWrap: {
     display: "flex",
     alignItems: "center",
-    gap: 14,
+    gap: 12,
   },
   nav: {
     display: "flex",
     gap: 6,
     padding: 3,
     borderRadius: 999,
-    border: "1px solid #1f2937",
-    background: "rgba(2,6,23,0.96)",
+    border: "1px solid rgba(15,23,42,0.85)",
+    background: "rgba(2,6,23,0.95)",
     fontSize: 12,
   },
   navBtnBase: {
-    padding: "6px 16px",
+    padding: "6px 14px",
     borderRadius: 999,
     textDecoration: "none",
     border: "1px solid transparent",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    whiteSpace: "nowrap" as const,
+    cursor: "pointer",
+    whiteSpace: "nowrap",
   },
   navBtnActive: {
     borderColor: "#1d4ed8",
     background:
-      "radial-gradient(circle at top left, rgba(37,99,235,0.55), transparent 60%) #020617",
+      "radial-gradient(circle at top left, rgba(59,130,246,0.45), transparent 60%) #020617",
     color: "#e5e7eb",
   },
   navBtnIdle: {
     color: "#9ca3af",
   },
-  langs: {
-    display: "flex",
-    gap: 6,
-    fontSize: 11,
-  },
-  langChip: {
-    borderRadius: 999,
-    border: "1px solid transparent",
-    padding: "3px 8px",
-    cursor: "pointer",
-    color: "#9ca3af",
-  },
-  langChipActive: {
-    borderColor: "#1d4ed8",
-    background: "rgba(15,23,42,0.9)",
-    color: "#e5e7eb",
+
+  // Мобільність
+  headerRoot: {
+    width: "100%",
   },
 };
 
@@ -103,31 +100,30 @@ export function RootaHeader() {
   const isOverview = pathname === "/landing";
   const isAbout = pathname === "/about";
 
-  const langs: Array<"EN" | "ES" | "JA"> = ["EN", "ES", "JA"];
-  const [activeLang, setActiveLang] = useState<"EN" | "ES" | "JA">("EN");
-
   return (
     <header style={headerStyles.wrap}>
       <div style={headerStyles.inner}>
         {/* Logo + name */}
-        <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+        <Link
+          href="/"
+          style={{ textDecoration: "none", color: "inherit", display: "flex" }}
+        >
           <div style={headerStyles.left}>
-            <RootaLogo size={32} />
+            <RootaLogo size={34} />
             <div style={headerStyles.brandTitle}>
               <span style={headerStyles.brandName}>ROOTA</span>
               <span style={headerStyles.brandTagline}>
-                Ideas Stock Exchange · a live registry of ideas with proof and
-                pulse of interest.
+                Ideas Stock Exchange · Proof &amp; Pulse
               </span>
             </div>
           </div>
         </Link>
 
+        {/* Nav */}
         <div style={headerStyles.navWrap}>
-          {/* Nav */}
           <nav style={headerStyles.nav}>
             <Link
-              href="/#hive-section"
+              href="/#hive"
               style={{
                 ...headerStyles.navBtnBase,
                 ...(isHive ? headerStyles.navBtnActive : headerStyles.navBtnIdle),
@@ -136,10 +132,10 @@ export function RootaHeader() {
               Hive
             </Link>
             <Link
-              href="/landing"
+              href="/"
               style={{
                 ...headerStyles.navBtnBase,
-                ...(isOverview
+                ...(pathname === "/" && !isHive
                   ? headerStyles.navBtnActive
                   : headerStyles.navBtnIdle),
               }}
@@ -150,30 +146,14 @@ export function RootaHeader() {
               href="/about"
               style={{
                 ...headerStyles.navBtnBase,
-                ...(isAbout ? headerStyles.navBtnActive : headerStyles.navBtnIdle),
+                ...(isAbout
+                  ? headerStyles.navBtnActive
+                  : headerStyles.navBtnIdle),
               }}
             >
               About
             </Link>
           </nav>
-
-          {/* Langs – візуальний toggle, без i18n поки що */}
-          <div style={headerStyles.langs}>
-            {langs.map((l) => (
-              <button
-                key={l}
-                type="button"
-                onClick={() => setActiveLang(l)}
-                style={{
-                  ...headerStyles.langChip,
-                  ...(activeLang === l ? headerStyles.langChipActive : {}),
-                  background: "none",
-                }}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </header>
