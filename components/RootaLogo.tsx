@@ -1,7 +1,6 @@
 // components/RootaLogo.tsx
 
 type RootaLogoProps = {
-  /** Розмір у пікселях (ширина = висота) */
   size?: number;
 };
 
@@ -21,57 +20,43 @@ export function RootaLogo({ size = 44 }: RootaLogoProps) {
           "0 18px 40px rgba(15,23,42,0.85), 0 0 0 1px rgba(15,23,42,0.9)",
       }}
     >
-      {/* Фон — темний сквід з легким градієнтом вгору */}
       <defs>
+        {/* Темний фон */}
         <linearGradient id="ro_bg" x1="0" y1="40" x2="40" y2="0">
           <stop offset="0%" stopColor="#020617" />
-          <stop offset="45%" stopColor="#020617" />
           <stop offset="100%" stopColor="#020617" />
         </linearGradient>
 
-        {/* Світла пляма за ростком */}
-        <radialGradient id="ro_glow" cx="50%" cy="30%" r="60%">
-          <stop offset="0%" stopColor="#22c55e" stopOpacity="0.18" />
-          <stop offset="60%" stopColor="#22c55e" stopOpacity="0.0" />
-          <stop offset="100%" stopColor="#22c55e" stopOpacity="0.0" />
+        {/* Світіння під листками */}
+        <radialGradient id="ro_glow" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stopColor="#22c55e" stopOpacity="0.2" />
+          <stop offset="70%" stopColor="#22c55e" stopOpacity="0.0" />
         </radialGradient>
       </defs>
 
-      {/* Основний сквід */}
-      <rect
-        x="2"
-        y="2"
-        width="36"
-        height="36"
-        rx="12"
-        fill="url(#ro_bg)"
-      />
+      {/* Темний квадрат */}
+      <rect x="2" y="2" width="36" height="36" rx="12" fill="url(#ro_bg)" />
 
-      {/* Світіння */}
-      <rect
-        x="2"
-        y="2"
-        width="36"
-        height="36"
-        rx="12"
-        fill="url(#ro_glow)"
-      />
+      {/* Glow */}
+      <rect x="2" y="2" width="36" height="36" rx="12" fill="url(#ro_glow)" />
 
-      {/* Сам росток — дві листочки + стебло */}
-      <g transform="translate(20 21)">
-        {/* Лівий листок */}
+      {/* Паросток */}
+      <g transform="translate(20 17)">
+        {/* Лівий листок (вгору-вліво) */}
         <path
-          d="M-1.5 -6.5C-5 -6.4 -7.8 -4 -8.6 -0.2C-8.7 0.3 -8.3 0.8 -7.8 0.9C-4.5 1.7 -1.8 0.2 -0.4 -2.5C0.3 -3.9 0.1 -5.4 -0.2 -6.0C-0.5 -6.4 -1.0 -6.5 -1.5 -6.5Z"
+          d="M-1.2 -3C-4.8 -3.1 -7.2 -1 -7.9 2.2C-8 2.7 -7.6 3.2 -7.1 3.3C-4.1 4.0 -1.7 2.2 -0.6 0C0.1 -1.3 -0.1 -2.5 -0.4 -2.9C-0.7 -3.1 -1.0 -3 -1.2 -3Z"
           fill="#4ade80"
         />
-        {/* Правий листок */}
+
+        {/* Правий листок (вгору-вправо) */}
         <path
-          d="M1.5 -6.5C5 -6.4 7.8 -4 8.6 -0.2C8.7 0.3 8.3 0.8 7.8 0.9C4.5 1.7 1.8 0.2 0.4 -2.5C-0.3 -3.9 -0.1 -5.4 0.2 -6.0C0.5 -6.4 1.0 -6.5 1.5 -6.5Z"
+          d="M1.2 -3C4.8 -3.1 7.2 -1 7.9 2.2C8 2.7 7.6 3.2 7.1 3.3C4.1 4.0 1.7 2.2 0.6 0C-0.1 -1.3 0.1 -2.5 0.4 -2.9C0.7 -3.1 1.0 -3 1.2 -3Z"
           fill="#22c55e"
         />
-        {/* Стебло */}
+
+        {/* Стебло вниз */}
         <path
-          d="M-1.0 0.2C-1.0 2.5 -0.6 4.7 0 6.6C0.6 4.7 1.0 2.5 1.0 0.2C1.0 -0.5 0.6 -1 0 -1C-0.6 -1 -1.0 -0.5 -1.0 0.2Z"
+          d="M-1 2C-1 4.4 -0.6 6.7 0 8.6C0.6 6.7 1 4.4 1 2C1 1.3 0.6 1 0 1C-0.6 1 -1 1.3 -1 2Z"
           fill="#16a34a"
         />
       </g>
