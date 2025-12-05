@@ -104,20 +104,17 @@ export function RootaHeader() {
     <header style={headerStyles.wrap}>
       <div style={headerStyles.inner}>
         {/* Logo + name */}
-        <Link
-          href="/"
-          style={{ textDecoration: "none", color: "inherit", display: "flex" }}
-        >
-          <div style={headerStyles.left}>
-            <RootaLogo size={34} />
-            <div style={headerStyles.brandTitle}>
-              <span style={headerStyles.brandName}>ROOTA</span>
-              <span style={headerStyles.brandTagline}>
-                Ideas Stock Exchange · Proof &amp; Pulse
-              </span>
-            </div>
-          </div>
-        </Link>
+       <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+  <div style={headerStyles.left}>
+    <RootaLogo size={44} />
+    <div style={headerStyles.brandTitle}>
+      <span style={headerStyles.brandName}>ROOTA</span>
+      <span style={headerStyles.brandTagline}>
+        Ideas Stock Exchange · Proof &amp; Pulse
+      </span>
+    </div>
+  </div>
+</Link>
 
         {/* Nav */}
         <div style={headerStyles.navWrap}>
