@@ -1,3 +1,4 @@
+// app/page.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -12,88 +13,28 @@ type Idea = {
   pulse: number | null;
 };
 
+type PulseFilter = "ALL" | "SEED" | "VALIDATED" | "HIGH";
+
 const styles: { [key: string]: React.CSSProperties } = {
   page: {
     minHeight: "100vh",
     background:
       "radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.18), #020617)",
     color: "#e5e7eb",
-    padding: "96px 20px 56px", // трохи відступу зверху під fixed header
-    fontFamily:
-      "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+    padding: "32px 20px 56px",
     width: "100%",
-    maxWidth: 1200,
+    maxWidth: 1120,
     margin: "0 auto",
-    boxSizing: "border-box" as const,
-  },
-    liveControls: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    marginBottom: 12,
-  },
-  searchInput: {
-    width: "100%",
-    borderRadius: 999,
-    border: "1px solid #1f2937",
-    backgroundColor: "#020617",
-    padding: "8px 12px",
-    fontSize: 13,
-    color: "#e5e7eb",
-    outline: "none",
-  },
-  pulseFilterRow: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: 8,
-    alignItems: "center",
-    fontSize: 12,
-    color: "#9ca3af",
-  },
-  pulseFilterBtn: {
-    borderRadius: 999,
-    border: "1px solid #1f2937",
-    padding: "4px 10px",
-    fontSize: 12,
-    background: "#020617",
-    cursor: "pointer",
-  },
-  pulseFilterBtnActive: {
-    borderColor: "#22c55e",
-    background:
-      "radial-gradient(circle at top left, rgba(34,197,94,0.45), transparent 60%) #022c22",
-    color: "#bbf7d0",
-  },
-  pulseLegend: {
-    fontSize: 11,
-    color: "#6b7280",
-  },
-  pulseActions: {
-    display: "flex",
-    gap: 6,
-    justifyContent: "flex-end",
-    marginTop: 6,
-  },
-  pulseActionBtn: {
-    width: 22,
-    height: 22,
-    borderRadius: "999px",
-    border: "1px solid #374151",
-    background: "#020617",
-    color: "#e5e7eb",
-    fontSize: 13,
-    lineHeight: "18px",
-    cursor: "pointer",
+    boxSizing: "border-box",
   },
 
-  // TOP BADGE
   badgeRow: {
     display: "flex",
     gap: 8,
     alignItems: "center",
     marginBottom: 14,
     fontSize: 11,
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "0.12em",
     color: "#a5b4fc",
   },
@@ -104,19 +45,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     background: "rgba(30,64,175,0.35)",
   },
 
-  // HERO
   heroGrid: {
     display: "grid",
     gridTemplateColumns: "minmax(0, 2.1fr) minmax(0, 1.4fr)",
     gap: 40,
     alignItems: "flex-start",
     marginBottom: 40,
-  },
-  heroGridMobile: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 24,
-    marginBottom: 32,
   },
 
   title: {
@@ -125,12 +59,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     letterSpacing: "-0.03em",
     marginBottom: 14,
   },
-  titleMobile: {
-    fontSize: 30,
-    fontWeight: 700,
-    letterSpacing: "-0.03em",
-    marginBottom: 12,
-  },
   subtitle: {
     fontSize: 16,
     color: "#cbd5f5",
@@ -138,19 +66,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     lineHeight: 1.6,
     marginBottom: 22,
   },
-  subtitleMobile: {
-    fontSize: 15,
-    color: "#cbd5f5",
-    maxWidth: 600,
-    lineHeight: 1.5,
-    marginBottom: 18,
-  },
 
   ctaRow: {
     marginTop: 4,
     display: "flex",
     gap: 14,
-    flexWrap: "wrap" as const,
+    flexWrap: "wrap",
   },
   ctaButtonPrimary: {
     borderRadius: 999,
@@ -161,6 +82,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 14,
     color: "#e5e7eb",
     textDecoration: "none",
+    cursor: "pointer",
   },
   ctaButtonSecondary: {
     borderRadius: 999,
@@ -172,39 +94,37 @@ const styles: { [key: string]: React.CSSProperties } = {
     textDecoration: "none",
   },
 
-  // DESKTOP HEARTBEAT CARD (праворуч від hero)
   heroSideCard: {
     borderRadius: 18,
     border: "1px solid #1f2937",
     padding: "14px 16px 16px",
     background:
-      "linear-gradient(135deg, rgba(16,185,129,0.45), rgba(30,64,175,0.45))",
+      "radial-gradient(circle at top left, rgba(15,118,110,0.6), transparent 60%) #020617",
     fontSize: 13,
-    color: "#e5e7eb",
+    color: "#cbd5f5",
     lineHeight: 1.6,
   },
   heroSideTitle: {
     fontSize: 13,
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "0.16em",
-    color: "#bbf7d0",
-    marginBottom: 8,
+    color: "#a5b4fc",
+    marginBottom: 6,
   },
   heroSideRow: {
     display: "flex",
     flexDirection: "column",
-    gap: 8,
-    marginTop: 4,
+    gap: 6,
+    marginTop: 6,
   },
   heroSideLabel: {
     fontSize: 12,
-    color: "#d1fae5",
+    color: "#9ca3af",
   },
   heroSideValue: {
     fontSize: 13,
   },
 
-  // GENERIC SECTION
   section: {
     marginTop: 32,
     paddingTop: 24,
@@ -221,7 +141,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 14,
     fontWeight: 600,
     color: "#e5e7eb",
-    textTransform: "uppercase" as const,
+    textTransform: "uppercase",
     letterSpacing: "0.14em",
   },
   sectionHint: {
@@ -235,57 +155,62 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 10,
   },
 
-  // MOBILE HEARTBEAT CARDS
-  heartbeatCardList: {
+  twoColText: {
+    display: "grid",
+    gridTemplateColumns: "minmax(0,1.3fr) minmax(0,1.3fr)",
+    gap: 28,
+  },
+
+  miniList: {
+    margin: "4px 0 6px 0",
+    paddingLeft: 18,
+    fontSize: 14,
+    color: "#cbd5f5",
+  },
+  miniItem: {
+    marginBottom: 4,
+  },
+
+  // HIVE CONTROLS
+  hiveControlsRow: {
     display: "flex",
-    flexDirection: "column",
-    gap: 10,
-    marginTop: 4,
-  },
-  heartbeatCard: {
-    borderRadius: 16,
-    border: "1px solid #064e3b",
-    padding: "10px 12px",
-    background:
-      "radial-gradient(circle at top left, rgba(16,185,129,0.55), transparent 60%) #022c22",
-    fontSize: 13,
-    color: "#d1fae5",
-    lineHeight: 1.5,
-  },
-  heartbeatCardTitle: {
-    fontSize: 13,
-    fontWeight: 600,
-    marginBottom: 4,
-  },
-
-  // WHO USES THE HIVE
-  personaGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, minmax(0,1fr))",
-    gap: 16,
-    marginTop: 10,
-  },
-  personaGridMobile: {
-    display: "grid",
-    gridTemplateColumns: "minmax(0,1fr)",
+    flexWrap: "wrap",
     gap: 12,
-    marginTop: 10,
+    marginBottom: 12,
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  personaCard: {
-    borderRadius: 16,
-    border: "1px solid #111827",
-    padding: "12px 14px",
+  searchInput: {
+    flex: "1 1 210px",
+    minWidth: 0,
+    borderRadius: 999,
+    border: "1px solid #1f2937",
+    padding: "8px 12px",
+    fontSize: 13,
+    backgroundColor: "#020617",
+    color: "#e5e7eb",
+  },
+  filterPillsRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  filterPill: {
+    borderRadius: 999,
+    border: "1px solid #1f2937",
+    padding: "4px 10px",
+    fontSize: 11,
+    backgroundColor: "#020617",
+    color: "#9ca3af",
+    cursor: "pointer",
+  },
+  filterPillActive: {
+    borderColor: "#3b82f6",
     background:
-      "radial-gradient(circle at top left, rgba(37,99,235,0.35), transparent 60%) #020617",
-    fontSize: 13,
-  },
-  personaTitle: {
-    fontSize: 13,
-    fontWeight: 600,
-    marginBottom: 4,
+      "radial-gradient(circle at top left, rgba(59,130,246,0.38), transparent 60%) #020617",
+    color: "#e5e7eb",
   },
 
-  // LIVE HIVE
   liveHeaderRow: {
     display: "flex",
     justifyContent: "space-between",
@@ -323,6 +248,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 12,
     color: "#6b7280",
   },
+  liveRight: {
+    textAlign: "right",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    gap: 6,
+  },
   livePulsePill: {
     borderRadius: 999,
     border: "1px solid #374151",
@@ -332,57 +264,69 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     gap: 6,
   },
+  pulseControls: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    marginTop: 4,
+  },
+  pulseBtn: {
+    width: 20,
+    height: 20,
+    borderRadius: 999,
+    border: "1px solid #374151",
+    background: "#020617",
+    color: "#e5e7eb",
+    fontSize: 12,
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   liveViewLink: {
     fontSize: 12,
     color: "#93c5fd",
     textDecoration: "none",
-    marginTop: 8,
+    marginTop: 4,
     display: "inline-flex",
     alignItems: "center",
     gap: 4,
   },
 
-  // BOTTOM CTA
   bottomCta: {
     marginTop: 32,
     paddingTop: 20,
     borderTop: "1px solid #1f2937",
     display: "flex",
     justifyContent: "space-between",
-    flexWrap: "wrap" as const,
+    flexWrap: "wrap",
     gap: 16,
     alignItems: "center",
   },
 };
 
+function getPulseBucket(pulse: number | null): PulseFilter | "NONE" {
+  const p = pulse ?? 0;
+  if (p >= 5) return "HIGH";
+  if (p >= 3) return "VALIDATED";
+  if (p >= 1) return "SEED";
+  return "NONE";
+}
+
 export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loadingIdeas, setLoadingIdeas] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [query, setQuery] = useState("");
-  const [pulseFilter, setPulseFilter] = useState<"all" | "seed" | "validated" | "high">("all");
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [pulseFilter, setPulseFilter] = useState<PulseFilter>("ALL");
 
-  // simple responsive flag
-  useEffect(() => {
-    const check = () => {
-      if (typeof window !== "undefined") {
-        setIsMobile(window.innerWidth < 768);
-      }
-    };
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  // scroll to hive
   const scrollToHive = () => {
-    const el = document.getElementById("hive-section");
+    const el = document.getElementById("hive");
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  // load last ideas
   useEffect(() => {
     let cancelled = false;
 
@@ -400,7 +344,7 @@ export default function HomePage() {
             new Date(a.created_at).getTime()
         );
         if (!cancelled) {
-          setIdeas(sorted.slice(0, 4));
+          setIdeas(sorted.slice(0, 20));
         }
       } finally {
         if (!cancelled) setLoadingIdeas(false);
@@ -412,53 +356,54 @@ export default function HomePage() {
       cancelled = true;
     };
   }, []);
-  async function adjustPulse(ideaId: string, delta: number) {
-  setIdeas((prev) =>
-    prev.map((idea) =>
-      idea.id === ideaId
-        ? { ...idea, pulse: (idea.pulse ?? 0) + delta }
-        : idea
-    )
-  );
 
-  try {
-    await fetch("/api/pulse", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ideaId, delta }),
-    });
-  } catch {
-    // тихо ігноруємо на випадок, якщо бек ще не готовий
-  }
-}
-const filteredIdeas = ideas.filter((idea) => {
-  const text = (idea.title + " " + (idea.description ?? "")).toLowerCase();
-  const q = query.toLowerCase();
-  if (q && !text.includes(q)) return false;
+  const handlePulseChange = async (idea: Idea, delta: 1 | -1) => {
+    if (updatingId) return;
+    setUpdatingId(idea.id);
+    try {
+      const res = await fetch(`/api/ideas/${idea.id}/pulse`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta }),
+      });
+      if (!res.ok) return;
+      const json = await res.json();
+      const newPulse = json?.pulse as number | undefined;
 
-  const p = idea.pulse ?? 0;
-  if (pulseFilter === "seed" && !(p >= 1 && p <= 2)) return false;
-  if (pulseFilter === "validated" && !(p >= 3 && p <= 4)) return false;
-  if (pulseFilter === "high" && p < 5) return false;
+      if (typeof newPulse === "number") {
+        setIdeas((prev) =>
+          prev.map((i) =>
+            i.id === idea.id ? { ...i, pulse: newPulse } : i
+          )
+        );
+      }
+    } finally {
+      setUpdatingId(null);
+    }
+  };
 
-  return true;
-});
+  const visibleIdeas = ideas.filter((i) => {
+    const text = (i.title + " " + (i.description ?? "")).toLowerCase();
+    const q = search.trim().toLowerCase();
+    if (q && !text.includes(q)) return false;
+
+    if (pulseFilter === "ALL") return true;
+    const bucket = getPulseBucket(i.pulse);
+    return bucket === pulseFilter;
+  });
 
   return (
     <main style={styles.page}>
-      {/* TOP BADGE UNDER HEADER */}
+      {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
-        <span>IDEAS DESERVE A HOME, NOT A FEED.</span>
+        <span>Ideas Stock Exchange · Proof &amp; Pulse</span>
       </div>
 
-      {/* HERO */}
-      <section style={isMobile ? styles.heroGridMobile : styles.heroGrid}>
+      <section style={styles.heroGrid}>
         <div>
-          <h1 style={isMobile ? styles.titleMobile : styles.title}>
-            Ideas deserve a home, not a feed.
-          </h1>
-          <p style={isMobile ? styles.subtitleMobile : styles.subtitle}>
+          <h1 style={styles.title}>Ideas deserve a home, not a feed.</h1>
+          <p style={styles.subtitle}>
             Roota turns raw thoughts into timestamped records with{" "}
             <strong>proof</strong> and <strong>pulse</strong>. It&apos;s a live
             hive — a place where ideas take root, grow and stay visible to
@@ -469,7 +414,7 @@ const filteredIdeas = ideas.filter((idea) => {
             <button
               type="button"
               onClick={scrollToHive}
-              style={{ ...styles.ctaButtonPrimary, cursor: "pointer" }}
+              style={styles.ctaButtonPrimary}
             >
               Enter the Hive
             </button>
@@ -479,71 +424,31 @@ const filteredIdeas = ideas.filter((idea) => {
           </div>
         </div>
 
-        {/* права картка — лише на desktop / tablet */}
-        {!isMobile && (
-          <aside style={styles.heroSideCard}>
-            <div style={styles.heroSideTitle}>Heartbeat, not applause</div>
-            <p>
-              Launches chase applause — a spike of attention and then silence.
-              Roota tracks the heartbeat of ideas: every proof fixes a moment in
-              time, every pulse adds energy.
-            </p>
-            <div style={styles.heroSideRow}>
-              <div>
-                <div style={styles.heroSideLabel}>Visible signals</div>
-                <div style={styles.heroSideValue}>
-                  Proof tokens, pulse changes, live idea pages.
-                </div>
-              </div>
-              <div>
-                <div style={styles.heroSideLabel}>Missing on purpose</div>
-                <div style={styles.heroSideValue}>
-                  Screenshots, pitch decks and vanity likes don&apos;t live
-                  here.
-                </div>
+        <aside style={styles.heroSideCard}>
+          <div style={styles.heroSideTitle}>Heartbeat, not applause</div>
+          <p>
+            Product launches chase applause — a spike of attention, then
+            silence. Roota tracks the heartbeat of ideas: every proof fixes a
+            moment in time, every pulse adds energy.
+          </p>
+          <div style={styles.heroSideRow}>
+            <div>
+              <div style={styles.heroSideLabel}>Visible signals</div>
+              <div style={styles.heroSideValue}>
+                Proof tokens, pulse changes, live idea pages.
               </div>
             </div>
-          </aside>
-        )}
+            <div>
+              <div style={styles.heroSideLabel}>Missing on purpose</div>
+              <div style={styles.heroSideValue}>
+                No screenshots, no vanity likes — just signals of life.
+              </div>
+            </div>
+          </div>
+        </aside>
       </section>
 
-      {/* MOBILE HEARTBEAT CARDS – замість вузької вертикальної колони */}
-      {isMobile && (
-        <section style={styles.section}>
-          <div style={styles.sectionTitleRow}>
-            <h2 style={styles.sectionTitle}>How Roota feels</h2>
-            <div style={styles.sectionHint}>
-              Short cards instead of one long column.
-            </div>
-          </div>
-
-          <div style={styles.heartbeatCardList}>
-            <div style={styles.heartbeatCard}>
-              <div style={styles.heartbeatCardTitle}>Proof &amp; pulse</div>
-              <div>
-                Every idea gets a timestamped proof token and a live pulse that
-                can rise or fall as attention moves.
-              </div>
-            </div>
-            <div style={styles.heartbeatCard}>
-              <div style={styles.heartbeatCardTitle}>Visible signals</div>
-              <div>
-                You see changes over time: ideas that wake up, slow down or
-                quietly keep beating in the background.
-              </div>
-            </div>
-            <div style={styles.heartbeatCard}>
-              <div style={styles.heartbeatCardTitle}>What doesn&apos;t live here</div>
-              <div>
-                No vanity screenshots, no pitch decks, no likes for the sake of
-                likes. Just the heartbeat of ideas.
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* WHY ROOTA EXISTS – компактний текст для всіх екранів */}
+      {/* WHY ROOTA EXISTS (коротка версія) */}
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
@@ -553,160 +458,166 @@ const filteredIdeas = ideas.filter((idea) => {
           </div>
         </div>
 
-        <p style={styles.paragraph}>
-          Most ideas live in fragments: notes, Notion pages, chat threads, voice
-          messages. They&apos;re hard to show, impossible to track and nearly
-          impossible to prove.
-        </p>
-        <p style={styles.paragraph}>
-          Roota turns thoughts into records: a{" "}
-          <strong>timestamped proof token</strong>, context and{" "}
-          <strong>pulse</strong> that shows how attention moves over time. The
-          hive becomes a living registry of what people care about and when.
-        </p>
-      </section>
-
-      {/* WHO USES THE HIVE */}
-      <section style={styles.section}>
-        <div style={styles.sectionTitleRow}>
-          <h2 style={styles.sectionTitle}>Who uses the hive</h2>
-          <div style={styles.sectionHint}>
-            Roota doesn&apos;t sell ideas. It reveals what&apos;s alive and
-            where energy quietly gathers.
-          </div>
-        </div>
-
-        <div style={isMobile ? styles.personaGridMobile : styles.personaGrid}>
-          <div style={styles.personaCard}>
-            <div style={styles.personaTitle}>Makers &amp; founders</div>
-            <p>
-              Capture raw concepts, watch which ones resonate, and turn bloom
-              candidates into projects, products or side ventures.
-            </p>
-          </div>
-
-          <div style={styles.personaCard}>
-            <div style={styles.personaTitle}>Studios &amp; teams</div>
-            <p>
-              Run private hives, track internal signals and see which
-              directions organically gain energy inside the group.
-            </p>
-          </div>
-
-          <div style={styles.personaCard}>
-            <div style={styles.personaTitle}>Funds &amp; scouts</div>
-            <p>
-              Look at early signals — pockets where proof + pulse rise before
-              pitch decks appear on the surface.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* LIVE HIVE */}
-     <section id="hive-section" style={styles.section}>
-  <div style={styles.liveHeaderRow}>
-    <div style={styles.sectionTitle}>Live signals from the hive</div>
-    <div style={styles.sectionHint}>
-      Realtime pulse — no screenshots, just what&apos;s alive now.
-    </div>
-  </div>
-
-  <div style={styles.liveControls}>
-    <input
-      style={styles.searchInput}
-      placeholder="Search by title or description…"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-    />
-
-    <div style={styles.pulseFilterRow}>
-      <span>Pulse level:</span>
-      {(
-        [
-          ["all", "All"],
-          ["seed", "Seed 1–2"],
-          ["validated", "Validated 3–4"],
-          ["high", "High 5+"],
-        ] as const
-      ).map(([value, label]) => (
-        <button
-          key={value}
-          type="button"
-          onClick={() => setPulseFilter(value)}
-          style={{
-            ...styles.pulseFilterBtn,
-            ...(pulseFilter === value ? styles.pulseFilterBtnActive : {}),
-          }}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
-
-    <div style={styles.pulseLegend}>
-      1–2 = Seed · 3–4 = Validated · 5+ = High conviction.
-    </div>
-  </div>
-
-  {loadingIdeas && <p style={styles.sectionHint}>Loading latest ideas…</p>}
-
-  {!loadingIdeas && filteredIdeas.length === 0 && (
-    <p style={styles.sectionHint}>
-      No signals for this view. Try another search or pulse level.
-    </p>
-  )}
-
-  {!loadingIdeas && filteredIdeas.length > 0 && (
-    <div style={styles.liveList}>
-      {filteredIdeas.map((idea) => (
-        <div key={idea.id} style={styles.liveCard}>
+        <div style={styles.twoColText}>
           <div>
-            <div style={styles.liveTitle}>{idea.title}</div>
-            <div style={styles.liveDesc}>{idea.description}</div>
-            <div style={styles.liveMeta}>
-              {new Date(idea.created_at).toLocaleDateString()} · proof &amp;
-              pulse on record
-            </div>
+            <p style={styles.paragraph}>
+              Most ideas live in fragments: notes, Notion pages, chat threads.
+              They&apos;re hard to show, impossible to track and nearly
+              impossible to prove.
+            </p>
+            <p style={styles.paragraph}>
+              Roota turns thoughts into records: a{" "}
+              <strong>timestamped proof token</strong>, public context and{" "}
+              <strong>pulse</strong> that shows how attention moves.
+            </p>
           </div>
-          <div style={{ textAlign: "right" as const }}>
-            <div style={styles.livePulsePill}>
-              <span>⚡</span>
-              <span>{idea.pulse ?? 0}</span>
-              <span>| heartbeat</span>
-            </div>
 
-            <div style={styles.pulseActions}>
-              <button
-                type="button"
-                style={styles.pulseActionBtn}
-                onClick={() => adjustPulse(idea.id, -1)}
-              >
-                –
-              </button>
-              <button
-                type="button"
-                style={styles.pulseActionBtn}
-                onClick={() => adjustPulse(idea.id, +1)}
-              >
-                +
-              </button>
-            </div>
-
-            <Link
-              href={`/idea/${idea.slug || idea.id}`}
-              style={styles.liveViewLink}
-            >
-              <span>View idea</span>
-              <span>→</span>
-            </Link>
+          <div>
+            <p style={styles.paragraph}>
+              Together this becomes a living registry of ideas — not a list of
+              launches, but a map of what people care about and when.
+            </p>
+            <ul style={styles.miniList}>
+              <li style={styles.miniItem}>
+                ⏱ Proof — “this idea existed here, in this form, on this date”.
+              </li>
+              <li style={styles.miniItem}>
+                ⚡ Pulse — “this is how strongly it resonates over time”.
+              </li>
+              <li style={styles.miniItem}>
+                🐝 Hive — a space where ideas cross-pollinate instead of
+                compete.
+              </li>
+            </ul>
           </div>
         </div>
-      ))}
-    </div>
-  )}
-</section>
+      </section>
 
+      {/* HIVE SECTION */}
+      <section id="hive" style={styles.section}>
+        <div style={styles.liveHeaderRow}>
+          <div style={styles.sectionTitle}>Live signals from the hive</div>
+          <div style={styles.sectionHint}>
+            Realtime pulse — no screenshots, just what&apos;s alive now.
+          </div>
+        </div>
+
+        {/* Controls: search + pulse filter */}
+        <div style={styles.hiveControlsRow}>
+          <input
+            style={styles.searchInput}
+            placeholder="Search ideas by title or description…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <div style={styles.filterPillsRow}>
+            {([
+              ["ALL", "All"],
+              ["SEED", "Seed (1–2)"],
+              ["VALIDATED", "Validated (3–4)"],
+              ["HIGH", "High conviction (5+)"],
+            ] as [PulseFilter | "ALL", string][]).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setPulseFilter(value as PulseFilter)}
+                style={{
+                  ...styles.filterPill,
+                  ...(pulseFilter === value
+                    ? styles.filterPillActive
+                    : null),
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <p style={styles.sectionHint}>
+          Pulse levels: 1–2 = Seed · 3–4 = Validated · 5+ = High conviction.
+        </p>
+
+        {loadingIdeas && (
+          <p style={styles.sectionHint}>Loading latest ideas…</p>
+        )}
+
+        {!loadingIdeas && visibleIdeas.length === 0 && (
+          <p style={styles.sectionHint}>
+            No signals match this view. Try changing the filter or search.
+          </p>
+        )}
+
+        {!loadingIdeas && visibleIdeas.length > 0 && (
+          <div style={styles.liveList}>
+            {visibleIdeas.map((idea) => {
+              const p = idea.pulse ?? 0;
+              const bucket = getPulseBucket(idea.pulse);
+              const label =
+                bucket === "HIGH"
+                  ? "High conviction"
+                  : bucket === "VALIDATED"
+                  ? "Validated"
+                  : bucket === "SEED"
+                  ? "Seed"
+                  : "New";
+
+              return (
+                <div key={idea.id} style={styles.liveCard}>
+                  <div>
+                    <div style={styles.liveTitle}>{idea.title}</div>
+                    <div style={styles.liveDesc}>{idea.description}</div>
+                    <div style={styles.liveMeta}>
+                      {new Date(idea.created_at).toLocaleDateString()} · Proof &
+                      pulse on record
+                    </div>
+                  </div>
+
+                  <div style={styles.liveRight}>
+                    <div style={styles.livePulsePill}>
+                      <span>⚡</span>
+                      <span>{p}</span>
+                      <span>· {label}</span>
+                    </div>
+                    <div style={styles.pulseControls}>
+                      <button
+                        type="button"
+                        onClick={() => handlePulseChange(idea, -1)}
+                        disabled={!!updatingId}
+                        style={{
+                          ...styles.pulseBtn,
+                          opacity: updatingId ? 0.5 : 1,
+                        }}
+                      >
+                        –
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handlePulseChange(idea, +1)}
+                        disabled={!!updatingId}
+                        style={{
+                          ...styles.pulseBtn,
+                          opacity: updatingId ? 0.5 : 1,
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <Link
+                      href={`/idea/${idea.slug || idea.id}`}
+                      style={styles.liveViewLink}
+                    >
+                      <span>View idea</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       {/* BOTTOM CTA */}
       <div style={styles.bottomCta}>
@@ -721,7 +632,7 @@ const filteredIdeas = ideas.filter((idea) => {
           <button
             type="button"
             onClick={scrollToHive}
-            style={{ ...styles.ctaButtonPrimary, cursor: "pointer" }}
+            style={styles.ctaButtonPrimary}
           >
             Explore the Hive
           </button>
