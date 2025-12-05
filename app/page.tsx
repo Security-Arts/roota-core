@@ -397,7 +397,7 @@ export default function HomePage() {
       {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
-        <span>Ideas Stock Exchange · Proof &amp; Pulse</span>
+        <span>Ideas Stock Exchange · A live registry of ideas with Proof & Pulse</span>
       </div>
 
       <section style={styles.heroGrid}>
