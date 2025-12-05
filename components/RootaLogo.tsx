@@ -1,72 +1,57 @@
 // components/RootaLogo.tsx
-
 import React from "react";
 
-export interface RootaLogoProps {
-  size?: number;
-}
-
-export const RootaLogo: React.FC<RootaLogoProps> = ({ size = 44 }) => {
+export function RootaLogo({ size = 48 }: { size?: number }) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 24 24"
       aria-hidden="true"
     >
-      {/* Dark rounded square */}
-      <rect x="8" y="8" width="48" height="48" rx="14" fill="#020617" />
-
-      {/* Soft top glow */}
-      <rect
-        x="8"
-        y="8"
-        width="48"
-        height="48"
-        rx="14"
-        fill="url(#rootaGlow)"
-        opacity="0.45"
+      {/* стебло — трохи ширше і масивніше */}
+      <path
+        d="
+          M11.2 19.8
+          C10.9 17.4 11 15 11.2 13.0
+           11.3 12.2 11.9 11.7 12.6 11.7
+           13.3 11.7 13.9 12.2 14.0 13.0
+           14.2 15.0 14.3 17.4 14.0 19.8
+           13.9 20.4 13.4 20.8 12.8 20.8
+           12.2 20.8 11.6 20.4 11.2 19.8
+          Z
+        "
+        fill="#22c55e"
       />
 
-      {/* STEM – short & wide */}
-      <rect
-        x={29}
-        y={30}
-        width={6}
-        height={11}
+      {/* ліва листочка — вузька й видовжена вгору */}
+      <ellipse
+        cx={9}
+        cy={8}
         rx={3}
-        fill="#16a34a"
+        ry={5}
+        transform="rotate(-18 9 8)"
+        fill="#4ade80"
       />
 
-      {/* LEFT LEAF – narrow & elongated, pointing up */}
+      {/* права листочка — дзеркальна */}
       <ellipse
-        cx={26}
-        cy={24}
-        rx={4.1}
-        ry={8}
-        transform="rotate(-18 26 24)"
-        fill="#6BFFA8"
+        cx={15}
+        cy={8}
+        rx={3}
+        ry={5}
+        transform="rotate(18 15 8)"
+        fill="#86efac"
       />
 
-      {/* RIGHT LEAF – mirrored */}
+      {/* легке затемнення / тінь під рослиною */}
       <ellipse
-        cx={38}
-        cy={24}
-        rx={4.1}
-        ry={8}
-        transform="rotate(18 38 24)"
-        fill="#5CFF9C"
+        cx="12"
+        cy="21"
+        rx="3.4"
+        ry="0.9"
+        fill="rgba(15,23,42,0.6)"
       />
-
-      <defs>
-        <radialGradient id="rootaGlow" cx="50%" cy="15%" r="80%">
-          <stop offset="0%" stopColor="#34d399" stopOpacity="0.85" />
-          <stop offset="40%" stopColor="#22c55e" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
-        </radialGradient>
-      </defs>
     </svg>
   );
-};
-
-export default RootaLogo;
+}
