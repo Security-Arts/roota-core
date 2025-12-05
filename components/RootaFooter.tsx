@@ -1,25 +1,55 @@
-"use client";
+// components/RootaFooter.tsx
+import React from "react";
 
 export function RootaFooter() {
-  return (
-    <footer
-      style={{
-        marginTop: 60,
-        padding: "30px 20px",
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        textAlign: "center",
-        fontSize: 13,
-        color: "#94a3b8",
-        background:
-          "linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(15,23,42,0.6) 100%)",
-      }}
-    >
-      <div style={{ marginBottom: 6 }}>
-        Roota • Ideas Stock Exchange · Proof & Pulse
-      </div>
+  const year = new Date().getFullYear();
 
-      <div style={{ opacity: 0.6 }}>
-        © {new Date().getFullYear()} Roota. All rights reserved.
+  const styles: { [key: string]: React.CSSProperties } = {
+    wrap: {
+      borderTop: "1px solid #111827",
+      padding: "16px 20px 22px",
+      marginTop: 32,
+      display: "flex",
+      justifyContent: "center",
+      fontFamily:
+        "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
+    },
+    inner: {
+      width: "100%",
+      maxWidth: 1120,
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: 12,
+      fontSize: 12,
+      color: "#9ca3af",
+    },
+    right: {
+      display: "flex",
+      gap: 12,
+      flexWrap: "wrap",
+      alignItems: "center",
+    },
+    link: {
+      color: "#93c5fd",
+      textDecoration: "none",
+    },
+  };
+
+  return (
+    <footer style={styles.wrap}>
+      <div style={styles.inner}>
+        <div>© {year} Roota · Ideas Stock Exchange · Proof &amp; Pulse</div>
+        <div style={styles.right}>
+          <span>Public hive stays open.</span>
+          <span>
+            Contact:{" "}
+            <a href="mailto:team@roota.exchange" style={styles.link}>
+              team@roota.exchange
+            </a>
+          </span>
+        </div>
       </div>
     </footer>
   );
