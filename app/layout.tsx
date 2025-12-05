@@ -1,40 +1,33 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { RootaHeader } from "@/components/RootaHeader";
+import { RootaFooter } from "@/components/RootaFooter";
 
 export const metadata: Metadata = {
-  title: "Roota · Ideas Stock Exchange",
-  description: "Ideas Stock Exchange · Proof & Pulse",
+  title: "Roota • Ideas Stock Exchange",
+  description: "A live registry of ideas with proof & pulse."
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body
         style={{
           fontFamily:
             "-apple-system, BlinkMacSystemFont, 'Inter', 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif",
-          backgroundColor: "#020617",
-          color: "#f9fafb",
+          backgroundColor: "#0f172a",
+          color: "#f8fafc",
           margin: 0,
         }}
       >
+        {/* Fixed header */}
         <RootaHeader />
-        {/* щоб контент не заїжджав під fixed header */}
-        <div
-          style={{
-            paddingTop: 96,
-            minHeight: "100vh",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {children}
-        </div>
+
+        {/* Page content */}
+        <main style={{ paddingTop: 80 }}>{children}</main>
+
+        {/* 🔥 Footer goes HERE */}
+        <RootaFooter />
       </body>
     </html>
   );
