@@ -2,12 +2,11 @@
 
 import React from "react";
 
-// Простий SVG-логотип Roota з двома листками вгору
 export interface RootaLogoProps {
   size?: number;
 }
 
-export const RootaLogo: React.FC<RootaLogoProps> = ({ size = 48 }) => {
+export const RootaLogo: React.FC<RootaLogoProps> = ({ size = 44 }) => {
   const viewBoxSize = 64;
 
   return (
@@ -31,21 +30,39 @@ export const RootaLogo: React.FC<RootaLogoProps> = ({ size = 48 }) => {
         opacity="0.4"
       />
 
-      {/* Стебло */}
+      {/* ШИРШЕ СТЕБЛО */}
       <path
-        d="M32 40 C31.5 36 31.3 32 31.3 28 C31.3 26.8 32.7 26.8 32.7 28 C32.7 32 32.5 36 32 40 Z"
+        d="
+          M31 40
+          C30.5 34, 30.5 28, 30.8 24
+           30.9 22.5, 33.1 22.5, 33.2 24
+           33.5 28, 33.5 34, 33 40
+          Z
+        "
         fill="#4ade80"
       />
 
-      {/* Лівий листок */}
+      {/* ЛІВИЙ ЛИСТОК — видовжений */}
       <path
-        d="M30 28 C22 26, 20 20, 22 16 C26 16, 30 18, 32 22 C31 24, 30.5 26, 30 28 Z"
+        d="
+          M30 26
+          C24 24, 21.5 19, 23.2 15.5
+           25 12, 29 13, 32 17
+           31 20, 30.5 23.2, 30 26
+          Z
+        "
         fill="#4ade80"
       />
 
-      {/* Правий листок */}
+      {/* ПРАВИЙ ЛИСТОК — видовжений */}
       <path
-        d="M34 28 C42 26, 44 20, 42 16 C38 16, 34 18, 32 22 C33 24, 33.5 26, 34 28 Z"
+        d="
+          M34 26
+          C40 24, 42.5 19, 40.8 15.5
+           39 12, 35 13, 32 17
+           33 20, 33.5 23.2, 34 26
+          Z
+        "
         fill="#22c55e"
       />
 
