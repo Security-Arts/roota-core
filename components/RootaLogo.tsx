@@ -1,60 +1,78 @@
 // components/RootaLogo.tsx
 import React from "react";
 
-export function RootaLogo({ size = 28 }: { size?: number }) {
+export function RootaLogo({ size = 44 }: { size?: number }) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="0 0 64 64"
       aria-hidden="true"
     >
+      {/* BACKGROUND — dark rounded square */}
+      <rect
+        x="8"
+        y="8"
+        width="48"
+        height="48"
+        rx="14"
+        fill="#07101e"
+      />
 
-      {/* СТЕБЛО — довше, акуратніше, не товще */}
+      {/* TOP GREEN GLOW */}
+      <rect
+        x="8"
+        y="8"
+        width="48"
+        height="48"
+        rx="14"
+        fill="url(#rootaGlow)"
+        opacity="0.42"
+      />
+
+      {/* STEM — thicker, but still elegant */}
       <path
         d="
-          M11.55 20
-          C11.3 17, 11.25 14, 11.4 12.5
-           11.5 11.7, 12.5 11.7, 12.6 12.5
-           12.75 14, 12.7 17, 12.45 20
+          M30.5 42
+          C30.2 37, 30.4 32, 31 28.3
+            31.3 26.8, 32.7 26.8, 33.0 28.3
+            33.6 32, 33.8 37, 33.5 42
           Z
         "
-        fill="#22c55e"
+        fill="#29e67a"
       />
 
-      {/* ЛІВА ЛИСТОЧКА — ширше вліво, витягнута, не кругла */}
+      {/* LEFT LEAF — elongated, pointed, spreading left */}
       <path
         d="
-          M11 11
-          C7.8 10.4, 6.1 8.9, 5.4 7
-            5.1 6.1, 5.7 5.1, 6.7 4.8
-            8.1 4.4, 10 5.2, 11 6.8
-            11.7 8, 11.8 9.6, 11 11
+          M32 28
+          C27 25, 24.2 21.5, 23.7 18
+            23.3 15.5, 25.0 13.8, 27.3 13.6
+            29.6 13.3, 31.3 14.8, 32.1 16.8
+            32.8 18.8, 33.0 22.0, 32 28
         "
-        fill="#4ade80"
+        fill="#6BFFA8"
       />
 
-      {/* ПРАВА ЛИСТОЧКА — ширше вправо, симетрія */}
+      {/* RIGHT LEAF — mirrored, spreading right */}
       <path
         d="
-          M13 11
-          C16.2 10.4, 17.9 8.9, 18.6 7
-            18.9 6.1, 18.3 5.1, 17.3 4.8
-            15.9 4.4, 14 5.2, 13 6.8
-            12.3 8, 12.2 9.6, 13 11
+          M32 28
+          C37 25, 39.8 21.5, 40.3 18
+            40.7 15.5, 39.0 13.8, 36.7 13.6
+            34.4 13.3, 32.7 14.8, 31.9 16.8
+            31.2 18.8, 31.0 22.0, 32 28
         "
-        fill="#86efac"
+        fill="#5CFF9C"
       />
 
-      {/* ТІНЬ */}
-      <ellipse
-        cx="12"
-        cy="21"
-        rx="3.2"
-        ry="0.8"
-        fill="rgba(15,23,42,0.6)"
-      />
-
+      <defs>
+        <radialGradient id="rootaGlow" cx="50%" cy="20%" r="70%">
+          <stop offset="0%" stopColor="#3cf584" stopOpacity="0.7" />
+          <stop offset="40%" stopColor="#2ad96e" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#1d5f3a" stopOpacity="0" />
+        </radialGradient>
+      </defs>
     </svg>
   );
 }
