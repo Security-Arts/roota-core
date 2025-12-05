@@ -1,57 +1,65 @@
 // components/RootaLogo.tsx
+
 import React from "react";
 
-export function RootaLogo({ size = 48 }: { size?: number }) {
+export interface RootaLogoProps {
+  size?: number;
+}
+
+export const RootaLogo: React.FC<RootaLogoProps> = ({ size = 44 }) => {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="0 0 64 64"
       aria-hidden="true"
     >
-      {/* стебло — трохи ширше і масивніше */}
-      <path
-        d="
-          M11.2 19.8
-          C10.9 17.4 11 15 11.2 13.0
-           11.3 12.2 11.9 11.7 12.6 11.7
-           13.3 11.7 13.9 12.2 14.0 13.0
-           14.2 15.0 14.3 17.4 14.0 19.8
-           13.9 20.4 13.4 20.8 12.8 20.8
-           12.2 20.8 11.6 20.4 11.2 19.8
-          Z
-        "
-        fill="#22c55e"
+      {/* Dark rounded square */}
+      <rect x="8" y="8" width="48" height="48" rx="14" fill="#020617" />
+
+      {/* Soft top glow */}
+      <rect
+        x="8"
+        y="8"
+        width="48"
+        height="48"
+        rx="14"
+        fill="url(#rootaGlow)"
+        opacity="0.45"
       />
 
-      {/* ліва листочка — вузька й видовжена вгору */}
-      <ellipse
-        cx={9}
-        cy={8}
+      {/* STEM – slightly longer */}
+      <rect
+        x={29}
+        y={28}           // (було 30 → тепер довше на 2px)
+        width={6}
+        height={14}      // (було 11 → тепер довше на 3px)
         rx={3}
-        ry={5}
-        transform="rotate(-18 9 8)"
-        fill="#4ade80"
+        fill="#16a34a"
       />
 
-      {/* права листочка — дзеркальна */}
+      {/* LEFT LEAF – wider spread, more open */}
       <ellipse
-        cx={15}
-        cy={8}
-        rx={3}
-        ry={5}
-        transform="rotate(18 15 8)"
-        fill="#86efac"
+        cx={24}          // було 26 → більше вліво
+        cy={23}
+        rx={4.6}         // було 4.1 → трохи ширше
+        ry={8.5}         // було 8 → трохи довше
+        transform="rotate(-26 24 23)"  // більший кут відкриття
+        fill="#6BFFA8"
       />
 
-      {/* легке затемнення / тінь під рослиною */}
+      {/* RIGHT LEAF – wider spread, more open */}
       <ellipse
-        cx="12"
-        cy="21"
-        rx="3.4"
-        ry="0.9"
-        fill="rgba(15,23,42,0.6)"
+        cx={40}          // було 38 → більше вправо
+        cy={23}
+        rx={4.6}
+        ry={8.5}
+        transform="rotate(26 40 23)"   // більший кут відкриття
+        fill="#5CFF9C"
       />
-    </svg>
-  );
-}
+
+      <defs>
+        <radialGradient id="rootaGlow" cx="50%" cy="15%" r="80%">
+          <stop offset="0%" stopColor="#34d399" stopOpacity="0.85" />
+          <stop offset="40%" stopColor="#22c55e" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#
