@@ -22,9 +22,68 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontFamily:
       "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
     width: "100%",
-    maxWidth: 1100,
+    maxWidth: 1200,
     margin: "0 auto",
     boxSizing: "border-box" as const,
+  },
+    liveControls: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginBottom: 12,
+  },
+  searchInput: {
+    width: "100%",
+    borderRadius: 999,
+    border: "1px solid #1f2937",
+    backgroundColor: "#020617",
+    padding: "8px 12px",
+    fontSize: 13,
+    color: "#e5e7eb",
+    outline: "none",
+  },
+  pulseFilterRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8,
+    alignItems: "center",
+    fontSize: 12,
+    color: "#9ca3af",
+  },
+  pulseFilterBtn: {
+    borderRadius: 999,
+    border: "1px solid #1f2937",
+    padding: "4px 10px",
+    fontSize: 12,
+    background: "#020617",
+    cursor: "pointer",
+  },
+  pulseFilterBtnActive: {
+    borderColor: "#22c55e",
+    background:
+      "radial-gradient(circle at top left, rgba(34,197,94,0.45), transparent 60%) #022c22",
+    color: "#bbf7d0",
+  },
+  pulseLegend: {
+    fontSize: 11,
+    color: "#6b7280",
+  },
+  pulseActions: {
+    display: "flex",
+    gap: 6,
+    justifyContent: "flex-end",
+    marginTop: 6,
+  },
+  pulseActionBtn: {
+    width: 22,
+    height: 22,
+    borderRadius: "999px",
+    border: "1px solid #374151",
+    background: "#020617",
+    color: "#e5e7eb",
+    fontSize: 13,
+    lineHeight: "18px",
+    cursor: "pointer",
   },
 
   // TOP BADGE
@@ -300,6 +359,8 @@ export default function HomePage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [loadingIdeas, setLoadingIdeas] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [query, setQuery] = useState("");
+  const [pulseFilter, setPulseFilter] = useState<"all" | "seed" | "validated" | "high">("all");
 
   // simple responsive flag
   useEffect(() => {
@@ -351,6 +412,37 @@ export default function HomePage() {
       cancelled = true;
     };
   }, []);
+  async function adjustPulse(ideaId: string, delta: number) {
+  setIdeas((prev) =>
+    prev.map((idea) =>
+      idea.id === ideaId
+        ? { ...idea, pulse: (idea.pulse ?? 0) + delta }
+        : idea
+    )
+  );
+
+  try {
+    await fetch("/api/pulse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ideaId, delta }),
+    });
+  } catch {
+    // тихо ігноруємо на випадок, якщо бек ще не готовий
+  }
+}
+const filteredIdeas = ideas.filter((idea) => {
+  const text = (idea.title + " " + (idea.description ?? "")).toLowerCase();
+  const q = query.toLowerCase();
+  if (q && !text.includes(q)) return false;
+
+  const p = idea.pulse ?? 0;
+  if (pulseFilter === "seed" && !(p >= 1 && p <= 2)) return false;
+  if (pulseFilter === "validated" && !(p >= 3 && p <= 4)) return false;
+  if (pulseFilter === "high" && p < 5) return false;
+
+  return true;
+});
 
   return (
     <main style={styles.page}>
@@ -512,55 +604,109 @@ export default function HomePage() {
       </section>
 
       {/* LIVE HIVE */}
-      <section id="hive-section" style={styles.section}>
-        <div style={styles.liveHeaderRow}>
-          <div style={styles.sectionTitle}>Live signals from the hive</div>
-          <div style={styles.sectionHint}>
-            Realtime pulse — no screenshots, just what&apos;s alive now.
+     <section id="hive-section" style={styles.section}>
+  <div style={styles.liveHeaderRow}>
+    <div style={styles.sectionTitle}>Live signals from the hive</div>
+    <div style={styles.sectionHint}>
+      Realtime pulse — no screenshots, just what&apos;s alive now.
+    </div>
+  </div>
+
+  <div style={styles.liveControls}>
+    <input
+      style={styles.searchInput}
+      placeholder="Search by title or description…"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
+
+    <div style={styles.pulseFilterRow}>
+      <span>Pulse level:</span>
+      {(
+        [
+          ["all", "All"],
+          ["seed", "Seed 1–2"],
+          ["validated", "Validated 3–4"],
+          ["high", "High 5+"],
+        ] as const
+      ).map(([value, label]) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => setPulseFilter(value)}
+          style={{
+            ...styles.pulseFilterBtn,
+            ...(pulseFilter === value ? styles.pulseFilterBtnActive : {}),
+          }}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+
+    <div style={styles.pulseLegend}>
+      1–2 = Seed · 3–4 = Validated · 5+ = High conviction.
+    </div>
+  </div>
+
+  {loadingIdeas && <p style={styles.sectionHint}>Loading latest ideas…</p>}
+
+  {!loadingIdeas && filteredIdeas.length === 0 && (
+    <p style={styles.sectionHint}>
+      No signals for this view. Try another search or pulse level.
+    </p>
+  )}
+
+  {!loadingIdeas && filteredIdeas.length > 0 && (
+    <div style={styles.liveList}>
+      {filteredIdeas.map((idea) => (
+        <div key={idea.id} style={styles.liveCard}>
+          <div>
+            <div style={styles.liveTitle}>{idea.title}</div>
+            <div style={styles.liveDesc}>{idea.description}</div>
+            <div style={styles.liveMeta}>
+              {new Date(idea.created_at).toLocaleDateString()} · proof &amp;
+              pulse on record
+            </div>
+          </div>
+          <div style={{ textAlign: "right" as const }}>
+            <div style={styles.livePulsePill}>
+              <span>⚡</span>
+              <span>{idea.pulse ?? 0}</span>
+              <span>| heartbeat</span>
+            </div>
+
+            <div style={styles.pulseActions}>
+              <button
+                type="button"
+                style={styles.pulseActionBtn}
+                onClick={() => adjustPulse(idea.id, -1)}
+              >
+                –
+              </button>
+              <button
+                type="button"
+                style={styles.pulseActionBtn}
+                onClick={() => adjustPulse(idea.id, +1)}
+              >
+                +
+              </button>
+            </div>
+
+            <Link
+              href={`/idea/${idea.slug || idea.id}`}
+              style={styles.liveViewLink}
+            >
+              <span>View idea</span>
+              <span>→</span>
+            </Link>
           </div>
         </div>
+      ))}
+    </div>
+  )}
+</section>
 
-        {loadingIdeas && (
-          <p style={styles.sectionHint}>Loading latest ideas…</p>
-        )}
-
-        {!loadingIdeas && ideas.length === 0 && (
-          <p style={styles.sectionHint}>
-            No signals yet. Be the first bee to publish an idea.
-          </p>
-        )}
-
-        {!loadingIdeas && ideas.length > 0 && (
-          <div style={styles.liveList}>
-            {ideas.map((idea) => (
-              <div key={idea.id} style={styles.liveCard}>
-                <div>
-                  <div style={styles.liveTitle}>{idea.title}</div>
-                  <div style={styles.liveDesc}>{idea.description}</div>
-                  <div style={styles.liveMeta}>
-                    {new Date(idea.created_at).toLocaleDateString()} · proof &amp;
-                    pulse on record
-                  </div>
-                </div>
-                <div style={{ textAlign: "right" as const }}>
-                  <div style={styles.livePulsePill}>
-                    <span>⚡</span>
-                    <span>{idea.pulse ?? 0}</span>
-                    <span>| heartbeat</span>
-                  </div>
-                  <Link
-                    href={`/idea/${idea.slug || idea.id}`}
-                    style={styles.liveViewLink}
-                  >
-                    <span>View idea</span>
-                    <span>→</span>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
 
       {/* BOTTOM CTA */}
       <div style={styles.bottomCta}>
