@@ -1,7 +1,8 @@
 "use client";
-import { IdeaCard } from "@/components/IdeaCard";
+
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { IdeaCard } from "@/components/IdeaCard";
 
 type Idea = {
   id: string;
@@ -20,7 +21,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background:
       "radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.18), #020617)",
     color: "#e5e7eb",
-    padding: "96px 20px 56px", // 96px щоб не лізло під fixed-header
+    padding: "32px 20px 56px",
     width: "100%",
     maxWidth: 1120,
     margin: "0 auto",
@@ -222,71 +223,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: "column",
     gap: 10,
   },
-  liveCard: {
-    borderRadius: 18,
-    border: "1px solid #111827",
-    padding: "12px 14px",
-    background:
-      "radial-gradient(circle at top left, rgba(15,23,42,0.95), transparent 55%) #020617",
-  },
-  liveTitle: {
-    fontSize: 14,
-    fontWeight: 600,
-    marginBottom: 4,
-  },
-  liveDesc: {
-    fontSize: 13,
-    color: "#9ca3af",
-    marginBottom: 6,
-  },
-  liveMeta: {
-    fontSize: 12,
-    color: "#6b7280",
-  },
-  liveRight: {
-    textAlign: "right",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end",
-    gap: 6,
-  },
-  livePulsePill: {
-    borderRadius: 999,
-    border: "1px solid #374151",
-    padding: "3px 9px",
-    fontSize: 12,
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 6,
-  },
-  pulseControls: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 4,
-    marginTop: 4,
-  },
-  pulseBtn: {
-    width: 20,
-    height: 20,
-    borderRadius: 999,
-    border: "1px solid #374151",
-    background: "#020617",
-    color: "#e5e7eb",
-    fontSize: 12,
-    cursor: "pointer",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  liveViewLink: {
-    fontSize: 12,
-    color: "#93c5fd",
-    textDecoration: "none",
-    marginTop: 4,
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 4,
-  },
 
   bottomCta: {
     marginTop: 32,
@@ -446,7 +382,7 @@ export default function HomePage() {
       </section>
 
       {/* WHY ROOTA EXISTS (коротка версія) */}
-      <section style={styles.section} id="overview">
+      <section id="overview" style={styles.section}>
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
           <div style={styles.sectionHint}>
@@ -545,99 +481,17 @@ export default function HomePage() {
             No signals match this view. Try changing the filter or search.
           </p>
         )}
-{!loadingIdeas && visibleIdeas.length > 0 && (
-  <div style={{ marginTop: 20 }}>
-    {visibleIdeas.map((idea) => (
-      <IdeaCard key={idea.id} idea={idea} />
-    ))}
-  </div>
-)}
 
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: 12,
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <div style={styles.liveTitle}>{idea.title}</div>
-                      <div style={styles.livePulsePill}>
-                        <span>⚡</span>
-                        <span>{p}</span>
-                        <span>· {label}</span>
-                      </div>
-                    </div>
-
-                    {/* Опис */}
-                    {idea.description && (
-                      <div style={styles.liveDesc}>{idea.description}</div>
-                    )}
-
-                    {/* Низ: дата + [-][+] + стрілка */}
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        gap: 8,
-                        marginTop: 4,
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <div style={styles.liveMeta}>
-                        {dateText} · Proof & pulse on record
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                        }}
-                      >
-                        <div style={styles.pulseControls}>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handlePulseChange(idea, -1)
-                            }
-                            disabled={!!updatingId}
-                            style={{
-                              ...styles.pulseBtn,
-                              opacity: updatingId ? 0.5 : 1,
-                            }}
-                          >
-                            –
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handlePulseChange(idea, +1)
-                            }
-                            disabled={!!updatingId}
-                            style={{
-                              ...styles.pulseBtn,
-                              opacity: updatingId ? 0.5 : 1,
-                            }}
-                          >
-                            +
-                          </button>
-                        </div>
-
-                        <Link
-                          href={`/idea/${idea.slug || idea.id}`}
-                          style={styles.liveViewLink}
-                        >
-                          <span>View</span>
-                          <span>→</span>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        {!loadingIdeas && visibleIdeas.length > 0 && (
+          <div style={styles.liveList}>
+            {visibleIdeas.map((idea) => (
+              <IdeaCard
+                key={idea.id}
+                idea={idea}
+                // щоб не загубити можливість змінювати pulse:
+                // можна потім додати onPulse у IdeaCard, якщо треба.
+              />
+            ))}
           </div>
         )}
       </section>
