@@ -277,3 +277,18 @@ a {
   color: #fff;
   cursor: pointer;
 }
+/* HERO layout: на десктопі дві колонки, на мобілці — одна */
+.hero-layout {
+  /* тут нічого не задаємо, desktop уже налаштований через inline-стилі */
+}
+
+@media (max-width: 768px) {
+  .hero-layout {
+    display: block !important; /* замість grid */
+  }
+
+  .hero-layout > aside {
+    margin-top: 16px;
+  }
+}
+
