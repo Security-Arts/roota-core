@@ -1,6 +1,8 @@
-// components/RootaHeader.tsx
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { RootaLogo } from "./RootaLogo";
 
 const headerStyles: { [key: string]: React.CSSProperties } = {
@@ -12,8 +14,8 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     zIndex: 40,
     display: "flex",
     justifyContent: "center",
-    padding: "8px 12px",
-    pointerEvents: "none", // щоб тінь/фон не блокували скрол
+    padding: "8px 10px",
+    pointerEvents: "none", // фон не блокує скрол
   },
   inner: {
     maxWidth: 1120,
@@ -21,20 +23,22 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 16,
-    padding: "10px 18px",
+    gap: 12,
+    padding: "10px 16px",
     borderRadius: 999,
     border: "1px solid rgba(30,64,175,0.7)",
     background:
       "radial-gradient(circle at top left, rgba(15,23,42,0.95), transparent 70%) #020617",
     boxShadow: "0 18px 40px rgba(0,0,0,0.7)",
     pointerEvents: "auto",
+    flexWrap: "wrap", // щоб на мобілці таби могли стати нижнім рядом
   },
   brandRow: {
     display: "flex",
     alignItems: "center",
     gap: 10,
     minWidth: 0,
+    flexShrink: 1,
   },
   logoBox: {
     width: 40,
@@ -48,6 +52,7 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
+    flexShrink: 0,
   },
   brandText: {
     display: "flex",
@@ -68,17 +73,21 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
   tabs: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
+    gap: 6,
+    flexShrink: 0,
+    flexWrap: "wrap",
+    marginLeft: "auto",
   },
   tab: {
     borderRadius: 999,
     border: "1px solid transparent",
-    padding: "7px 18px",
-    fontSize: 13,
+    padding: "6px 14px",
+    fontSize: 12.5,
     background: "transparent",
     color: "#9ca3af",
     cursor: "pointer",
     textDecoration: "none",
+    whiteSpace: "nowrap",
   } as React.CSSProperties,
   tabActive: {
     background:
@@ -89,6 +98,13 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
 };
 
 export function RootaHeader() {
+  const pathname = usePathname();
+
+  const isHive = pathname === "/hive";
+  const isOverview =
+    pathname === "/overview" || pathname === "/landing"; // на випадок старого /landing
+  const isAbout = pathname === "/about";
+
   return (
     <header style={headerStyles.shell}>
       <div style={headerStyles.inner}>
@@ -113,15 +129,32 @@ export function RootaHeader() {
         {/* Таби справа */}
         <nav style={headerStyles.tabs}>
           <Link
-            href="/#hive"
-            style={{ ...headerStyles.tab, ...headerStyles.tabActive }}
+            href="/hive"
+            style={{
+              ...headerStyles.tab,
+              ...(isHive ? headerStyles.tabActive : null),
+            }}
           >
             Hive
           </Link>
-          <Link href="/#overview" style={headerStyles.tab}>
+
+          <Link
+            href="/overview"
+            style={{
+              ...headerStyles.tab,
+              ...(isOverview ? headerStyles.tabActive : null),
+            }}
+          >
             Overview
           </Link>
-          <Link href="/about" style={headerStyles.tab}>
+
+          <Link
+            href="/about"
+            style={{
+              ...headerStyles.tab,
+              ...(isAbout ? headerStyles.tabActive : null),
+            }}
+          >
             About
           </Link>
         </nav>
