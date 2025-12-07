@@ -1,4 +1,13 @@
 /* Базовий reset можна додати потім, зараз тільки те, що треба */
+.roota-tab {
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.roota-tab:hover {
+  background: rgba(59,130,246,0.15); /* синій прозорий */
+  color: #e5e7eb;
+  border-color: rgba(59,130,246,0.3);
+}
 
 .idea-layout {
   display: grid;
