@@ -180,16 +180,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     justifyContent: "space-between",
   },
-  searchInput: {
-    flex: "1 1 210px",
-    minWidth: 0,
-    borderRadius: 999,
-    border: "1px solid #1f2937",
-    padding: "8px 12px",
-    fontSize: 13,
-    backgroundColor: "#020617",
-    color: "#e5e7eb",
-  },
+searchInput: {
+  width: "100%",          // на мобілці — повна ширина
+  maxWidth: 520,          // на десктопі — не розтягується до безмежності
+  borderRadius: 999,
+  border: "1px solid #1f2937",
+  padding: "10px 14px",
+  fontSize: 14,
+  backgroundColor: "rgba(2,6,23,0.92)",  // легка прозорість дає глибину
+  color: "#e5e7eb",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.45)", // компактна тінь, без "бублика"
+  outline: "none",
+},
+
   filterPillsRow: {
     display: "flex",
     flexWrap: "wrap",
@@ -477,6 +480,7 @@ export default function HomePage() {
         ...styles.hiveControlsRow,
         flexDirection: "column",
         alignItems: "stretch",
+        justifyContent: "flex-start",
         gap: 10,
       }
     : styles.hiveControlsRow;
