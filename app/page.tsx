@@ -1,5 +1,6 @@
 // app/page.tsx
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -393,11 +394,12 @@ export default function HomePage() {
 
   return (
     <main style={styles.page}>
-          
       {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
-        <span>Ideas Stock Exchange · A live registry of ideas with Proof & Pulse</span>
+        <span>
+          Ideas Stock Exchange · A live registry of ideas with Proof & Pulse
+        </span>
       </div>
 
       <section style={styles.heroGrid}>
@@ -450,7 +452,6 @@ export default function HomePage() {
 
       {/* WHY ROOTA EXISTS (коротка версія) */}
       <section id="overview" style={styles.section}>
-      <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
           <div style={styles.sectionHint}>
