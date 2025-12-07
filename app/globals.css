@@ -2,6 +2,10 @@
 .roota-tab {
   transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
 .roota-tab:hover {
   background: rgba(59,130,246,0.15); /* синій прозорий */
