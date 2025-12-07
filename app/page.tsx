@@ -319,6 +319,7 @@ export default function HomePage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [pulseFilter, setPulseFilter] = useState<PulseFilter>("ALL");
+  const [isMobile, setIsMobile] = useState(false);
 
   const scrollToHive = () => {
     const el = document.getElementById("hive");
@@ -326,6 +327,18 @@ export default function HomePage() {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== "undefined") {
+        setIsMobile(window.innerWidth <= 768);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -392,8 +405,84 @@ export default function HomePage() {
     return bucket === pulseFilter;
   });
 
+  // --- Адаптивні стилі ---
+  const pageStyle: React.CSSProperties = {
+    ...styles.page,
+    padding: isMobile ? "28px 16px 40px" : styles.page.padding,
+  };
+
+  const heroGridStyle: React.CSSProperties = isMobile
+    ? {
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+        marginBottom: 32,
+      }
+    : styles.heroGrid;
+
+  const titleStyle: React.CSSProperties = {
+    ...styles.title,
+    fontSize: isMobile ? 32 : styles.title.fontSize,
+  };
+
+  const subtitleStyle: React.CSSProperties = {
+    ...styles.subtitle,
+    fontSize: isMobile ? 15 : styles.subtitle.fontSize,
+  };
+
+  const sectionTitleRowStyle: React.CSSProperties = isMobile
+    ? {
+        ...styles.sectionTitleRow,
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: 6,
+      }
+    : styles.sectionTitleRow;
+
+  const twoColTextStyle: React.CSSProperties = isMobile
+    ? {
+        display: "flex",
+        flexDirection: "column",
+        gap: 18,
+      }
+    : styles.twoColText;
+
+  const liveCardStyle: React.CSSProperties = isMobile
+    ? {
+        ...styles.liveCard,
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }
+    : styles.liveCard;
+
+  const liveRightStyle: React.CSSProperties = isMobile
+    ? {
+        ...styles.liveRight,
+        alignItems: "flex-start",
+        textAlign: "left",
+      }
+    : styles.liveRight;
+
+  const liveHeaderRowStyle: React.CSSProperties = isMobile
+    ? {
+        ...styles.liveHeaderRow,
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: 6,
+      }
+    : styles.liveHeaderRow;
+
+  const hiveControlsRowStyle: React.CSSProperties = isMobile
+    ? {
+        ...styles.hiveControlsRow,
+        flexDirection: "column",
+        alignItems: "stretch",
+        gap: 10,
+      }
+    : styles.hiveControlsRow;
+
   return (
-    <main style={styles.page}>
+    <main style={pageStyle}>
       {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
@@ -402,10 +491,10 @@ export default function HomePage() {
         </span>
       </div>
 
-      <section style={styles.heroGrid}>
+      <section style={heroGridStyle}>
         <div>
-          <h1 style={styles.title}>Ideas deserve a home, not a feed.</h1>
-          <p style={styles.subtitle}>
+          <h1 style={titleStyle}>Ideas deserve a home, not a feed.</h1>
+          <p style={subtitleStyle}>
             Roota turns raw thoughts into timestamped records with{" "}
             <strong>proof</strong> and <strong>pulse</strong>. It&apos;s a live
             hive — a place where ideas take root, grow and stay visible to
@@ -451,8 +540,8 @@ export default function HomePage() {
       </section>
 
       {/* WHY ROOTA EXISTS (коротка версія) */}
-      <section id="overview" style={styles.section}>
-        <div style={styles.sectionTitleRow}>
+      <section style={styles.section}>
+        <div style={sectionTitleRowStyle}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
           <div style={styles.sectionHint}>
             Ideas usually die in chats and notebooks. Roota keeps their
@@ -460,7 +549,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div style={styles.twoColText}>
+        <div style={twoColTextStyle}>
           <div>
             <p style={styles.paragraph}>
               Most ideas live in fragments: notes, Notion pages, chat threads.
@@ -497,7 +586,7 @@ export default function HomePage() {
 
       {/* HIVE SECTION */}
       <section id="hive" style={styles.section}>
-        <div style={styles.liveHeaderRow}>
+        <div style={liveHeaderRowStyle}>
           <div style={styles.sectionTitle}>Live signals from the hive</div>
           <div style={styles.sectionHint}>
             Realtime pulse — no screenshots, just what&apos;s alive now.
@@ -505,7 +594,7 @@ export default function HomePage() {
         </div>
 
         {/* Controls: search + pulse filter */}
-        <div style={styles.hiveControlsRow}>
+        <div style={hiveControlsRowStyle}>
           <input
             style={styles.searchInput}
             placeholder="Search ideas by title or description…"
@@ -566,7 +655,7 @@ export default function HomePage() {
                   : "New";
 
               return (
-                <div key={idea.id} style={styles.liveCard}>
+                <div key={idea.id} style={liveCardStyle}>
                   <div>
                     <div style={styles.liveTitle}>{idea.title}</div>
                     <div style={styles.liveDesc}>{idea.description}</div>
@@ -576,7 +665,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div style={styles.liveRight}>
+                  <div style={liveRightStyle}>
                     <div style={styles.livePulsePill}>
                       <span>⚡</span>
                       <span>{p}</span>
