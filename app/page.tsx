@@ -323,7 +323,17 @@ export default function HomePage() {
   const [search, setSearch] = useState("");
   const [pulseFilter, setPulseFilter] = useState<PulseFilter>("ALL");
   const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const update = () => {
+      if (typeof window !== "undefined") {
+        setIsMobile(window.innerWidth < 768);
+      }
+    };
 
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
   const scrollToHive = () => {
     const el = document.getElementById("hive");
     if (el) {
@@ -646,73 +656,164 @@ export default function HomePage() {
 
         {!loadingIdeas && visibleIdeas.length > 0 && (
           <div style={styles.liveList}>
-            {visibleIdeas.map((idea) => {
-              const p = idea.pulse ?? 0;
-              const bucket = getPulseBucket(idea.pulse);
-              const label =
-                bucket === "HIGH"
-                  ? "High conviction"
-                  : bucket === "VALIDATED"
-                  ? "Validated"
-                  : bucket === "SEED"
-                  ? "Seed"
-                  : "New";
+        {visibleIdeas.map((idea) => {
+  const p = idea.pulse ?? 0;
+  const bucket = getPulseBucket(idea.pulse);
+  const label =
+    bucket === "HIGH"
+      ? "High conviction"
+      : bucket === "VALIDATED"
+      ? "Validated"
+      : bucket === "SEED"
+      ? "Seed"
+      : "New";
 
-              return (
-                <div key={idea.id} style={liveCardStyle}>
-                  <div>
-                    <div style={styles.liveTitle}>{idea.title}</div>
-                    <div style={styles.liveDesc}>{idea.description}</div>
-                    <div style={styles.liveMeta}>
-                      {new Date(idea.created_at).toLocaleDateString()} · Proof &
-                      pulse on record
-                    </div>
-                  </div>
+  const dateText = new Date(idea.created_at).toLocaleDateString();
 
-                  <div style={liveRightStyle}>
-                    <div style={styles.livePulsePill}>
-                      <span>⚡</span>
-                      <span>{p}</span>
-                      <span>· {label}</span>
-                    </div>
-                    <div style={styles.pulseControls}>
-                      <button
-                        type="button"
-                        onClick={() => handlePulseChange(idea, -1)}
-                        disabled={!!updatingId}
-                        style={{
-                          ...styles.pulseBtn,
-                          opacity: updatingId ? 0.5 : 1,
-                        }}
-                      >
-                        –
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handlePulseChange(idea, +1)}
-                        disabled={!!updatingId}
-                        style={{
-                          ...styles.pulseBtn,
-                          opacity: updatingId ? 0.5 : 1,
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <Link
-                      href={`/idea/${idea.slug || idea.id}`}
-                      style={styles.liveViewLink}
-                    >
-                      <span>View idea</span>
-                      <span>→</span>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+  // 📱 MOBILE-КАРТКА
+  if (isMobile) {
+    return (
+      <div key={idea.id} style={styles.liveCard}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+            width: "100%",
+          }}
+        >
+          {/* Верхній рядок: заголовок + пульс справа */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+            }}
+          >
+            <div style={styles.liveTitle}>{idea.title}</div>
+            <div style={styles.livePulsePill}>
+              <span>⚡</span>
+              <span>{p}</span>
+              <span>· {label}</span>
+            </div>
           </div>
-        )}
-      </section>
+
+          {/* Опис */}
+          {idea.description && (
+            <div style={styles.liveDesc}>{idea.description}</div>
+          )}
+
+          {/* Низ: дата + кнопки + стрілка */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+              marginTop: 4,
+            }}
+          >
+            <div style={styles.liveMeta}>{dateText} · Proof & pulse on record</div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              <div style={styles.pulseControls}>
+                <button
+                  type="button"
+                  onClick={() => handlePulseChange(idea, -1)}
+                  disabled={!!updatingId}
+                  style={{
+                    ...styles.pulseBtn,
+                    opacity: updatingId ? 0.5 : 1,
+                  }}
+                >
+                  –
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handlePulseChange(idea, +1)}
+                  disabled={!!updatingId}
+                  style={{
+                    ...styles.pulseBtn,
+                    opacity: updatingId ? 0.5 : 1,
+                  }}
+                >
+                  +
+                </button>
+              </div>
+
+              <Link
+                href={`/idea/${idea.slug || idea.id}`}
+                style={styles.liveViewLink}
+              >
+                <span>→</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 🖥 DESKTOP-КАРТКА (твій попередній варіант)
+  return (
+    <div key={idea.id} style={styles.liveCard}>
+      <div>
+        <div style={styles.liveTitle}>{idea.title}</div>
+        <div style={styles.liveDesc}>{idea.description}</div>
+        <div style={styles.liveMeta}>
+          {dateText} · Proof & pulse on record
+        </div>
+      </div>
+
+      <div style={styles.liveRight}>
+        <div style={styles.livePulsePill}>
+          <span>⚡</span>
+          <span>{p}</span>
+          <span>· {label}</span>
+        </div>
+        <div style={styles.pulseControls}>
+          <button
+            type="button"
+            onClick={() => handlePulseChange(idea, -1)}
+            disabled={!!updatingId}
+            style={{
+              ...styles.pulseBtn,
+              opacity: updatingId ? 0.5 : 1,
+            }}
+          >
+            –
+          </button>
+          <button
+            type="button"
+            onClick={() => handlePulseChange(idea, +1)}
+            disabled={!!updatingId}
+            style={{
+              ...styles.pulseBtn,
+              opacity: updatingId ? 0.5 : 1,
+            }}
+          >
+            +
+          </button>
+        </div>
+        <Link
+          href={`/idea/${idea.slug || idea.id}`}
+          style={styles.liveViewLink}
+        >
+          <span>View idea</span>
+          <span>→</span>
+        </Link>
+      </div>
+    </div>
+  );
+})}
+
 
       {/* BOTTOM CTA */}
       <div style={styles.bottomCta}>
