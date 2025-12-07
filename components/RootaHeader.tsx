@@ -8,23 +8,23 @@ import { RootaLogo } from "./RootaLogo";
 export function RootaHeader() {
   const pathname = usePathname();
 
-  const isActive = (route: string) => {
-    if (route === "/hive" && (pathname === "/" || pathname === "/hive"))
-      return true;
-    return pathname === route;
-  };
+  // ❗ Хочеш, щоб на головній НЕ світився Hive?
+  //     заміни умову нижче з pathname === "/" на false
+  const isHive = pathname === "/hive"; 
+  const isOverview = pathname === "/overview";
+  const isAbout = pathname === "/about";
 
   const tabStyle = (active: boolean): React.CSSProperties => ({
     padding: "6px 14px",
     borderRadius: 999,
     fontSize: 13,
-    textDecoration: "none",
     border: active ? "1px solid #3b82f6" : "1px solid transparent",
     background: active
       ? "radial-gradient(circle at 20% 0, rgba(37,99,235,1), rgba(15,23,42,1))"
       : "transparent",
     color: active ? "#fff" : "#9ca3af",
     cursor: "pointer",
+    transition: "all 0.18s ease",
   });
 
   return (
@@ -58,41 +58,43 @@ export function RootaHeader() {
           pointerEvents: "auto",
         }}
       >
-        <Link
-          href="/"
-          style={{ display: "flex", alignItems: "center", gap: 10 }}
-        >
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 16,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "rgba(0,0,0,0.45)",
-              border: "1px solid #1f2937",
-            }}
-          >
-            <RootaLogo size={26} />
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {/* Бренд */}
+        <Link href="/" className="roota-brand-link">
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div
               style={{
-                fontSize: 14,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
+                width: 40,
+                height: 40,
+                borderRadius: 16,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(0,0,0,0.45)",
+                border: "1px solid #1f2937",
               }}
             >
-              ROOTA
+              <RootaLogo size={26} />
             </div>
-            <div style={{ fontSize: 12, color: "#9ca3af" }}>
-              Ideas Stock Exchange · Proof & Pulse
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <div
+                style={{
+                  fontSize: 14,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "#e5e7eb",
+                }}
+              >
+                ROOTA
+              </div>
+              <div style={{ fontSize: 12, color: "#9ca3af" }}>
+                Ideas Stock Exchange · Proof & Pulse
+              </div>
             </div>
           </div>
         </Link>
 
+        {/* Таби */}
         <nav
           style={{
             display: "flex",
@@ -103,7 +105,7 @@ export function RootaHeader() {
           <Link
             href="/hive"
             className="roota-tab"
-            style={tabStyle(isActive("/hive"))}
+            style={tabStyle(isHive)}
           >
             Hive
           </Link>
@@ -111,7 +113,7 @@ export function RootaHeader() {
           <Link
             href="/overview"
             className="roota-tab"
-            style={tabStyle(isActive("/overview"))}
+            style={tabStyle(isOverview)}
           >
             Overview
           </Link>
@@ -119,7 +121,7 @@ export function RootaHeader() {
           <Link
             href="/about"
             className="roota-tab"
-            style={tabStyle(isActive("/about"))}
+            style={tabStyle(isAbout)}
           >
             About
           </Link>
