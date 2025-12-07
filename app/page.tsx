@@ -1,6 +1,6 @@
 // app/page.tsx
 "use client";
-
+import { RootaHeader } from "../components/RootaHeader";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -394,6 +394,8 @@ export default function HomePage() {
 
   return (
     <main style={styles.page}>
+            <RootaHeader />
+
       {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
