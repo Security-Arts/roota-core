@@ -401,7 +401,7 @@ export default function HomePage() {
         </span>
       </div>
 
-      <section style={styles.heroGrid}>
+      <section className="hero-layout" style={styles.heroGrid}>
         <div>
           <h1 style={styles.title}>Ideas deserve a home, not a feed.</h1>
           <p style={styles.subtitle}>
