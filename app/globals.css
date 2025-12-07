@@ -160,3 +160,60 @@ a {
     margin-top: 16px;
   }
 }
+/* ---- IDEA CARD ---- */
+
+.idea-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #111827;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: radial-gradient(circle at top left, rgba(15,23,42,0.95), transparent 55%) #020617;
+  margin-bottom: 12px;
+}
+
+.idea-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.idea-card-desc {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.idea-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.idea-card-right {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.idea-card-pulse {
+  border: 1px solid #374151;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(0,0,0,0.3);
+}
+
+/* ---- MOBILE ---- */
+@media (max-width: 768px) {
+  .idea-card {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .idea-card-right {
+    justify-content: flex-start;
+  }
+}
