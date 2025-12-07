@@ -547,8 +547,10 @@ export default function HomePage() {
         )}
 
         {!loadingIdeas && visibleIdeas.length > 0 && (
-          <div style={styles.liveList}>
-            {visibleIdeas.map((idea) => {
+        <div style={{ marginTop: 20 }}>
+  {visibleIdeas.map((idea) => (
+    <IdeaCard key={idea.id} idea={idea} />
+  ))}
               const p = idea.pulse ?? 0;
               const bucket = getPulseBucket(idea.pulse);
               const label =
