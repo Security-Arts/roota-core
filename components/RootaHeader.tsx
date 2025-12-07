@@ -31,7 +31,7 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
       "radial-gradient(circle at top left, rgba(15,23,42,0.95), transparent 70%) #020617",
     boxShadow: "0 18px 40px rgba(0,0,0,0.7)",
     pointerEvents: "auto",
-    flexWrap: "wrap", // щоб на мобілці таби могли стати нижнім рядом
+    flexWrap: "wrap", // на мобілці таби можуть стати другим рядом
   },
   brandRow: {
     display: "flex",
@@ -100,9 +100,10 @@ const headerStyles: { [key: string]: React.CSSProperties } = {
 export function RootaHeader() {
   const pathname = usePathname();
 
-  const isHive = pathname === "/hive";
+  // 🔥 ВАЖЛИВО: Головна / рахується як Hive
+  const isHive = pathname === "/" || pathname === "/hive";
   const isOverview =
-    pathname === "/overview" || pathname === "/landing"; // на випадок старого /landing
+    pathname === "/overview" || pathname === "/landing";
   const isAbout = pathname === "/about";
 
   return (
