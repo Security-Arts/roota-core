@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
+import { HiveTable } from "@/components/HiveTable";
+<HiveTable ideas={visibleIdeas} onPulse={handlePulseChange} />
 type Idea = {
   id: string;
   title: string;
