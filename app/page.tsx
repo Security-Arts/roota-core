@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -21,7 +20,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     background:
       "radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 60%), radial-gradient(circle at bottom right, rgba(129,140,248,0.18), #020617)",
     color: "#e5e7eb",
-    padding: "32px 20px 56px",
+    padding: "96px 20px 56px", // 96px щоб не лізло під fixed-header
     width: "100%",
     maxWidth: 1120,
     margin: "0 auto",
@@ -180,19 +179,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     justifyContent: "space-between",
   },
-searchInput: {
-  width: "100%",          // на мобілці — повна ширина
-  maxWidth: 520,          // на десктопі — не розтягується до безмежності
-  borderRadius: 999,
-  border: "1px solid #1f2937",
-  padding: "10px 14px",
-  fontSize: 14,
-  backgroundColor: "rgba(2,6,23,0.92)",  // легка прозорість дає глибину
-  color: "#e5e7eb",
-  boxShadow: "0 8px 20px rgba(0,0,0,0.45)", // компактна тінь, без "бублика"
-  outline: "none",
-},
-
+  searchInput: {
+    flex: "1 1 210px",
+    minWidth: 0,
+    borderRadius: 999,
+    border: "1px solid #1f2937",
+    padding: "8px 12px",
+    fontSize: 13,
+    backgroundColor: "#020617",
+    color: "#e5e7eb",
+  },
   filterPillsRow: {
     display: "flex",
     flexWrap: "wrap",
@@ -232,10 +228,6 @@ searchInput: {
     padding: "12px 14px",
     background:
       "radial-gradient(circle at top left, rgba(15,23,42,0.95), transparent 55%) #020617",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    gap: 16,
   },
   liveTitle: {
     fontSize: 14,
@@ -322,36 +314,13 @@ export default function HomePage() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [pulseFilter, setPulseFilter] = useState<PulseFilter>("ALL");
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const update = () => {
-      if (typeof window !== "undefined") {
-        setIsMobile(window.innerWidth < 768);
-      }
-    };
 
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
   const scrollToHive = () => {
     const el = document.getElementById("hive");
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (typeof window !== "undefined") {
-        setIsMobile(window.innerWidth <= 768);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -408,7 +377,7 @@ export default function HomePage() {
     }
   };
 
-   const visibleIdeas = ideas.filter((i) => {
+  const visibleIdeas = ideas.filter((i) => {
     const text = (i.title + " " + (i.description ?? "")).toLowerCase();
     const q = search.trim().toLowerCase();
     if (q && !text.includes(q)) return false;
@@ -418,23 +387,8 @@ export default function HomePage() {
     return bucket === pulseFilter;
   });
 
-  // стилі для hive-controls (щоб на мобільних воно не було в один довгий ряд)
-  const controlsRowStyle: React.CSSProperties = isMobile
-    ? {
-        ...styles.hiveControlsRow,
-        flexDirection: "column",
-        alignItems: "stretch",
-        gap: 10,
-      }
-    : styles.hiveControlsRow;
-
-  // небагато збільшимо відступ під фіксованим хедером
-  const pageStyle: React.CSSProperties = isMobile
-    ? { ...styles.page, paddingTop: 96 }
-    : { ...styles.page, paddingTop: 96 };
-
   return (
-    <main style={pageStyle}>
+    <main style={styles.page}>
       {/* HERO */}
       <div style={styles.badgeRow}>
         <span style={styles.badge}>ROOTA</span>
@@ -546,7 +500,7 @@ export default function HomePage() {
         </div>
 
         {/* Controls: search + pulse filter */}
-        <div style={controlsRowStyle}>
+        <div style={styles.hiveControlsRow}>
           <input
             style={styles.searchInput}
             placeholder="Search ideas by title or description…"
@@ -610,154 +564,100 @@ export default function HomePage() {
                 idea.created_at
               ).toLocaleDateString();
 
-              // 📱 MOBILE КАРТКА
-              if (isMobile) {
-                return (
-                  <div key={idea.id} style={styles.liveCard}>
+              // Універсальна компактна картка (добре для desktop і мобіли)
+              return (
+                <div key={idea.id} style={styles.liveCard}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
+                      width: "100%",
+                    }}
+                  >
+                    {/* Верхній ряд: назва + пульс справа */}
                     <div
                       style={{
                         display: "flex",
-                        flexDirection: "column",
-                        gap: 6,
-                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 12,
+                        flexWrap: "wrap",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: 8,
-                        }}
-                      >
-                        <div style={styles.liveTitle}>{idea.title}</div>
-                        <div style={styles.livePulsePill}>
-                          <span>⚡</span>
-                          <span>{p}</span>
-                          <span>· {label}</span>
-                        </div>
-                      </div>
-
-                      {idea.description && (
-                        <div style={styles.liveDesc}>
-                          {idea.description}
-                        </div>
-                      )}
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: 8,
-                          marginTop: 4,
-                        }}
-                      >
-                        <div style={styles.liveMeta}>
-                          {dateText} · Proof & pulse on record
-                        </div>
-
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 6,
-                          }}
-                        >
-                          <div style={styles.pulseControls}>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handlePulseChange(idea, -1)
-                              }
-                              disabled={!!updatingId}
-                              style={{
-                                ...styles.pulseBtn,
-                                opacity: updatingId ? 0.5 : 1,
-                              }}
-                            >
-                              –
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                handlePulseChange(idea, +1)
-                              }
-                              disabled={!!updatingId}
-                              style={{
-                                ...styles.pulseBtn,
-                                opacity: updatingId ? 0.5 : 1,
-                              }}
-                            >
-                              +
-                            </button>
-                          </div>
-
-                          <Link
-                            href={`/idea/${idea.slug || idea.id}`}
-                            style={styles.liveViewLink}
-                          >
-                            <span>→</span>
-                          </Link>
-                        </div>
+                      <div style={styles.liveTitle}>{idea.title}</div>
+                      <div style={styles.livePulsePill}>
+                        <span>⚡</span>
+                        <span>{p}</span>
+                        <span>· {label}</span>
                       </div>
                     </div>
-                  </div>
-                );
-              }
 
-              // 🖥 DESKTOP КАРТКА
-              return (
-                <div key={idea.id} style={styles.liveCard}>
-                  <div>
-                    <div style={styles.liveTitle}>{idea.title}</div>
-                    <div style={styles.liveDesc}>{idea.description}</div>
-                    <div style={styles.liveMeta}>
-                      {dateText} · Proof & pulse on record
-                    </div>
-                  </div>
+                    {/* Опис */}
+                    {idea.description && (
+                      <div style={styles.liveDesc}>{idea.description}</div>
+                    )}
 
-                  <div style={styles.liveRight}>
-                    <div style={styles.livePulsePill}>
-                      <span>⚡</span>
-                      <span>{p}</span>
-                      <span>· {label}</span>
-                    </div>
-                    <div style={styles.pulseControls}>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handlePulseChange(idea, -1)
-                        }
-                        disabled={!!updatingId}
-                        style={{
-                          ...styles.pulseBtn,
-                          opacity: updatingId ? 0.5 : 1,
-                        }}
-                      >
-                        –
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          handlePulseChange(idea, +1)
-                        }
-                        disabled={!!updatingId}
-                        style={{
-                          ...styles.pulseBtn,
-                          opacity: updatingId ? 0.5 : 1,
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <Link
-                      href={`/idea/${idea.slug || idea.id}`}
-                      style={styles.liveViewLink}
+                    {/* Низ: дата + [-][+] + стрілка */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 8,
+                        marginTop: 4,
+                        flexWrap: "wrap",
+                      }}
                     >
-                      <span>View idea</span>
-                      <span>→</span>
-                    </Link>
+                      <div style={styles.liveMeta}>
+                        {dateText} · Proof & pulse on record
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                        }}
+                      >
+                        <div style={styles.pulseControls}>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handlePulseChange(idea, -1)
+                            }
+                            disabled={!!updatingId}
+                            style={{
+                              ...styles.pulseBtn,
+                              opacity: updatingId ? 0.5 : 1,
+                            }}
+                          >
+                            –
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handlePulseChange(idea, +1)
+                            }
+                            disabled={!!updatingId}
+                            style={{
+                              ...styles.pulseBtn,
+                              opacity: updatingId ? 0.5 : 1,
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        <Link
+                          href={`/idea/${idea.slug || idea.id}`}
+                          style={styles.liveViewLink}
+                        >
+                          <span>View</span>
+                          <span>→</span>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
@@ -770,9 +670,9 @@ export default function HomePage() {
       <div style={styles.bottomCta}>
         <div style={{ maxWidth: 520 }}>
           <p style={styles.paragraph}>
-            Roota keeps the public hive open and neutral. Proof and pulse
-            stay public — paid layers appear only where they add real
-            leverage: private hives, analytics and Bee-agents.
+            Roota keeps the public hive open and neutral. Proof and pulse stay
+            public — paid layers appear only where they add real leverage:
+            private hives, analytics and Bee-agents.
           </p>
         </div>
         <div style={styles.ctaRow}>
@@ -791,4 +691,3 @@ export default function HomePage() {
     </main>
   );
 }
-
