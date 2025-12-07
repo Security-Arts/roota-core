@@ -1,5 +1,5 @@
 "use client";
-
+import { IdeaCard } from "@/components/IdeaCard";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -545,40 +545,14 @@ export default function HomePage() {
             No signals match this view. Try changing the filter or search.
           </p>
         )}
+{!loadingIdeas && visibleIdeas.length > 0 && (
+  <div style={{ marginTop: 20 }}>
+    {visibleIdeas.map((idea) => (
+      <IdeaCard key={idea.id} idea={idea} />
+    ))}
+  </div>
+)}
 
-        {!loadingIdeas && visibleIdeas.length > 0 && (
-        <div style={{ marginTop: 20 }}>
-  {visibleIdeas.map((idea) => (
-    <IdeaCard key={idea.id} idea={idea} />
-  ))}
-              const p = idea.pulse ?? 0;
-              const bucket = getPulseBucket(idea.pulse);
-              const label =
-                bucket === "HIGH"
-                  ? "High conviction"
-                  : bucket === "VALIDATED"
-                  ? "Validated"
-                  : bucket === "SEED"
-                  ? "Seed"
-                  : "New";
-
-              const dateText = new Date(
-                idea.created_at
-              ).toLocaleDateString();
-
-              // Універсальна компактна картка (добре для desktop і мобіли)
-              return (
-                <div key={idea.id} style={styles.liveCard}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 6,
-                      width: "100%",
-                    }}
-                  >
-                    {/* Верхній ряд: назва + пульс справа */}
-                    <div
                       style={{
                         display: "flex",
                         alignItems: "center",
