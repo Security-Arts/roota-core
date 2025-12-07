@@ -2,7 +2,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { RootaHeader } from "@/components/RootaHeader";
-import { RootaFooter } from "@/components/RootaFooter";
+// якщо RootaFooter є — імпортуй, якщо ні, прибери його з JSX
+// import { RootaFooter } from "@/components/RootaFooter";
 
 export const metadata: Metadata = {
   title: "Roota · Ideas Stock Exchange",
@@ -26,16 +27,21 @@ export default function RootLayout({
         }}
       >
         <RootaHeader />
+
+        {/* відступ зверху, щоб контент не ліз під fixed-хедер */}
         <div
           style={{
             minHeight: "100vh",
-            paddingTop: 80, // щоб контент не залазив під хедер
+            paddingTop: 88,
           }}
         >
           {children}
         </div>
-        <RootaFooter />
+
+        {/* якщо є футер — залиш, якщо ні, прибери */}
+        {/* <RootaFooter /> */}
       </body>
     </html>
   );
 }
+
