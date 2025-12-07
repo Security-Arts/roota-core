@@ -449,6 +449,7 @@ export default function HomePage() {
       </section>
 
       {/* WHY ROOTA EXISTS (коротка версія) */}
+      <section id="overview" style={styles.section}>
       <section style={styles.section}>
         <div style={styles.sectionTitleRow}>
           <h2 style={styles.sectionTitle}>Why Roota exists</h2>
