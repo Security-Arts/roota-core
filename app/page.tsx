@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { IdeaCard } from "@/components/IdeaCard";
 
 type Idea = {
   id: string;
@@ -222,6 +221,75 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: "flex",
     flexDirection: "column",
     gap: 10,
+  },
+  liveCard: {
+    borderRadius: 18,
+    border: "1px solid #111827",
+    padding: "12px 14px",
+    background:
+      "radial-gradient(circle at top left, rgba(15,23,42,0.95), transparent 55%) #020617",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: 16,
+  },
+  liveTitle: {
+    fontSize: 14,
+    fontWeight: 600,
+    marginBottom: 4,
+  },
+  liveDesc: {
+    fontSize: 13,
+    color: "#9ca3af",
+    marginBottom: 6,
+  },
+  liveMeta: {
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  liveRight: {
+    textAlign: "right",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    gap: 6,
+  },
+  livePulsePill: {
+    borderRadius: 999,
+    border: "1px solid #374151",
+    padding: "3px 9px",
+    fontSize: 12,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+  },
+  pulseControls: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    marginTop: 4,
+  },
+  pulseBtn: {
+    width: 20,
+    height: 20,
+    borderRadius: 999,
+    border: "1px solid #374151",
+    background: "#020617",
+    color: "#e5e7eb",
+    fontSize: 12,
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  liveViewLink: {
+    fontSize: 12,
+    color: "#93c5fd",
+    textDecoration: "none",
+    marginTop: 4,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
   },
 
   bottomCta: {
@@ -484,14 +552,70 @@ export default function HomePage() {
 
         {!loadingIdeas && visibleIdeas.length > 0 && (
           <div style={styles.liveList}>
-            {visibleIdeas.map((idea) => (
-              <IdeaCard
-                key={idea.id}
-                idea={idea}
-                // щоб не загубити можливість змінювати pulse:
-                // можна потім додати onPulse у IdeaCard, якщо треба.
-              />
-            ))}
+            {visibleIdeas.map((idea) => {
+              const p = idea.pulse ?? 0;
+              const bucket = getPulseBucket(idea.pulse);
+              const label =
+                bucket === "HIGH"
+                  ? "High conviction"
+                  : bucket === "VALIDATED"
+                  ? "Validated"
+                  : bucket === "SEED"
+                  ? "Seed"
+                  : "New";
+
+              return (
+                <div key={idea.id} style={styles.liveCard}>
+                  <div>
+                    <div style={styles.liveTitle}>{idea.title}</div>
+                    <div style={styles.liveDesc}>{idea.description}</div>
+                    <div style={styles.liveMeta}>
+                      {new Date(idea.created_at).toLocaleDateString()} · Proof &
+                      pulse on record
+                    </div>
+                  </div>
+
+                  <div style={styles.liveRight}>
+                    <div style={styles.livePulsePill}>
+                      <span>⚡</span>
+                      <span>{p}</span>
+                      <span>· {label}</span>
+                    </div>
+                    <div style={styles.pulseControls}>
+                      <button
+                        type="button"
+                        onClick={() => handlePulseChange(idea, -1)}
+                        disabled={!!updatingId}
+                        style={{
+                          ...styles.pulseBtn,
+                          opacity: updatingId ? 0.5 : 1,
+                        }}
+                      >
+                        –
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handlePulseChange(idea, +1)}
+                        disabled={!!updatingId}
+                        style={{
+                          ...styles.pulseBtn,
+                          opacity: updatingId ? 0.5 : 1,
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <Link
+                      href={`/idea/${idea.slug || idea.id}`}
+                      style={styles.liveViewLink}
+                    >
+                      <span>View idea</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </section>
